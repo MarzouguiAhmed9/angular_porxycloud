@@ -11,8 +11,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { addCv1 } from '../fn/cv-controller/add-cv-1';
-import { AddCv1$Params } from '../fn/cv-controller/add-cv-1';
+import { addCv } from '../fn/cv-controller/add-cv';
+import { AddCv$Params } from '../fn/cv-controller/add-cv';
 
 @Injectable({ providedIn: 'root' })
 export class CvControllerService extends BaseService {
@@ -20,27 +20,27 @@ export class CvControllerService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `addCv1()` */
-  static readonly AddCv1Path = '/cv/add';
+  /** Path part for operation `addCv()` */
+  static readonly AddCvPath = '/cv/add';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `addCv1()` instead.
+   * To access only the response body, use `addCv()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addCv1$Response(params: AddCv1$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
-    return addCv1(this.http, this.rootUrl, params, context);
+  addCv$Response(params: AddCv$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+    return addCv(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `addCv1$Response()` instead.
+   * To access the full response (for headers, for example), `addCv$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addCv1(params: AddCv1$Params, context?: HttpContext): Observable<number> {
-    return this.addCv1$Response(params, context).pipe(
+  addCv(params: AddCv$Params, context?: HttpContext): Observable<number> {
+    return this.addCv$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
     );
   }

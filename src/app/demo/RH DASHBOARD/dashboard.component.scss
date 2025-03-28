@@ -70,4 +70,22 @@
     text-align: center;
     margin-top: 50px;
   }
+  // Add success and error alert styles
+  .alert {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .success {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .error {
+    background-color: #dc3545;
+    color: white;
+  }
+
 }
