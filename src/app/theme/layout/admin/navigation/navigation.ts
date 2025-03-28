@@ -23,10 +23,10 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'dashboard',
-        title: 'Dashboard',
+        title: 'RH ',
         type: 'item',
         url: '/dashboard',
-        icon: 'feather icon-home',
+        icon: 'feather icon-user',
         classes: 'nav-item'
       }
     ]
