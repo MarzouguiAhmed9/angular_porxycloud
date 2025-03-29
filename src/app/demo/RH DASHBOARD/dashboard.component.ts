@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApplicationControllerService } from '../../servicesahmed/services/application-controller.service';
 import { Application } from '../../servicesahmed/models/application';
-import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { Offre } from "../../servicesahmed/models/offre";
 import { OffreControllerService } from "../../servicesahmed/services/offre-controller.service";
+import { SharedModule } from "../../theme/shared/shared.module";
+import { HttpClient } from '@angular/common/http'; // Add HttpClient for testing interceptor
 
 @Component({
   selector: 'app-dashboard',
@@ -26,23 +27,26 @@ export class DashboardComponent implements OnInit {
   constructor(
     private applicationService: ApplicationControllerService,
     private offreservice: OffreControllerService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient  // Inject HttpClient to test the interceptor
   ) {}
 
   ngOnInit(): void {
+    // Load applications (as before)
     this.loadApplications();
-    console.log(this.applications);
+
+    // Test the interceptor by making a simple HTTP GET request
+    this.testInterceptor();
   }
 
-  // Load applications from the service
   private loadApplications(): void {
     this.isLoading = true;
-    this.errorMessage = '';  // Reset error message on new request
+    this.errorMessage = '';
 
     this.applicationService.getApplications().subscribe({
       next: (data: Application[]) => {
         this.applications = data;
-        console.log('Fetched applications:', data);  // Debug here
+        console.log('Fetched applications:', data);
       },
       error: (error) => {
         this.errorMessage = 'Failed to load applications. Please try again later.';
@@ -54,33 +58,53 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  private testInterceptor() {
+    // Make a dummy HTTP GET request to test the interceptor
+    this.http.get('/some-endpoint').subscribe({
+      next: (data) => {
+        console.log('Test request successful:', data);
+      },
+      error: (error) => {
+        console.error('Test request error:', error);
+      }
+    });
+  }
+
   onSubmit() {
-    // Handle the submit form logic here
+    // Handle form submission
     this.saveoffre();
   }
 
-  // Save offre and handle the response
   saveoffre() {
-    console.log("Add Offre:", this.offre);
+    console.log("Adding Offre:", this.offre);
+    this.isLoading = true;
 
-    this.offreservice.addoffre({
-      body: this.offre
-    }).subscribe({
+    this.offreservice.addoffre({ body: this.offre }).subscribe({
       next: (response) => {
         alert("Offre added successfully!");
         console.log("Offre added successfully:", response);
+        this.resetForm();
       },
       error: (error) => {
-        // Log detailed error
         console.error('Error adding offre:', error);
-        // Check the error status to give better feedback
+        this.isLoading = false;
         if (error.status === 0) {
           alert('Network error or server unreachable. Please check your network or server.');
         } else {
           alert('Failed to add offre. Please try again.');
         }
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }
 
+  private resetForm() {
+    this.offre = {
+      title: '',
+      skills: '',
+      description: ''
+    };
+  }
 }

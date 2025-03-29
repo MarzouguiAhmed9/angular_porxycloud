@@ -1,32 +1,28 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpHeaders
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenService } from "../token/token.service";
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
-
   constructor(private tokenService: TokenService) {}
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const token = this.tokenService.token;
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const token = this.tokenService.getToken();
+    console.log('Interceptor triggered');
+    console.log('Token in localStorage:', token);  // Log the token
 
-    // Check if the token exists and create a new request with updated headers
     if (token) {
-      // Clone the request and set the new header
-      const authReq = request.clone({
-        headers: request.headers.set('Authorization', 'Bearer ' + token)
+      const cloned = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`  // Attach the token
+        }
       });
-      return next.handle(authReq);
+      console.log('Cloned request with Authorization header');
+      return next.handle(cloned);
     }
 
-    // If no token, continue with the original request
-    return next.handle(request);
+    console.log('No token found, request sent without Authorization');
+    return next.handle(req);  // No token, just pass the request
   }
 }

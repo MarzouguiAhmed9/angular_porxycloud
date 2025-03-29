@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "http://localhost:8089/Projetback",
+    "secure": false,
+    "changeOrigin": true, // Add this option to avoid issues with origin
+    "logLevel": "debug"  // Optionally, enable debug to see logs for the proxy requests
+  }
+}
