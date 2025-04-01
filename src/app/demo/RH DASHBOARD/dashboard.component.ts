@@ -6,7 +6,8 @@ import { Application } from '../../servicesahmed/models/application';
 import { Offre } from "../../servicesahmed/models/offre";
 import { OffreControllerService } from "../../servicesahmed/services/offre-controller.service";
 import { SharedModule } from "../../theme/shared/shared.module";
-import { HttpClient } from '@angular/common/http'; // Add HttpClient for testing interceptor
+import { HttpClient } from '@angular/common/http';
+import { TokenService } from "../../servicesahmed/token/token.service"; // Add HttpClient for testing interceptor
 
 @Component({
   selector: 'app-dashboard',
@@ -28,13 +29,22 @@ export class DashboardComponent implements OnInit {
     private applicationService: ApplicationControllerService,
     private offreservice: OffreControllerService,
     private router: Router,
-    private http: HttpClient  // Inject HttpClient to test the interceptor
+    private http: HttpClient,
+  private tokenService: TokenService// Inject HttpClient to test the interceptor
   ) {}
 
   ngOnInit(): void {
     // Load applications (as before)
     this.loadApplications();
+    const token = this.tokenService.getToken();
+    console.log('Token:', token);  // Should log the token if it exists
 
+    // Check if the user is already authenticated
+    if (this.tokenService.hasToken()) {
+      console.log('User is authenticated');
+    } else {
+      console.log('User is not authenticated');
+    }
     // Test the interceptor by making a simple HTTP GET request
     this.testInterceptor();
   }
