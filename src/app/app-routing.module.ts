@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
-import { DashboardComponent } from './demo/dashboard/dashboard.component';
+import { DashboardComponent } from './demo/RH DASHBOARD/dashboard.component';
 import { FormElementsModule } from './demo/pages/form-elements/form-elements.module';
 import { UiBasicModule } from './demo/ui-elements/ui-basic/ui-basic.module';
 import { TablesModule } from './demo/pages/tables/tables.module';
@@ -20,7 +20,7 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadComponent: () => import('./demo/dashboard/dashboard.component').then(m => m.DashboardComponent)
+        loadComponent: () => import('./demo/RH DASHBOARD/dashboard.component').then(m => m.DashboardComponent)
       },
       {
         path: 'basic',

@@ -2,18 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-// Project import
+// Project imports
 import { CardComponent } from './components/card/card.component';
 
-// Bootstrap import
+// Bootstrap imports
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Import HttpClientModule only once
-import { HttpClientModule } from '@angular/common/http';
+// Import HttpClientModule and provide the interceptor
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Third party
 import { NgScrollbarModule } from 'ngx-scrollbar';
+
+// Import the HttpTokenInterceptor
+import { HttpTokenInterceptor } from '../../servicesahmed/interceptor/http-token.interceptor';
 
 @NgModule({
   declarations: [],
@@ -25,7 +28,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     CardComponent,
     NgbModule,
     NgScrollbarModule,
-    NgbCollapseModule
+    NgbCollapseModule,
   ],
   exports: [
     CommonModule,
@@ -34,7 +37,14 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     CardComponent,
     NgbModule,
     NgScrollbarModule,
-    NgbCollapseModule
-  ]
+    NgbCollapseModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpTokenInterceptor,  // Register the interceptor
+      multi: true,  // Allow multiple interceptors
+    },
+  ],
 })
 export class SharedModule {}

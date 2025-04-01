@@ -1,0 +1,79 @@
+<div class="dashboard-container">
+  <!-- Form to add an "Offre" -->
+  <div class="offer-form">
+    <h2>Add New Offre</h2>
+    <form (ngSubmit)="onSubmit()">
+
+      <!-- Title Input -->
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          type="text"
+          id="title"
+          [(ngModel)]="offre.title"
+          name="title"
+          required
+          class="form-control"
+          placeholder="Enter job title" />
+      </div>
+
+      <!-- Skills Input -->
+      <div class="form-group">
+        <label for="skills">Skills</label>
+        <input
+          type="text"
+          id="skills"
+          [(ngModel)]="offre.skills"
+          name="skills"
+          required
+          class="form-control"
+          placeholder="Enter required skills" />
+      </div>
+
+      <!-- Description Input -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          [(ngModel)]="offre.description"
+          name="description"
+          required
+          class="form-control"
+          placeholder="Enter job description"></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn btn-primary">Add Offre</button>
+    </form>
+  </div>
+
+  <!-- Applications List Section -->
+  <h1>Applications List</h1>
+
+  <!-- Check if there are any applications to display -->
+  <div *ngIf="applications && applications.length > 0; else noDataTemplate">
+    <table class="applications-table">
+      <thead>
+      <tr>
+        <th>Status</th>
+        <th>Student ID</th>
+        <th>Motivated Letter</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let application of applications">
+        <td>{{ application.status }}</td>
+        <td>{{ application.studentId }}</td>
+        <td>{{ application.motivatedlettre }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Template for when no applications are available -->
+  <ng-template #noDataTemplate>
+    <p>No applications available.</p>
+  </ng-template>
+</div>
