@@ -83,10 +83,23 @@ export default class AuthSignupComponent {
   }
 
   loadRoles() {
-    this.userService.getRoles().subscribe(
+    const token = localStorage.getItem('token'); // Récupérer le token stocké
+    if (!token) {
+      console.error("❌ Aucun token trouvé, impossible de récupérer les rôles");
+      return;
+    }
+  
+    const decodedToken = this.decodeJwt(token);  // Décoder le token JWT
+    const userId = decodedToken?.id;  // Récupérer l'ID utilisateur
+  
+    if (!userId) {
+      console.error("❌ ID utilisateur introuvable dans le token");
+      return;
+    }
+  
+    this.userService.getRoles(userId).subscribe(
       (roles: Role[]) => {
         this.availableRoles = roles;
-        // Assurez-vous que le premier rôle est sélectionné par défaut
         if (!this.registerForm.value.roles || this.registerForm.value.roles.length === 0) {
           this.registerForm.patchValue({
             roles: [this.availableRoles[0]?.id]  // Sélectionner le premier rôle par défaut
@@ -94,11 +107,23 @@ export default class AuthSignupComponent {
         }
       },
       error => {
-        console.error("Erreur lors du chargement des rôles", error);
+        console.error("❌ Erreur lors du chargement des rôles", error);
       }
     );
   }
+  decodeJwt(token: string): any {
+    try {
+      const payload = token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(payload));
+      console.log('Payload du token:', decodedPayload);  // Affiche le contenu complet du token
+    return decodedPayload;
 
+    } catch (error) {
+      console.error("❌ Erreur lors du décodage du token", error);
+      return null;
+    }
+  }
+    
   // Fonction de soumission du formulaire
   onSubmit(): void {
     if (this.registerForm.valid) {
