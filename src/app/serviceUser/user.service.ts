@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,29 +14,53 @@ export class UserService {
     
   
     constructor(private http: HttpClient, private router: Router) {}
-  
-    login(credentials: { username: string, password: string }) {
-      return this.http.post<any>(`${this.baseUrl}/login`, credentials, {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-        withCredentials: true  // Si tu utilises des cookies ou des sessions
-      }).pipe(
-        catchError(error => {
-          // Gérer l'erreur et l'afficher dans la console
-          console.error('Login failed', error);
-          
-          // Retourne une erreur personnalisée ou rejette l'erreur
-          let errorMessage = 'An unknown error occurred.';
-          if (error.status === 0) {
-            errorMessage = 'Server not reachable. Please try again later.';
-          } else if (error.status === 401) {
-            errorMessage = 'Invalid credentials. Please check your username and password.';
+    login(credentials: { username: string; password: string }): Observable<any> {
+      return this.http.post(`${this.baseUrl}/login`, credentials).pipe(
+        tap((response: any) => {
+          if (response.token) {
+            this.storeToken(response.token);
+            const role = this.getUserRole();
+            this.redirectUser(role);
           }
-          
-          // Retourner l'erreur sous forme de message lisible
-          return throwError(errorMessage);
+        }),
+        catchError(error => {
+          console.error('❌ Erreur de connexion', error);
+          return throwError(error);
         })
       );
     }
+    redirectUser(role: string | null): void {
+      if (!role) {
+        this.router.navigate(['/auth/signin']); // Redirection par défaut si aucun rôle trouvé
+        return;
+      }
+    
+      switch (role) {
+        case 'ROLE_ADMIN':
+          this.router.navigate(['/admin/dashboard']);
+          break;
+        case 'ROLE_USER':
+          this.router.navigate(['/user/home']);
+          break;
+        default:
+          this.router.navigate(['/auth/signin']); // Par défaut, rediriger vers la page de connexion
+      }
+    }
+
+   getUserRole(): string | null {
+      const token = this.getToken();
+      if (!token) return null;
+    
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1])); // Décoder le token
+        const roles = payload.roles || [];
+        return roles.length > 0 ? roles[1] : null; // Retourner le premier rôle trouvé
+      } catch (error) {
+        console.error('❌ Erreur lors du décodage du token', error);
+        return null;
+      }
+    }
+    
     
     
     
@@ -45,34 +69,66 @@ export class UserService {
       return this.http.post(`${this.baseUrl}/register`, user);
     }
   
+   
     storeToken(token: string): void {
       localStorage.setItem('authToken', token);
     }
   
+    // 📌 Récupération du token
     getToken(): string | null {
       return localStorage.getItem('authToken');
     }
   
+    // 🔓 Déconnexion utilisateur
     logout(): void {
       localStorage.removeItem('authToken');
       this.router.navigate(['/login']);
     }
-    getRoles(): Observable<any[]> {
-      return this.http.get<any[]>(`${this.baseUrl}/users/roles`);
+  
+    // 📌 Récupération des rôles de l'utilisateur connecté
+    getUserRoles(): string[] {
+      const token = this.getToken();
+      if (!token) return [];
+  
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.roles || [];
+      } catch (error) {
+        console.error('❌ Erreur lors du décodage du token', error);
+        return [];
+      }
+    }
+  
+    getRoles(userId: number): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/users/${userId}/roles`).pipe(
+        catchError(error => {
+          console.error('❌ Erreur lors de la récupération des rôles', error);
+          return throwError('Impossible de récupérer les rôles.');
+        })
+      );
     }
 
-    getApplications() {
-      const token = localStorage.getItem('auth_token');  // Or wherever you store the token
-    
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-      this.http.get('http://localhost:8089/Projetback/application/getall', { headers })
-        .subscribe(
-          (response) => {
-            console.log('Applications fetched:', response);
-          },
-          (error) => {
-            console.error('Error fetching applications:', error);
-          }
-        );   }
-   
+
+    // 🏢 Récupération des applications liées à un utilisateur
+  // 🏢 Récupération des applications liées à un utilisateur
+/*getApplications(userId: number): Observable<any> {
+  const token = this.getToken();
+  if (!token) {
+    console.error('❌ Aucun token trouvé');
+    return throwError('Utilisateur non authentifié.');
   }
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+
+  return this.http.get(`${this.baseUrl}/application/getall`, { headers }).pipe(
+    catchError(error => {
+      console.error('❌ Erreur lors de la récupération des applications', error);
+      return throwError('Impossible de récupérer les applications.');
+    })
+  );
+}*/
+
+  }    
