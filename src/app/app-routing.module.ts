@@ -1,13 +1,7 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
-import { DashboardComponent } from './demo/dashboard/dashboard.component';
-import { FormElementsModule } from './demo/pages/form-elements/form-elements.module';
-import { UiBasicModule } from './demo/ui-elements/ui-basic/ui-basic.module';
-import { TablesModule } from './demo/pages/tables/tables.module';
-import { AuthenticationModule } from './demo/pages/authentication/authentication.module';
-import { DiplomaComponent } from './demo/diploma/diploma.component';
 
 const routes: Routes = [
   {
@@ -25,7 +19,7 @@ const routes: Routes = [
       },
       {
         path: 'diploma',
-        component: DiplomaComponent
+        loadChildren: () => import('./demo/diploma/diploma.module').then((m) => m.DiplomaModule)
       },
       {
         path: 'basic',

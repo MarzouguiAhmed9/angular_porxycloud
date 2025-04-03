@@ -1,0 +1,34 @@
+<div class="col-xl-12">
+    <app-card cardTitle="Study Plan List" [options]="false" blockClass="table-border-style">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Program Name</th>
+              <th>Degree Type</th>
+              <th>Specialization</th>
+              <th>Duration (Years)</th>
+              <th>University</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let studyPlan of studyPlans; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ studyPlan.programName }}</td>
+              <td>{{ studyPlan.degreeType }}</td>
+              <td>{{ studyPlan.specialization }}</td>
+              <td>{{ studyPlan.durationYears }}</td>
+              <td>{{ studyPlan.university?.name }}</td>
+              <td>
+                <!-- <button class="btn btn-sm btn-primary" (click)="editStudyPlan(studyPlan)">Edit</button> -->
+                <!-- <button class="btn btn-sm btn-danger" (click)="deleteStudyPlan(studyPlan.studyPlanId)">Delete</button> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+  

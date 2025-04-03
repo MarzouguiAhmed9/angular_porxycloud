@@ -19,7 +19,7 @@ export const NavigationItems: NavigationItem[] = [
     id: 'navigation',
     title: 'Navigation',
     type: 'group',
-    icon: 'icon-navigation',
+    icon: ' icon-navigation',
     children: [
       {
         id: 'dashboard',
@@ -32,10 +32,22 @@ export const NavigationItems: NavigationItem[] = [
       {
         id: 'diploma',
         title: 'Diploma',
-        type: 'item',
-        url: '/diploma',
+        type: 'collapse',
         icon: 'feather icon-book',
-        classes: 'nav-item'
+        children:[
+          {
+            id: 'university',
+            title: 'University',
+            type: 'item',
+            url: '/diploma/university'
+          },
+          {
+            id: 'studyplan',
+            title: 'Study Plan',
+            type: 'item',
+            url: '/diploma/studyplan'
+          },
+        ]
       }
     ]
   },

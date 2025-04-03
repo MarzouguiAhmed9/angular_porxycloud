@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { CardComponent } from "../../../../theme/shared/components/card/card.component";
 
 @Component({
-  selector: 'app-diploma-table',
+  selector: 'app-studyplan-table',
   imports: [CardComponent],
-  templateUrl: './diploma-table.component.html',
-  styleUrl: './diploma-table.component.scss'
+  templateUrl: './studyplan-table.component.html',
+  styleUrl: './studyplan-table.component.scss'
 })
-export class DiplomaTableComponent {
+export class StudyplanTableComponent {
 
 }
