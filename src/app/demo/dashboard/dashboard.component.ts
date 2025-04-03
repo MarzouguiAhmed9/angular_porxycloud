@@ -50,11 +50,14 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         this.errorMessage = 'Failed to load applications. Please try again later.';
-        console.error('Error fetching applications:', error);
       },
       complete: () => {
         this.isLoading = false;
       }
     });
+  }
+
+  logout() {
+    this.router.navigate(['/logout']);
   }
 }

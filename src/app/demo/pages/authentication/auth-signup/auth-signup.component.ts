@@ -3,14 +3,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from 'src/app/serviceUser/user.service';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+
 interface Role {
   id: number;
   name: string;
 }
+
 @Component({
   selector: 'app-auth-signup',
   standalone: true,
-  imports: [RouterModule,SharedModule],
+  imports: [RouterModule, SharedModule],
   templateUrl: './auth-signup.component.html',
   styleUrls: ['./auth-signup.component.scss']
 })
@@ -26,7 +28,7 @@ export default class AuthSignupComponent {
   ) {}
 
   ngOnInit(): void {
-    // Initialisation du formulaire avec des rôles par défaut (ROLE_ADMIN)
+    // Initialisation du formulaire avec un seul rôle par défaut
     this.registerForm = this.fb.group({
       username: [
         '', 
@@ -74,9 +76,8 @@ export default class AuthSignupComponent {
       birthday: [''],
       enabled: [true],
       accountLocked: [false],
-      roles: [[1]]  // ROLE_ADMIN (id 1) par défaut
+      role: [1]  // Rôle par défaut (id 1)
     });
-
 
     // Charger les rôles depuis l'API
     this.loadRoles();
@@ -100,9 +101,9 @@ export default class AuthSignupComponent {
     this.userService.getRoles(userId).subscribe(
       (roles: Role[]) => {
         this.availableRoles = roles;
-        if (!this.registerForm.value.roles || this.registerForm.value.roles.length === 0) {
+        if (!this.registerForm.value.role) {
           this.registerForm.patchValue({
-            roles: [this.availableRoles[0]?.id]  // Sélectionner le premier rôle par défaut
+            role: this.availableRoles[0]?.id  // Sélectionner le premier rôle par défaut
           });
         }
       },
@@ -111,26 +112,26 @@ export default class AuthSignupComponent {
       }
     );
   }
+
   decodeJwt(token: string): any {
     try {
       const payload = token.split('.')[1];
       const decodedPayload = JSON.parse(atob(payload));
       console.log('Payload du token:', decodedPayload);  // Affiche le contenu complet du token
-    return decodedPayload;
-
+      return decodedPayload;
     } catch (error) {
       console.error("❌ Erreur lors du décodage du token", error);
       return null;
     }
   }
-    
+
   // Fonction de soumission du formulaire
   onSubmit(): void {
     if (this.registerForm.valid) {
       const formValue = this.registerForm.value;
       const userData = {
         ...formValue,
-        roles: formValue.roles.map((roleId: number) => ({ id: roleId }))
+        role: { id: formValue.role }  // Envoie le rôle sous forme d'objet avec id
       };
   
       this.userService.register(userData).subscribe(
@@ -150,8 +151,4 @@ export default class AuthSignupComponent {
       );
     }
   }
-  
-
-
-
 }

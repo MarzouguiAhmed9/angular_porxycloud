@@ -7,6 +7,7 @@ import { FormElementsModule } from './demo/pages/form-elements/form-elements.mod
 import { UiBasicModule } from './demo/ui-elements/ui-basic/ui-basic.module';
 import { TablesModule } from './demo/pages/tables/tables.module';
 import { AuthenticationModule } from './demo/pages/authentication/authentication.module';
+import { LogoutComponent } from './demo/pages/authentication/logout/logout.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,8 @@ const routes: Routes = [
         redirectTo: 'dashboard',
         pathMatch: 'full'
       },
+      { path: 'logout', loadComponent: () => import('./demo/pages/authentication/logout/logout.component').then(m => m.LogoutComponent) }
+,
       {
         path: 'dashboard',
         loadComponent: () => import('./demo/dashboard/dashboard.component').then(m => m.DashboardComponent)

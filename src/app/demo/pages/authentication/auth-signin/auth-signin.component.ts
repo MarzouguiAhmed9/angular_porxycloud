@@ -23,17 +23,15 @@ export default class AuthSigninComponent {
       (response) => {
         if (response.token) {
           this.authService.storeToken(response.token);
-          console.log('Rôles de l’utilisateur connecté:', this.authService.getUserRole());
-
-        
-          const role = this.authService.getUserRole(); // Récupérer le premier rôle
-          console.log('✅ Rôle de l’utilisateur connecté:', role);
-
-          if (role) {
-            this.redirectBasedOnRole(role);
+          console.log('Token stocké avec succès.');
+          
+          const roles = this.authService.getUserRole(); // Obtenir les rôles
+          console.log('Rôles de l’utilisateur connecté:', roles);
+  
+          if (roles && roles.includes('ROLE_ADMIN')) {
+            this.router.navigate(['/dashboard']);
           } else {
-            console.error('❌ Aucun rôle trouvé');
-            this.router.navigate(['/guest']);
+            this.router.navigate(['/home']);
           }
         } else {
           console.error('❌ Token non trouvé dans la réponse');
@@ -44,6 +42,7 @@ export default class AuthSigninComponent {
       }
     );
   }
+  
 
   redirectBasedOnRole(role: string): void {
     switch (role) {
