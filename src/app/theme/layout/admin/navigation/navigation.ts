@@ -28,6 +28,14 @@ export const NavigationItems: NavigationItem[] = [
         url: '/dashboard',
         icon: 'feather icon-home',
         classes: 'nav-item'
+      },
+      {
+        id: 'diploma',
+        title: 'Diploma',
+        type: 'item',
+        url: '/diploma',
+        icon: 'feather icon-book',
+        classes: 'nav-item'
       }
     ]
   },
