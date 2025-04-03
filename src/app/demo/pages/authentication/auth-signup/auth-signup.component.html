@@ -17,38 +17,55 @@
             <label for="username">Nom d'utilisateur:</label>
             <input class="form-control rounded" formControlName="username" id="username" type="text" required />
             <small *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched" class="text-danger">Nom d'utilisateur requis.</small>
-
-               </div>
-          
+          </div>
+        
           <div class="form-group">
             <label for="password">Mot de passe:</label>
             <input class="form-control rounded" formControlName="password" id="password" type="password" required />
-            <small *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched" class="text-danger">Mot de passe requis (min 6 caractères).</small>
-            
-                </div>
-          
+            <small *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched" class="text-danger">
+              Le mot de passe doit contenir au moins 6 caractères, 1 chiffre, 1 majuscule et 1 caractère spécial.
+            </small>
+          </div>
+        
+          <div class="form-group">
+            <label for="passwordRepeat">Confirmer le mot de passe:</label>
+            <input class="form-control rounded" formControlName="passwordRepeat" id="passwordRepeat" type="password" required />
+            <small *ngIf="registerForm.hasError('passwordsMismatch')" class="text-danger">Les mots de passe ne correspondent pas.</small>
+          </div>
+        
           <div class="form-group">
             <label for="firstName">Prénom:</label>
             <input class="form-control rounded" formControlName="firstName" id="firstName" type="text" required />
-            <small *ngIf="registerForm.controls['firstName'].invalid && registerForm.controls['firstName'].touched" class="text-danger">Prénom requis.</small>
-            
-             </div>
-          
+          </div>
+        
           <div class="form-group">
             <label for="lastName">Nom:</label>
             <input class="form-control rounded" formControlName="lastName" id="lastName" type="text" required />
-            <small *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched" class="text-danger">Nom requis.</small>
-            
-            </div>
-          
+          </div>
+        
           <div class="form-group">
             <label for="email">Email:</label>
             <input class="form-control rounded" formControlName="email" id="email" type="email" required />
-            <small *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched" class="text-danger">Email invalide.</small>
           </div>
-          
+        
+          <div class="form-group">
+            <label for="phone">Téléphone:</label>
+            <input class="form-control rounded" formControlName="phone" id="phone" type="text" />
+          </div>
+        
+          <div class="form-group">
+            <label for="address">Adresse:</label>
+            <input class="form-control rounded" formControlName="address" id="address" type="text" />
+          </div>
+        
+          <div class="form-group">
+            <label for="birthday">Date de naissance:</label>
+            <input class="form-control rounded" formControlName="birthday" id="birthday" type="date" />
+          </div>
+        
           <button class="btn btn-primary shadow-2 mb-4 w-100" [disabled]="registerForm.invalid">S'inscrire</button>
         </form>
+        
         
         <p class="mb-0 text-muted">
           Vous avez déjà un compte ?

@@ -14,7 +14,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 // Third party
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { LogoutComponent } from 'src/app/demo/pages/authentication/logout/logout.component';
 
 @NgModule({
   declarations: [],
