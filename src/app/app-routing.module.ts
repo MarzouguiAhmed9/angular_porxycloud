@@ -6,7 +6,7 @@ import { DashboardComponent } from './demo/RH DASHBOARD/dashboard.component';
 import { FormElementsModule } from './demo/pages/form-elements/form-elements.module';
 import { UiBasicModule } from './demo/ui-elements/ui-basic/ui-basic.module';
 import { TablesModule } from './demo/pages/tables/tables.module';
-import { AuthenticationModule } from './demo/pages/authentication/authentication.module';
+import { AuthenticationRoutingModule} from './demo/pages/authentication/authentication.module';
 
 const routes: Routes = [
   {
@@ -21,6 +21,10 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () => import('./demo/RH DASHBOARD/dashboard.component').then(m => m.DashboardComponent)
+      },
+      {
+        path: 'RH',
+        loadChildren: () => import('./demo/RH componenet/RH.module').then((m) => m.RHModule)
       },
       {
         path: 'basic',
@@ -48,7 +52,7 @@ const routes: Routes = [
     children: [
       {
         path: 'auth',
-        loadChildren: () => import('./demo/pages/authentication/authentication.module').then(m => m.AuthenticationModule)
+        loadChildren: () => import('./demo/pages/authentication/authentication.module').then(m => m.AuthenticationRoutingModule)
       }
     ]
   }

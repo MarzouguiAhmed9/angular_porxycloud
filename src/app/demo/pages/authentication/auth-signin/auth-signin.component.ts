@@ -18,46 +18,43 @@ export default class AuthSigninComponent {
 
   login(): void {
     const credentials = { username: this.username, password: this.password };
+
     this.authService.login(credentials).subscribe(
       (response) => {
-        const token = response.token;
-        this.authService.storeToken(token);
-        this.redirectBasedOnRole(token);
+        if (response.token) {
+          this.authService.storeToken(response.token);
+          console.log('Token stocké avec succès.');
+          console.log('Token:', response.token);
+          const roles = this.authService.getUserRole(); // Obtenir les rôles
+          console.log('Rôles de l’utilisateur connecté:', roles);
+
+          if (roles && roles.includes('ROLE_ADMIN')) {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.router.navigate(['/home']);
+          }
+        } else {
+          console.error('❌ Token non trouvé dans la réponse');
+        }
       },
       (error) => {
-        console.error('Login failed', error);
-        console.error('Error details:', error?.error || error); 
+        console.error('❌ Échec de la connexion', error);
       }
     );
   }
 
-  redirectBasedOnRole(token: string): void {
-    try {
-      const decodedToken = this.decodeJwt(token);
-      const role = decodedToken.role;  // Vérifie que le rôle est dans le token
 
-      console.log('Role de l\'utilisateur:', role);
-
-      if (role === 'ROLE_ADMIN') {
+  redirectBasedOnRole(role: string): void {
+    switch (role) {
+      case 'ROLE_ADMIN':
         this.router.navigate(['/dashboard']);
-      
-      } else {
-        // Si le rôle n'est pas reconnu, on peut rediriger vers une page par défaut ou afficher une erreur
-        console.warn('Rôle inconnu, redirection par défaut');
-        this.router.navigate(['/']);
-      }
-    } catch (error) {
-      console.error('Erreur de décodage du jeton', error);
-      this.router.navigate(['/login']); // Redirection en cas d'erreur
+        break;
+      case 'ROLE_CLIENT':
+        this.router.navigate(['/home']);
+        break;
+      default:
+        this.router.navigate(['/guest']);
+        break;
     }
-  }
-
-  decodeJwt(token: string): any {
-    if (!token) {
-      throw new Error('Token manquant');
-    }
-    const payload = token.split('.')[1];
-    const decodedPayload = atob(payload);
-    return JSON.parse(decodedPayload);
   }
 }

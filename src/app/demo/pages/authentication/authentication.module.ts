@@ -1,12 +1,30 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
+import { LogoutComponent } from './logout/logout.component';
 
-import { AuthenticationRoutingModule } from './authentication-routing.module';
-import { FormsModule } from '@angular/forms'; // Importer FormsModule
-import AuthSigninComponent from './auth-signin/auth-signin.component';
+const routes: Routes = [
+  {
+    path: '',
+    children: [
+      {
+        path: 'signin',
+        loadComponent: () => import('./auth-signin/auth-signin.component')
+      },
+      {
+
+        path: 'signup',
+        loadComponent: () => import('./auth-signup/auth-signup.component')
+      },
+
+
+      { path: 'logout', component: LogoutComponent },  // Route de déconnexion
+
+    ]
+  }
+];
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, AuthenticationRoutingModule,FormsModule,AuthSigninComponent]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class AuthenticationModule {}
+export class AuthenticationRoutingModule {}

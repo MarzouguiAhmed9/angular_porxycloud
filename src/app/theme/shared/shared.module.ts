@@ -17,6 +17,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 
 // Import the HttpTokenInterceptor
 import { HttpTokenInterceptor } from '../../servicesahmed/interceptor/http-token.interceptor';
+import { RHModule } from "../../demo/RH componenet/RH.module";
 
 @NgModule({
   declarations: [],
@@ -29,6 +30,7 @@ import { HttpTokenInterceptor } from '../../servicesahmed/interceptor/http-token
     NgbModule,
     NgScrollbarModule,
     NgbCollapseModule,
+    RHModule,
   ],
   exports: [
     CommonModule,

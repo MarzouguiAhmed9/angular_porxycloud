@@ -19,15 +19,35 @@ export const NavigationItems: NavigationItem[] = [
     id: 'navigation',
     title: 'Navigation',
     type: 'group',
-    icon: 'icon-navigation',
+    icon: ' icon-navigation',
     children: [
       {
         id: 'dashboard',
-        title: 'RH ',
+        title: 'Dashboard',
         type: 'item',
         url: '/dashboard',
-        icon: 'feather icon-user',
+        icon: 'feather icon-home',
         classes: 'nav-item'
+      },
+      {
+        id: 'RH',
+        title: 'RH',
+        type: 'collapse',
+        icon: 'feather icon-book',
+        children:[
+          {
+            id: 'application',
+            title: 'application',
+            type: 'item',
+            url: '/RH/application'
+          },
+          {
+            id: 'offre',
+            title: 'Offre',
+            type: 'item',
+            url: '/RH/offre'
+          },
+        ]
       }
     ]
   },

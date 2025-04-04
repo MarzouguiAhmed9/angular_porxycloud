@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
     // Load applications (as before)
     this.loadApplications();
     const token = this.tokenService.getToken();
+
     console.log('Token:', token);  // Should log the token if it exists
 
     // Check if the user is already authenticated
