@@ -4,6 +4,7 @@
       <hr />
       <form [formGroup]="documentForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
         <div class="row">
+          <!-- Left Column -->
           <div class="col-md-6">
             <div class="form-group">
               <label for="title">Document Title</label>
@@ -24,19 +25,28 @@
                 <div *ngIf="f['description'].errors['minlength']">Description must be at least 10 characters</div>
               </div>
             </div>
+
+            <!-- Categories under Description -->
+            <div class="form-group">
+              <label for="categories">Categories</label>
+              <select class="form-control" id="categories" formControlName="categories" multiple
+                      [ngClass]="{ 'is-invalid': f['categories'].touched && f['categories'].errors }">
+                <option *ngFor="let category of categories" [value]="category.idCategory">
+                  {{ category.name }}
+                  <span *ngIf="category.description" class="text-muted">
+                    - {{ category.description }}
+                  </span>
+                </option>
+              </select>
+              <div *ngIf="f['categories'].touched && f['categories'].errors" class="invalid-feedback">
+                <div *ngIf="f['categories'].errors['required']">At least one category is required</div>
+              </div>
+              <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple categories</small>
+            </div>
           </div>
 
+          <!-- Right Column -->
           <div class="col-md-6">
-            <div class="form-group">
-              <label for="keywords">Keywords</label>
-              <input type="text" id="keywords" formControlName="keywords" class="form-control"
-                     [ngClass]="{ 'is-invalid': f['keywords'].touched && f['keywords'].errors }" />
-              <div *ngIf="f['keywords'].touched && f['keywords'].errors" class="invalid-feedback">
-                <div *ngIf="f['keywords'].errors['required']">Keywords are required</div>
-                <div *ngIf="f['keywords'].errors['minlength']">Keywords must be at least 3 characters</div>
-              </div>
-            </div>
-
             <div class="form-group">
               <label for="documentType">Document Type</label>
               <select class="form-control" id="documentType" formControlName="documentType"
@@ -61,6 +71,16 @@
             </div>
 
             <div class="form-group">
+              <label for="keywords">Keywords</label>
+              <input type="text" id="keywords" formControlName="keywords" class="form-control"
+                     [ngClass]="{ 'is-invalid': f['keywords'].touched && f['keywords'].errors }" />
+              <div *ngIf="f['keywords'].touched && f['keywords'].errors" class="invalid-feedback">
+                <div *ngIf="f['keywords'].errors['required']">Keywords are required</div>
+                <div *ngIf="f['keywords'].errors['minlength']">Keywords must be at least 3 characters</div>
+              </div>
+            </div>
+
+            <div class="form-group">
               <label for="file">File Upload</label>
               <input type="file" id="file" (change)="onFileSelected($event)" class="form-control"
                      [ngClass]="{ 'is-invalid': f['file'].touched && f['file'].errors }" />
@@ -71,9 +91,13 @@
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary" [disabled]="documentForm.invalid">
-          Submit
-        </button>
+        <div class="row mt-4">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary float-end" [disabled]="documentForm.invalid">
+              Submit Document
+            </button>
+          </div>
+        </div>
       </form>
     </app-card>
   </div>

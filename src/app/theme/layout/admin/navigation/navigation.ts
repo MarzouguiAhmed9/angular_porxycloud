@@ -36,50 +36,6 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-book',
         children: [
           {
-            id: 'departments',
-            title: 'Departments',
-            type: 'collapse',
-            icon: 'feather icon-grid',
-            children: [
-              {
-                id: 'add-department',
-                title: 'Add Department',
-                type: 'item',
-                url: '/departments/add',
-                icon: 'feather icon-plus'
-              },
-              {
-                id: 'list-departments',
-                title: 'Manage Departments',
-                type: 'item',
-                url: '/departments/list',
-                icon: 'feather icon-list'
-              }
-            ]
-          },
-          {
-            id: 'categories',
-            title: 'Categories',
-            type: 'collapse',
-            icon: 'feather icon-folder',
-            children: [
-              {
-                id: 'add-category',
-                title: 'Add Category',
-                type: 'item',
-                url: '/categories/add',
-                icon: 'feather icon-plus'
-              },
-              {
-                id: 'list-categories',
-                title: 'Manage Categories',
-                type: 'item',
-                url: '/categories/list',
-                icon: 'feather icon-list'
-              }
-            ]
-          },
-          {
             id: 'documents',
             title: 'Documents',
             type: 'collapse',
@@ -100,7 +56,37 @@ export const NavigationItems: NavigationItem[] = [
                 icon: 'feather icon-list'
               }
             ]
-          }
+          },
+          {
+            id: 'departments',
+            title: 'Departments',
+            type: 'collapse',
+            icon: 'feather icon-grid',
+            children: [
+              {
+                id: 'add-department',
+                title: 'Manage Departments',
+                type: 'item',
+                url: '/departments/add',
+                icon: 'feather icon-plus'
+              }
+            ]
+          },
+          {
+            id: 'categories',
+            title: 'Categories',
+            type: 'collapse',
+            icon: 'feather icon-folder',
+            children: [
+              {
+                id: 'add-category',
+                title: 'Manage Categories',
+                type: 'item',
+                url: '/categories/add',
+                icon: 'feather icon-plus'
+              }
+            ]
+          },
         ]
       }
 

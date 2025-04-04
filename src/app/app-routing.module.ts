@@ -23,6 +23,16 @@ const routes: Routes = [
               import('./library/categories/category/category.module').then(m => m.CategoryModule)
           }
         ]
+      },
+      {
+        path: 'departments',
+        children: [
+          {
+            path: 'add',
+            loadChildren: () =>
+              import('./library/departments/manage-departments/department.module').then(m => m.DepartmentModule)
+          }
+        ]
       }
       
       ,

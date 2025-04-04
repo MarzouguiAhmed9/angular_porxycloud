@@ -4,9 +4,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from "../../../theme/shared/components/card/card.component";
 import { DocumentService } from '../../../services/document.service';
-import { DocumentType, DocumentStatus } from '../../../models/document.model';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { DocumentType, DocumentStatus, Category } from '../../../models/document.model';
+import { CategoryService } from '../../../services/category.service';
 
 @Component({
   selector: 'app-document-add',
@@ -15,15 +14,17 @@ import { Observable } from 'rxjs';
   templateUrl: './document-add.component.html',
   styleUrls: ['./document-add.component.scss']
 })
-export class DocumentAddComponent {
+export class DocumentAddComponent implements OnInit {
   documentForm: FormGroup;
   documentTypes = Object.values(DocumentType);
   documentStatuses = Object.values(DocumentStatus);
+  categories: Category[] = [];
   selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
     private documentService: DocumentService,
+    private categoryService: CategoryService,
     private router: Router
   ) {
     this.documentForm = this.fb.group({
@@ -32,13 +33,28 @@ export class DocumentAddComponent {
       documentType: ['', Validators.required],
       keywords: ['', [Validators.required, Validators.minLength(3)]],
       status: [DocumentStatus.PENDING, Validators.required],
-      file: [null, Validators.required]
+      file: [null, Validators.required],
+      categories: [[], Validators.required]
     });
   }
 
-  onFileSelected(event: any) {
-    if (event.target.files && event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
+  ngOnInit() {
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (err) => console.error('Failed to load categories', err)
+    });
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
       this.documentForm.patchValue({
         file: this.selectedFile
       });
@@ -59,6 +75,10 @@ export class DocumentAddComponent {
       formData.append('documentType', this.documentForm.value.documentType);
       formData.append('keywords', this.documentForm.value.keywords);
       formData.append('status', this.documentForm.value.status);
+
+      this.documentForm.value.categories.forEach((categoryId: number) => {
+        formData.append('categoryIds', categoryId.toString());
+      });
 
       this.documentService.addDocument(formData).subscribe({
         next: (response) => {
