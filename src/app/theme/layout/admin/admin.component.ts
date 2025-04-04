@@ -6,12 +6,11 @@ import { CommonModule } from '@angular/common';
 // project import
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { ConfigurationComponent } from 'src/app/theme/layout/admin/configuration/configuration.component';
 import { BreadcrumbsComponent } from '../../shared/components/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-admin',
-  imports: [NavBarComponent, NavigationComponent, RouterModule, CommonModule, ConfigurationComponent, BreadcrumbsComponent],
+  imports: [NavBarComponent, NavigationComponent, RouterModule, CommonModule, BreadcrumbsComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
@@ -48,7 +47,7 @@ export class AdminComponent {
 
   closeMenu() {
     if (document.querySelector('app-navigation.pcoded-navbar').classList.contains('mob-open')) {
-      document.querySelector('app-navigation.pcoded-navbar').classList.remove('mob-open');
+      document.querySelector('wxapp-navigation.pcoded-navbar').classList.remove('mob-open');
     }
   }
 }

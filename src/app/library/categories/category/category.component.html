@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Add Category" [options]="false">
+      <hr />
+      <form [formGroup]="categoryForm" (ngSubmit)="addCategory()">
+        <div class="row">
+          <div class="col-md-6">
+            <!-- Category Name -->
+            <div class="form-group">
+              <label for="name">Category Name</label>
+              <input type="text" id="name" formControlName="name" class="form-control" placeholder="Enter category name" required />
+            </div>
+            
+            <!-- Description -->
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea id="description" formControlName="description" class="form-control" placeholder="Enter category description"></textarea>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">Add Category</button>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<div class="col-xl-12">
+  <app-card cardTitle="Manage Categories" [options]="false" blockClass="table-border-style">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of categories; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ category.name }}</td>
+            <td>{{ category.description }}</td>
+            <td>
+              <button class="btn btn-sm btn-warning" (click)="onEdit(category)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteCategory(category.idCategory)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+</div>

@@ -28,7 +28,82 @@ export const NavigationItems: NavigationItem[] = [
         url: '/dashboard',
         icon: 'feather icon-home',
         classes: 'nav-item'
+      },
+      {
+        id: 'library',
+        title: 'Library Management',
+        type: 'collapse',
+        icon: 'feather icon-book',
+        children: [
+          {
+            id: 'departments',
+            title: 'Departments',
+            type: 'collapse',
+            icon: 'feather icon-grid',
+            children: [
+              {
+                id: 'add-department',
+                title: 'Add Department',
+                type: 'item',
+                url: '/departments/add',
+                icon: 'feather icon-plus'
+              },
+              {
+                id: 'list-departments',
+                title: 'Manage Departments',
+                type: 'item',
+                url: '/departments/list',
+                icon: 'feather icon-list'
+              }
+            ]
+          },
+          {
+            id: 'categories',
+            title: 'Categories',
+            type: 'collapse',
+            icon: 'feather icon-folder',
+            children: [
+              {
+                id: 'add-category',
+                title: 'Add Category',
+                type: 'item',
+                url: '/categories/add',
+                icon: 'feather icon-plus'
+              },
+              {
+                id: 'list-categories',
+                title: 'Manage Categories',
+                type: 'item',
+                url: '/categories/list',
+                icon: 'feather icon-list'
+              }
+            ]
+          },
+          {
+            id: 'documents',
+            title: 'Documents',
+            type: 'collapse',
+            icon: 'feather icon-file',
+            children: [
+              {
+                id: 'add-document',
+                title: 'Add Document',
+                type: 'item',
+                url: '/documents/add',
+                icon: 'feather icon-plus'
+              },
+              {
+                id: 'list-documents',
+                title: 'Manage Documents',
+                type: 'item',
+                url: '/documents/list',
+                icon: 'feather icon-list'
+              }
+            ]
+          }
+        ]
       }
+
     ]
   },
   {
