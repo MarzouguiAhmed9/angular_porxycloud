@@ -34,13 +34,13 @@ export default class AuthSignupComponent {
         Validators.minLength(6),
         Validators.pattern(/(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])/)
       ]],
-      passwordRepeat: ['', Validators.required], // Ajout du champ de confirmation du mot de passe
+      passwordRepeat: ['', Validators.required], 
       firstName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/)]],
       lastName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.pattern(/^\+?[1-9]\d{1,14}$/)]],
-      address: [''],
-      birthday: [''],
+      phone: ['', [Validators.required,  Validators.pattern(/^[245793][0-9]{7}$/)]],
+      address: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9\s]*$/)]],
+      birthday: ['', [Validators.required, this.ageValidator]],
       enabled: [true],
       accountLocked: [false],
       role: [2]
@@ -55,6 +55,11 @@ export default class AuthSignupComponent {
     const password = form.get('password')?.value;
     const passwordRepeat = form.get('passwordRepeat')?.value;
     return password === passwordRepeat ? null : { passwordsMismatch: true };
+  }
+  ageValidator(control: any) {
+    const birthDate = new Date(control.value);
+    const age = new Date().getFullYear() - birthDate.getFullYear();
+    return age >= 12 ? null : { ageTooYoung: true }; // Minimum 12 ans
   }
 
   loadRoles() {
@@ -114,5 +119,9 @@ export default class AuthSignupComponent {
         }
       );
     }
+  }
+  onPhoneInput(event: any): void {
+    const value = event.target.value;
+    event.target.value = value.replace(/[^0-9]/g, ''); 
   }
 }

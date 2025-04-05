@@ -32,26 +32,46 @@
 
           <div class="form-group">
             <input class="form-control rounded" formControlName="firstName" id="firstName" type="text" placeholder="First Name" required />
+            <!-- Error message for First Name -->
+            <small *ngIf="registerForm.controls['firstName'].invalid && registerForm.controls['firstName'].touched" class="text-danger">
+              First Name is required and must contain only alphabetic characters.
+            </small>
           </div>
-
+          
           <div class="form-group">
             <input class="form-control rounded" formControlName="lastName" id="lastName" type="text" placeholder="Last Name" required />
+            <!-- Error message for Last Name -->
+            <small *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched" class="text-danger">
+              Last Name is required and must contain only alphabetic characters.
+            </small>
           </div>
-
+          
           <div class="form-group">
             <input class="form-control rounded" formControlName="email" id="email" type="email" placeholder="Email" required />
+            <!-- Error message for Email -->
+            <small *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched" class="text-danger">
+              A valid email address is required.
+            </small>
           </div>
+          
 
           <div class="form-group">
-            <input class="form-control rounded" formControlName="phone" id="phone" type="text" placeholder="Phone" />
+            <input class="form-control rounded" formControlName="phone" id="phone" type="text" placeholder="Phone" (input)="onPhoneInput($event)" />
+            <small *ngIf="registerForm.controls['phone'].invalid && registerForm.controls['phone'].touched" class="text-danger">
+              Phone must start with 2, 4, 5, 7, 9, or 3 and be followed by 7 digits.
+            </small>
           </div>
+          
+          
 
           <div class="form-group">
             <input class="form-control rounded" formControlName="address" id="address" type="text" placeholder="Address" />
+            <small *ngIf="registerForm.controls['address'].invalid && registerForm.controls['address'].touched" class="text-danger">Address is required and can contain spaces.</small>
           </div>
 
           <div class="form-group">
             <input class="form-control rounded" formControlName="birthday" id="birthday" type="date" placeholder="Date of Birth" />
+            <small *ngIf="registerForm.controls['birthday'].invalid && registerForm.controls['birthday'].touched" class="text-danger">You must be at least 12 years old.</small>
           </div>
 
           <button class="btn btn-primary shadow-2 mb-4 w-100" [disabled]="registerForm.invalid">Register</button>
