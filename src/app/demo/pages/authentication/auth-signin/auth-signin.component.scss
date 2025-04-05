@@ -1,0 +1,63 @@
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f7fc;
+    
+  }
+  
+
+  
+  .card {
+    width: 420px;
+    height: 450px;
+    border-radius: 10px;
+  }
+  
+  .card-body {
+    padding: 20px;
+
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .form-control:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  button {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .text-muted a {
+    color: #007bff;
+  }
+  
+  .text-muted a:hover {
+    text-decoration: underline;
+  }
+  

@@ -1,151 +1,132 @@
-// Global styles
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
   }
   
-  body {
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f9;
+  }
+  
+  // ✅ wrapper pour centrer verticalement et horizontalement
+  .forgot-password-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; // Pour centrer verticalement
-    padding: 0 10px; // Ajout d'un peu de padding pour le responsive
+    height: 100vh; // pour centrer verticalement
+    padding: 20px;
   }
   
+  // ✅ container avec largeur max
   .forgot-password-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 0 20px;
+  }
+  
+  .form-card {
     background-color: #fff;
+    padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    width: 100%;
-    max-width: 400px;
     text-align: center;
   
-    .form-card {
-      h2 {
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-        color: #333;
-      }
+    .form-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
   
-      form {
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+  
+      .form-group {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        align-items: flex-start;
   
-        .form-group {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-  
-          label {
-            font-size: 1rem;
-            color: #333;
-            margin-bottom: 5px;
-          }
-  
-          input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-            background-color: #f9f9f9;
-            transition: border 0.3s ease, background-color 0.3s ease;
-  
-            &:focus {
-              border-color: #4caf50;
-              background-color: #eafaf0;
-              outline: none;
-            }
-          }
-  
-          .error-message {
-            font-size: 0.9rem;
-            color: red;
-            margin-top: 5px;
-          }
-        }
-  
-        button {
-          padding: 12px 20px;
-          background-color: #4caf50;
-          color: #fff;
-          border: none;
-          border-radius: 4px;
-          font-size: 1.1rem;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-  
-          &:hover {
-            background-color: #45a049;
-          }
-  
-          &:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-          }
-        }
-      }
-  
-      .message {
-        margin-top: 20px;
-        padding: 10px;
-        border-radius: 4px;
-  
-        &.success-message {
-          background-color: #d4edda;
-          color: #155724;
-        }
-  
-        &.error-message {
-          background-color: #f8d7da;
-          color: #721c24;
-        }
-      }
-  
-      .go-reset {
-        margin-top: 20px;
-  
-        p {
+        label {
           font-size: 1rem;
           color: #333;
+          margin-bottom: 5px;
         }
   
-        .reset-link-button {
-          display: inline-block;
-          text-decoration: none;
-          color: #4caf50;
-          font-weight: bold;
-          padding: 10px 15px;
-          border: 2px solid #4caf50;
+        input {
+          width: 100%;
+          padding: 12px 15px;
+          border: 1px solid #ccc;
           border-radius: 4px;
-          transition: background-color 0.3s, color 0.3s;
+          font-size: 1rem;
+          background-color: #f9f9f9;
+          transition: border 0.3s ease, background-color 0.3s ease;
   
-          &:hover {
-            background-color: #4caf50;
-            color: #fff;
+          &:focus {
+            border-color: #4caf50;
+            background-color: #eafaf0;
+            outline: none;
           }
         }
+  
+        .error-message {
+          font-size: 0.9rem;
+          color: red;
+          margin-top: 5px;
+        }
+      }
+  
+      button {
+        padding: 12px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+  
+        &:hover {
+          background-color: #45a049;
+        }
+  
+        &:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+        }
+      }
+    }
+  
+    .message {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+  
+      &.success-message {
+        background-color: #d4edda;
+        color: #155724;
+      }
+  
+      &.error-message {
+        background-color: #f8d7da;
+        color: #721c24;
       }
     }
   }
   
-  // Media queries for responsiveness
+  // 📱 Responsive
   @media (max-width: 480px) {
-    .forgot-password-container {
-      padding: 30px;
-      width: 100%; // Prendre toute la largeur sur les écrans plus petits
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .forgot-password-container {
-      padding: 35px;
-      width: 90%; // Ajustement sur les écrans de taille moyenne
+    .form-card {
+      padding: 30px 20px;
     }
   }
   

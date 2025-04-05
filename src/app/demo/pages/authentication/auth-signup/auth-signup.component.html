@@ -11,65 +11,55 @@
         <div class="mb-4">
           <i class="feather icon-user-plus auth-icon"></i>
         </div>
-        <h3 class="mb-4">Inscription</h3>
+        <h3 class="mb-4">Sign Up</h3>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <label for="username">Nom d'utilisateur:</label>
-            <input class="form-control rounded" formControlName="username" id="username" type="text" required />
-            <small *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched" class="text-danger">Nom d'utilisateur requis.</small>
+            <input class="form-control rounded" formControlName="username" id="username" type="text" placeholder="Username" required />
+            <small *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched" class="text-danger">Username is required.</small>
           </div>
-        
+
           <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input class="form-control rounded" formControlName="password" id="password" type="password" required />
+            <input class="form-control rounded" formControlName="password" id="password" type="password" placeholder="Password" required />
             <small *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched" class="text-danger">
-              Le mot de passe doit contenir au moins 6 caractères, 1 chiffre, 1 majuscule et 1 caractère spécial.
+              Password must be at least 6 characters long, contain 1 digit, 1 uppercase letter, and 1 special character.
             </small>
           </div>
-        
+
           <div class="form-group">
-            <label for="passwordRepeat">Confirmer le mot de passe:</label>
-            <input class="form-control rounded" formControlName="passwordRepeat" id="passwordRepeat" type="password" required />
-            <small *ngIf="registerForm.hasError('passwordsMismatch')" class="text-danger">Les mots de passe ne correspondent pas.</small>
+            <input class="form-control rounded" formControlName="passwordRepeat" id="passwordRepeat" type="password" placeholder="Confirm Password" required />
+            <small *ngIf="registerForm.hasError('passwordsMismatch')" class="text-danger">Passwords do not match.</small>
           </div>
-        
+
           <div class="form-group">
-            <label for="firstName">Prénom:</label>
-            <input class="form-control rounded" formControlName="firstName" id="firstName" type="text" required />
+            <input class="form-control rounded" formControlName="firstName" id="firstName" type="text" placeholder="First Name" required />
           </div>
-        
+
           <div class="form-group">
-            <label for="lastName">Nom:</label>
-            <input class="form-control rounded" formControlName="lastName" id="lastName" type="text" required />
+            <input class="form-control rounded" formControlName="lastName" id="lastName" type="text" placeholder="Last Name" required />
           </div>
-        
+
           <div class="form-group">
-            <label for="email">Email:</label>
-            <input class="form-control rounded" formControlName="email" id="email" type="email" required />
+            <input class="form-control rounded" formControlName="email" id="email" type="email" placeholder="Email" required />
           </div>
-        
+
           <div class="form-group">
-            <label for="phone">Téléphone:</label>
-            <input class="form-control rounded" formControlName="phone" id="phone" type="text" />
+            <input class="form-control rounded" formControlName="phone" id="phone" type="text" placeholder="Phone" />
           </div>
-        
+
           <div class="form-group">
-            <label for="address">Adresse:</label>
-            <input class="form-control rounded" formControlName="address" id="address" type="text" />
+            <input class="form-control rounded" formControlName="address" id="address" type="text" placeholder="Address" />
           </div>
-        
+
           <div class="form-group">
-            <label for="birthday">Date de naissance:</label>
-            <input class="form-control rounded" formControlName="birthday" id="birthday" type="date" />
+            <input class="form-control rounded" formControlName="birthday" id="birthday" type="date" placeholder="Date of Birth" />
           </div>
-        
-          <button class="btn btn-primary shadow-2 mb-4 w-100" [disabled]="registerForm.invalid">S'inscrire</button>
+
+          <button class="btn btn-primary shadow-2 mb-4 w-100" [disabled]="registerForm.invalid">Register</button>
         </form>
-        
-        
+
         <p class="mb-0 text-muted">
-          Vous avez déjà un compte ?
-          <a [routerLink]="['/auth/signin']">Se connecter</a>
+          Already have an account?
+          <a [routerLink]="['/auth/signin']">Log in</a>
         </p>
       </div>
     </div>
