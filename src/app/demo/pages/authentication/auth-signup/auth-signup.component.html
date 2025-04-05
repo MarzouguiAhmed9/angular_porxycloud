@@ -11,36 +11,65 @@
         <div class="mb-4">
           <i class="feather icon-user-plus auth-icon"></i>
         </div>
-        <h3 class="mb-4">Sign up</h3>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Username" />
-        </div>
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" />
-        </div>
-        <div class="input-group mb-4">
-          <input type="password" class="form-control" placeholder="Password" />
-        </div>
-        <div class="form-group text-start mb-4">
-          <div class="checkbox checkbox-fill d-inline">
-            <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-1" checked="" />
-            <label for="checkbox-fill-1" class="cr">Save Details</label>
+        <h3 class="mb-4">Inscription</h3>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="username">Nom d'utilisateur:</label>
+            <input class="form-control rounded" formControlName="username" id="username" type="text" required />
+            <small *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched" class="text-danger">Nom d'utilisateur requis.</small>
           </div>
-        </div>
-        <div class="form-group text-start mb-3">
-          <div class="checkbox checkbox-fill d-inline">
-            <input type="checkbox" name="checkbox-fill-2" id="checkbox-fill-2" />
-            <label for="checkbox-fill-2" class="cr">
-              Send me the
-              <a href="javascript:">Newsletter</a>
-              weekly.
-            </label>
+        
+          <div class="form-group">
+            <label for="password">Mot de passe:</label>
+            <input class="form-control rounded" formControlName="password" id="password" type="password" required />
+            <small *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched" class="text-danger">
+              Le mot de passe doit contenir au moins 6 caractères, 1 chiffre, 1 majuscule et 1 caractère spécial.
+            </small>
           </div>
-        </div>
-        <button class="btn btn-primary shadow-2 mb-4">Sign up</button>
+        
+          <div class="form-group">
+            <label for="passwordRepeat">Confirmer le mot de passe:</label>
+            <input class="form-control rounded" formControlName="passwordRepeat" id="passwordRepeat" type="password" required />
+            <small *ngIf="registerForm.hasError('passwordsMismatch')" class="text-danger">Les mots de passe ne correspondent pas.</small>
+          </div>
+        
+          <div class="form-group">
+            <label for="firstName">Prénom:</label>
+            <input class="form-control rounded" formControlName="firstName" id="firstName" type="text" required />
+          </div>
+        
+          <div class="form-group">
+            <label for="lastName">Nom:</label>
+            <input class="form-control rounded" formControlName="lastName" id="lastName" type="text" required />
+          </div>
+        
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input class="form-control rounded" formControlName="email" id="email" type="email" required />
+          </div>
+        
+          <div class="form-group">
+            <label for="phone">Téléphone:</label>
+            <input class="form-control rounded" formControlName="phone" id="phone" type="text" />
+          </div>
+        
+          <div class="form-group">
+            <label for="address">Adresse:</label>
+            <input class="form-control rounded" formControlName="address" id="address" type="text" />
+          </div>
+        
+          <div class="form-group">
+            <label for="birthday">Date de naissance:</label>
+            <input class="form-control rounded" formControlName="birthday" id="birthday" type="date" />
+          </div>
+        
+          <button class="btn btn-primary shadow-2 mb-4 w-100" [disabled]="registerForm.invalid">S'inscrire</button>
+        </form>
+        
+        
         <p class="mb-0 text-muted">
-          Already have an account?
-          <a [routerLink]="['/auth/signin']">Log in</a>
+          Vous avez déjà un compte ?
+          <a [routerLink]="['/auth/signin']">Se connecter</a>
         </p>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
+import { HomeComponent } from 'src/Front_client/component/home/home.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,18 @@ const routes: Routes = [
         path: 'departments',
         loadComponent: () =>
           import('./library/departments/manage-departments/manage-departments.component').then(m => m.ManageDepartmentsComponent)
+      },
+    
+{ path: 'logout', loadComponent: () => import('./demo/pages/authentication/logout/logout.component').then(m => m.LogoutComponent) }
+,
+
+{ path: 'profile', loadComponent: () => import('./demo/pages/authentication/profile/profile.component').then(m => m.ProfileComponent) }
+,
+
+
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./demo/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
       
       ,

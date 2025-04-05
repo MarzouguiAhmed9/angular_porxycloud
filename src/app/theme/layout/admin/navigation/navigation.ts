@@ -180,6 +180,22 @@ export const NavigationItems: NavigationItem[] = [
             url: '/auth/signin',
             target: true,
             breadcrumbs: false
+          },
+          {
+            id: 'logout',
+            title: 'Logout',
+            type: 'item',
+            url: '/logout',
+            target: true,
+            breadcrumbs: false
+          },
+          {
+            id: 'profile',
+            title: 'Profile',
+            type: 'item',
+            url: '/profile',
+            target: true,
+            breadcrumbs: false
           }
         ]
       },

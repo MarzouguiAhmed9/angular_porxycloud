@@ -1,0 +1,34 @@
+<!-- forgot-password.component.html -->
+<div class="forgot-password-container">
+    <div class="form-card">
+      <h2>Mot de passe oublié ?</h2>
+  
+      <form [formGroup]="forgotForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Adresse email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Entrez votre adresse email"
+          />
+          <div *ngIf="email.invalid && email.touched" class="error-message">
+            Email invalide ou requis.
+          </div>
+        </div>
+  
+        <button type="submit" [disabled]="forgotForm.invalid">Envoyer le lien</button>
+      </form>
+  
+      <!-- Message de succès -->
+      <div class="message success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+  
+      <!-- Message d'erreur -->
+      <div class="message error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+  

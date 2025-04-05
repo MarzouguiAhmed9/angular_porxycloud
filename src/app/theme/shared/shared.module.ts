@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 // Third party
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { ResetPasswordComponent } from 'src/app/demo/pages/authentication/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [],
@@ -23,9 +24,11 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     FormsModule,
     ReactiveFormsModule,
     CardComponent,
-    NgbModule,
+    NgbModule,  // Importez RouterModule ici
     NgScrollbarModule,
-    NgbCollapseModule
+    NgbCollapseModule,
+
+    
   ],
   exports: [
     CommonModule,
