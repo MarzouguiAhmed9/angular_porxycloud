@@ -1,0 +1,132 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="editMode ? 'Edit Document' : 'Add Document'" [options]="false">
+      <hr />
+      <form [formGroup]="documentForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <div class="row">
+          <!-- Left Column -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="title">Document Title</label>
+              <input type="text" id="title" formControlName="title" class="form-control"
+                     [ngClass]="{ 'is-invalid': f['title'].touched && f['title'].errors }" />
+              <div *ngIf="f['title'].touched && f['title'].errors" class="invalid-feedback">
+                <div *ngIf="f['title'].errors['required']">Title is required</div>
+                <div *ngIf="f['title'].errors['minlength']">Min 3 characters</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea id="description" formControlName="description" class="form-control"
+                        [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors }"></textarea>
+              <div *ngIf="f['description'].touched && f['description'].errors" class="invalid-feedback">
+                <div *ngIf="f['description'].errors['required']">Description is required</div>
+                <div *ngIf="f['description'].errors['minlength']">Min 10 characters</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="categories">Categories</label>
+              <select class="form-control" id="categories" formControlName="categories" multiple>
+                <option *ngFor="let category of categories" [value]="category.idCategory">
+                  {{ category.name }}
+                </option>
+              </select>
+              <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple</small>
+            </div>
+          </div>
+          <!-- Right Column -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="documentType">Document Type</label>
+              <select class="form-control" id="documentType" formControlName="documentType">
+                <option value="">Select a type</option>
+                <option *ngFor="let type of documentTypes" [value]="type">{{ type }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="status">Status</label>
+              <select class="form-control" id="status" formControlName="status">
+                <option *ngFor="let status of documentStatuses" [value]="status">{{ status }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="keywords">Keywords</label>
+              <input type="text" id="keywords" formControlName="keywords" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="file">File Upload</label>
+              <input type="file" id="file" (change)="onFileSelected($event)" class="form-control" />
+              <small *ngIf="editMode" class="form-text text-muted">
+                Leave blank to keep the existing file.
+              </small>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row mt-4">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary float-end" 
+                    [disabled]="documentForm.invalid || (!editMode && !selectedFile)">
+              {{ editMode ? 'Update Document' : 'Submit Document' }}
+            </button>
+            <button *ngIf="editMode" type="button" class="btn btn-secondary ml-2" (click)="resetForm()">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+  
+<!-- Documents Table -->
+<div class="col-xl-12 mt-4">
+  <app-card cardTitle="Manage Documents" [options]="false" blockClass="table-border-style">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Upload Date</th>
+            <th>Keywords</th>
+            <th>Status</th>
+            <th>Student</th>
+            <th>Review</th>
+            <th>Categories</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doc of documents; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ doc.title }}</td>
+            <td>{{ doc.description }}</td>
+            <td>{{ doc.documentType }}</td>
+            <td>{{ doc.uploadDate | date:'medium' }}</td>
+            <td>{{ doc.keywords }}</td>
+            <td>{{ doc.status }}</td>
+            <td>{{ doc.student?.name || 'N/A' }}</td>
+            <td>
+              <span *ngIf="doc.review; else noReview">
+                {{ doc.review.comments }} ({{ doc.review.status }})
+              </span>
+              <ng-template #noReview>No Review</ng-template>
+            </td>
+            <td>
+              <ul>
+                <li *ngFor="let cat of doc.categories">{{ cat.name }}</li>
+              </ul>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-warning" (click)="onEdit(doc)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="onDelete(doc.idDocument)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+</div>

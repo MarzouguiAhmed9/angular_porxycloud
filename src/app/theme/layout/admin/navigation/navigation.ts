@@ -38,54 +38,23 @@ export const NavigationItems: NavigationItem[] = [
           {
             id: 'documents',
             title: 'Documents',
-            type: 'collapse',
-            icon: 'feather icon-file',
-            children: [
-              {
-                id: 'add-document',
-                title: 'Add Document',
-                type: 'item',
-                url: '/documents/add',
-                icon: 'feather icon-plus'
-              },
-              {
-                id: 'list-documents',
-                title: 'Manage Documents',
-                type: 'item',
-                url: '/documents/list',
-                icon: 'feather icon-list'
-              }
-            ]
+            type: 'item',
+            url: '/documents',
+            icon: 'feather icon-file'
           },
           {
             id: 'departments',
             title: 'Departments',
-            type: 'collapse',
-            icon: 'feather icon-grid',
-            children: [
-              {
-                id: 'add-department',
-                title: 'Manage Departments',
-                type: 'item',
-                url: '/departments/add',
-                icon: 'feather icon-plus'
-              }
-            ]
+            type: 'item',
+            url: '/departments',
+            icon: 'feather icon-grid'
           },
           {
             id: 'categories',
             title: 'Categories',
-            type: 'collapse',
-            icon: 'feather icon-folder',
-            children: [
-              {
-                id: 'add-category',
-                title: 'Manage Categories',
-                type: 'item',
-                url: '/categories/add',
-                icon: 'feather icon-plus'
-              }
-            ]
+            type: 'item',
+            url: '/categories',
+            icon: 'feather icon-folder'
           },
         ]
       }

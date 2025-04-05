@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CategoryService } from '../../../services/category.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -22,6 +22,8 @@ export class CategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
   categories: Category[] = [];
+  editMode = false;
+  editingCategoryId: number | null = null;
 
   constructor(private fb: FormBuilder, private categoryService: CategoryService) {
     this.categoryForm = this.fb.group({
@@ -31,59 +33,78 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Load categories when the component is initialized
     this.getCategories();
   }
 
-  // Get all categories from the backend
   getCategories(): void {
     this.categoryService.getCategories().subscribe(
       (response) => {
-        console.log('Categories fetched:', response);  // Debug: Log the response
         this.categories = response;
       },
       (error) => {
         console.error('Error fetching categories:', error);
-        console.log('Error Status:', error.status);
-        console.log('Error Message:', error.message);
-        // Optionally display more info or show user-friendly messages here
       }
     );
   }
-  
-  // Add a new category to the backend
+
   addCategory(): void {
     if (this.categoryForm.valid) {
-      const newCategory = this.categoryForm.value;
-      this.categoryService.addCategory(newCategory).subscribe(
-        (category) => {
-          console.log('New category added:', category);  // Debug: Log the newly added category
-          this.categories.push(category);
-          this.categoryForm.reset();
-        },
-        (error) => {
-          console.error('Error adding category:', error);  // Debug: Log the error
-        }
-      );
+      const formData = this.categoryForm.value;
+
+      if (this.editMode && this.editingCategoryId !== null) {
+        const updatedCategory: Category = {
+          idCategory: this.editingCategoryId,
+          ...formData
+        };
+
+        this.categoryService.updateCategory(updatedCategory).subscribe(
+          (updated) => {
+            const index = this.categories.findIndex(c => c.idCategory === updated.idCategory);
+            if (index !== -1) this.categories[index] = updated;
+            this.resetForm();
+          },
+          (error) => {
+            console.error('Error updating category:', error);
+          }
+        );
+      } else {
+        this.categoryService.addCategory(formData).subscribe(
+          (newCategory) => {
+            this.categories.push(newCategory);
+            this.resetForm();
+          },
+          (error) => {
+            console.error('Error adding category:', error);
+          }
+        );
+      }
     }
   }
 
-  // Delete an existing category from the backend
   deleteCategory(id: number): void {
     this.categoryService.deleteCategory(id).subscribe(
       () => {
-        console.log('Category deleted:', id);  // Debug: Log the deleted category ID
-        this.categories = this.categories.filter(category => category.idCategory !== id);
+        this.categories = this.categories.filter(c => c.idCategory !== id);
+        if (this.editingCategoryId === id) this.resetForm(); // If deleted item is being edited
       },
       (error) => {
-        console.error('Error deleting category:', error);  // Debug: Log the error
+        console.error('Error deleting category:', error);
       }
     );
   }
 
-  // Optional: Method to handle category edits (not implemented yet)
   onEdit(category: Category): void {
-    console.log('Editing category:', category);
-    // You can implement edit functionality here
+    this.editMode = true;
+    this.editingCategoryId = category.idCategory;
+    this.categoryForm.patchValue({
+      name: category.name,
+      description: category.description
+    });
+  }
+
+  resetForm(): void {
+    this.categoryForm.reset();
+    this.editMode = false;
+    this.editingCategoryId = null;
   }
 }

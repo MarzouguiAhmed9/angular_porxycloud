@@ -23,10 +23,10 @@ export class DocumentService {
     return this.http.get<Document>(`${this.apiUrl}/retrieve/${id}`);
   }
 
-  updateDocument(document: Document): Observable<Document> {
-    return this.http.put<Document>(`${this.apiUrl}/update`, document);
+  updateDocument(formData: FormData): Observable<Document> {
+    return this.http.put<Document>(`${this.apiUrl}/update`, formData);
   }
-
+  
   deleteDocument(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }

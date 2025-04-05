@@ -14,26 +14,26 @@ const routes: Routes = [
         loadComponent: () =>
           import('./demo/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
+      { path: '', redirectTo: 'documents', pathMatch: 'full' },
+      {
+        path: 'documents',
+        loadComponent: () =>
+          import('./library/documents/document-manager/document-manager.component').then(m => m.DocumentManagerComponent)
+      },
+
+      { path: '', redirectTo: 'categories', pathMatch: 'full' },
       {
         path: 'categories',
-        children: [
-          {
-            path: 'add',
-            loadChildren: () =>
-              import('./library/categories/category/category.module').then(m => m.CategoryModule)
-          }
-        ]
+        loadComponent: () =>
+          import('./library/categories/category/category.component').then(m => m.CategoryComponent)
       },
+
+      { path: '', redirectTo: 'departments', pathMatch: 'full' },
       {
         path: 'departments',
-        children: [
-          {
-            path: 'add',
-            loadChildren: () =>
-              import('./library/departments/manage-departments/department.module').then(m => m.DepartmentModule)
-          }
-        ]
-      }
+        loadComponent: () =>
+          import('./library/departments/manage-departments/manage-departments.component').then(m => m.ManageDepartmentsComponent)
+      },
       
       ,
       {
@@ -59,11 +59,6 @@ const routes: Routes = [
         path: 'sample-page',
         // Define or lazy-load your Sample Page module/component as needed
       },
-      {
-        path: 'documents',
-        loadChildren: () =>
-          import('./library/documents/document.module').then(m => m.DocumentModule)
-      }
     ]
   },
   {
