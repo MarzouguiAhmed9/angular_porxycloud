@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
-import { HomeComponent } from 'src/Front_client/component/home/home.component';
 
 const routes: Routes = [
   {
@@ -11,7 +10,6 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
-      { path: 'home', component: HomeComponent },
       {
         path: 'dashboard',
         loadComponent: () =>
@@ -30,17 +28,17 @@ const routes: Routes = [
       {
         path: 'documents',
         loadComponent: () =>
-          import('./library/documents/document-manager/document-manager.component').then(m => m.DocumentManagerComponent)
+          import('./demo//library/documents/document-manager/document-manager.component').then(m => m.DocumentManagerComponent)
       },
       {
         path: 'categories',
         loadComponent: () =>
-          import('./library/categories/category/category.component').then(m => m.CategoryComponent)
+          import('./demo/library/categories/category/category.component').then(m => m.CategoryComponent)
       },
       {
         path: 'departments',
         loadComponent: () =>
-          import('./library/departments/manage-departments/manage-departments.component').then(m => m.ManageDepartmentsComponent)
+          import('./demo/library/departments/manage-departments/manage-departments.component').then(m => m.ManageDepartmentsComponent)
       },
       {
         path: 'basic',

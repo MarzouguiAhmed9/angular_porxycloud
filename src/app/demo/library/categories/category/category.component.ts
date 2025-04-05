@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CategoryService } from '../../../services/category.service';
+import { CategoryService } from '../../../../services/category.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { CardComponent } from "../../../theme/shared/components/card/card.component";
+import { CardComponent } from "../../../../theme/shared/components/card/card.component";
 
 interface Category {
   idCategory: number;

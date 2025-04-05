@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { CardComponent } from "../../../theme/shared/components/card/card.component";
-import { DepartmentService } from '../../../services/department.service';
+import { CardComponent } from "../../../../theme/shared/components/card/card.component";
+import { DepartmentService } from '../../../../services/department.service';
 
 interface Department {
   idDepartment: number;

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DocumentService } from '../../../services/document.service';
-import { CategoryService } from '../../../services/category.service';
-import { Document, DocumentType, DocumentStatus, Category } from '../../../models/document.model';
-import { CardComponent } from '../../../theme/shared/components/card/card.component';
+import { DocumentService } from '../../../../services/document.service';
+import { CategoryService } from '../../../../services/category.service';
+import { Document, DocumentType, DocumentStatus, Category } from '../../../../models/document.model';
+import { CardComponent } from '../../../../theme/shared/components/card/card.component';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
