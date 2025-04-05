@@ -3,7 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';  // Assurez-vous d'importer HttpClient
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';  // Assurez-vous d'importer HttpClient
 import { UserService } from 'src/app/serviceUser/user.service';
 import { CommonModule } from '@angular/common';
 
@@ -46,23 +46,26 @@ export class ResetPasswordComponent implements OnInit {
       ? { passwordMismatch: true }
       : null;
   }
-
   onSubmit(): void {
     if (this.resetPasswordForm.valid && this.token) {
       const { password } = this.resetPasswordForm.value;
   
-      // Construction de l'objet à envoyer
+      // Construction de l'URL avec les paramètres dans la query string
       const resetData = {
         resetToken: this.token,
         newPassword: password
       };
   
-      // Appel API pour réinitialiser le mot de passe
-      this.http.post('http://localhost:8089/Projetback/api/auth/reset-password', resetData)
+      // Construction de l'URL avec les query parameters
+      const url = `http://localhost:8089/Projetback/api/auth/reset-password?resetToken=${resetData.resetToken}&newPassword=${resetData.newPassword}`;
+  
+      // Appel API pour réinitialiser le mot de passe avec réponse en texte
+      this.http.post(url, {}, { responseType: 'text' })
         .subscribe(
           response => {
             console.log('Réinitialisation réussie:', response);
-            this.router.navigate(['/login']);  // Redirige l'utilisateur vers la page de login
+            alert(response);  // Affiche le message de succès
+            this.router.navigate(['/auth/signin']);  // Redirige l'utilisateur vers la page de login
           },
           error => {
             console.error('Erreur lors de la réinitialisation:', error);
@@ -71,6 +74,8 @@ export class ResetPasswordComponent implements OnInit {
         );
     }
   }
+  
+  
   
   get confirmPassword() {
     return this.resetPasswordForm.get('confirmPassword');
