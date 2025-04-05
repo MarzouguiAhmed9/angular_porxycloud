@@ -118,4 +118,29 @@ export class UserService {
       })
     );
   }
+  getUserDetails(): any {
+    const token = this.getToken();
+    if (token) {
+      const payload = this.decodeToken(token);
+      console.log('Payload décodé:', payload); // Afficher le contenu du token
+      return payload ? payload.user : null;
+    }
+    return null;
+  }
+
+  forgotPassword(email: string) {
+    return this.http.post(`${this.baseUrl}/forgot-password`, { email });
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    const params = {
+      resetToken: token,
+      newPassword: newPassword
+    };
+  
+    return this.http.post(`${this.baseUrl}/reset-password`, null, {
+      params
+    });
+  }
+  
 }

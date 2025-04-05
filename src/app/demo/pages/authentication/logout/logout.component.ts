@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
+  styleUrls: ['./logout.component.scss'],
    imports: [RouterModule, SharedModule],
   standalone: true,  // Assurez-vous d'ajouter cette ligne
 
