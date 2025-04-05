@@ -1,0 +1,27 @@
+<div class="container" *ngIf="event">
+    <h2>Reservation for {{event.nomEvent}}</h2>
+    
+    <div class="row">
+      <div class="col-md-8">
+        <app-seat-selection 
+          [maxCapacity]="event.capaciteMax"
+          [takenSeats]="takenSeats"
+          (seatsSelected)="onSeatsSelected($event)">
+        </app-seat-selection>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="reservation-summary">
+          <h4>Reservation Summary</h4>
+          <p><strong>Event:</strong> {{event.nomEvent}}</p>
+          <p><strong>Selected Seats:</strong> {{selectedSeats.join(', ') || 'None'}}</p>
+          <p><strong>Total Price:</strong> {{event.prix * selectedSeats.length}} TND</p>
+          <button class="btn btn-primary" 
+                  (click)="confirmReservation()"
+                  [disabled]="selectedSeats.length === 0">
+            Confirm Reservation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,50 @@
+.seating-plan {
+    margin: 20px 0;
+  }
+  
+  .screen {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .seat-row {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  
+  .row-label {
+    width: 60px;
+    font-weight: bold;
+  }
+  
+  .seat {
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .seat.taken {
+    background: #dc3545;
+    color: white;
+    cursor: not-allowed;
+  }
+  
+  .seat.selected {
+    background: #28a745;
+    color: white;
+  }
+  
+  .reservation-summary {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+  }

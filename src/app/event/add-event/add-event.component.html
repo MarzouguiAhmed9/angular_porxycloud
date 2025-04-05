@@ -1,0 +1,119 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Add Event</h2>
+    
+    <form [formGroup]="eventForm" (ngSubmit)="addEvent()">
+      <!-- Nom de l'événement -->
+      <div class="mb-3">
+        <label for="nomEvent" class="form-label">Event Name</label>
+        <input type="text" id="nomEvent" class="form-control" formControlName="nomEvent">
+        <div *ngIf="nomEvent?.invalid && nomEvent?.touched" class="text-danger">
+          Le nom de l'événement doit comporter au moins 3 caractères.
+        </div>
+      </div>
+  
+      <!-- Description de l'événement -->
+      <div class="mb-3">
+        <label for="descriptionEvent" class="form-label">Description</label>
+        <textarea id="descriptionEvent" class="form-control" formControlName="descriptionEvent"></textarea>
+        <div *ngIf="descriptionEvent?.invalid && descriptionEvent?.touched" class="text-danger">
+          La description est requise et ne doit pas dépasser 500 caractères.
+        </div>
+      </div>
+  
+      <!-- Date de début -->
+      <div class="mb-3">
+        <label for="dateDebut" class="form-label">Start Date</label>
+        <input type="date" id="dateDebut" class="form-control" formControlName="dateDebut">
+        <div *ngIf="dateDebut?.invalid && dateDebut?.touched" class="text-danger">
+          La date de début doit être la date actuelle ou après celle-ci.
+        </div>
+      </div>
+  
+      <!-- Date de fin -->
+      <div class="mb-3">
+        <label for="dateFin" class="form-label">End Date</label>
+        <input type="date" id="dateFin" class="form-control" formControlName="dateFin">
+        <div *ngIf="dateFin?.invalid && dateFin?.touched" class="text-danger">
+          La date de fin doit être égale ou après la date de début.
+        </div>
+      </div>
+  
+      <!-- Lieu -->
+      <div class="mb-3">
+        <label for="lieu" class="form-label">Location</label>
+        <input type="text" id="lieu" class="form-control" formControlName="lieu">
+        <div *ngIf="lieu?.invalid && lieu?.touched" class="text-danger">
+          Le lieu est requis.
+        </div>
+      </div>
+  
+      <!-- Capacité maximale -->
+      <div class="mb-3">
+        <label for="capaciteMax" class="form-label">Maximum Capacity</label>
+        <input type="number" id="capaciteMax" class="form-control" formControlName="capaciteMax">
+        <div *ngIf="capaciteMax?.invalid && capaciteMax?.touched" class="text-danger">
+          La capacité doit être supérieure à 0.
+        </div>
+      </div>
+  
+      <!-- Prix -->
+      <div class="mb-3">
+        <label for="prix" class="form-label">Price</label>
+        <input type="number" id="prix" class="form-control" formControlName="prix" step="0.01">
+        <div *ngIf="prix?.invalid && prix?.touched" class="text-danger">
+          Le prix doit être supérieur ou égal à 0.
+        </div>
+      </div>
+  
+      <!-- Statut -->
+      <div class="mb-3">
+        <label for="statut" class="form-label">Statut</label>
+        <select id="statut" class="form-select" formControlName="statut">
+          <option value="Actif">Actif</option>
+          <option value="Annulé">Annulé</option>
+          <option value="Complet">Complet</option>
+          <option value="Terminé">Terminé</option>
+        </select>
+        <div *ngIf="statut?.invalid && statut?.touched" class="text-danger">
+          Le statut est requis.
+        </div>
+      </div>
+  
+      <!-- Type d'événement -->
+      <div class="mb-3">
+        <label for="typeEvenement" class="form-label">Type d'événement</label>
+        <input type="text" id="typeEvenement" class="form-control" formControlName="typeEvenement">
+        <div *ngIf="typeEvenement?.invalid && typeEvenement?.touched" class="text-danger">
+          Le type d'événement est requis.
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="imageEvent" class="form-label">Event Image</label>
+        <input type="file" id="imageEvent" class="form-control" 
+               (change)="onFileSelected($event)" accept="image/*">
+      </div>
+  <!-- Ajouter cette section après les autres champs -->
+<div class="mb-3">
+  <label class="form-label">Sponsors</label>
+  <div *ngFor="let sponsor of sponsors" class="form-check">
+<input class="form-check-input" 
+type="checkbox" 
+[id]="'sponsor-' + sponsor.idSponsor"
+(change)="onSponsorSelect(sponsor.idSponsor!, $any($event.target).checked)">
+    <label class="form-check-label" [for]="'sponsor-' + sponsor.idSponsor">
+      {{ sponsor.nomSponsor }}
+      <img *ngIf="sponsor.logo" 
+           [src]="'http://localhost:8081/gestionEvent/uploads/' + sponsor.logo" 
+           alt="{{ sponsor.nomSponsor }} logo"
+           style="max-height: 30px; margin-left: 10px;">
+    </label>
+  </div>
+</div>
+      <!-- Bouton de soumission -->
+      
+        <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">Add Event</button>
+     
+    </form>
+  </div>
+  

@@ -1,0 +1,42 @@
+
+<div class="container mt-4">
+    <div class="row">
+      <div *ngFor="let event of events" class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img *ngIf="event.imageEvent" 
+               [src]="'http://localhost:8081/gestionEvent/uploads/' + event.imageEvent" 
+               class="card-img-top" 
+               alt="{{ event.nomEvent }}"
+               style="height: 200px; object-fit: cover;">
+          
+          <div class="card-body">
+            <h5 class="card-title">{{ event.nomEvent }}</h5>
+            <p class="card-text text-muted">{{ event.dateDebut | date:'dd/MM/yyyy' }} - {{ event.dateFin | date:'dd/MM/yyyy' }}</p>
+            <p class="card-text">{{ event.descriptionEvent  }}</p>
+            
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge" 
+                    [ngClass]="{
+                      'bg-success': event.statut === 'Actif',
+                      'bg-danger': event.statut === 'Annulé',
+                      'bg-warning': event.statut === 'Complet',
+                      'bg-secondary': event.statut === 'Terminé'
+                    }">
+                {{ event.statut }}
+              </span> 
+              <button [routerLink]="['/events', event.idEvent, 'reserve']" 
+              class="btn btn-primary me-md-2"
+              [disabled]="event.statut !== 'Actif'">
+        <i class="fas fa-ticket-alt me-2"></i>Book Now
+      </button>
+                <button (click)="viewDetails(event.idEvent!)" class="btn btn-primary">
+                  Details <i class="fas fa-arrow-right ms-1"></i>
+                </button>
+             
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

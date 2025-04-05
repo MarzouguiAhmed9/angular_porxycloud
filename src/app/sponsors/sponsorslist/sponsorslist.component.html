@@ -1,0 +1,43 @@
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  </head>
+  <table class="table">
+    <thead>
+      <tr>
+        
+        <th scope="col">Logo</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Description</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sponsor of sponsors">
+        
+        <td>
+          <img *ngIf="sponsor.logo" 
+               [src]="'http://localhost:8081/gestionEvent/uploads/' + sponsor.logo" 
+               alt="Sponsor logo" 
+               class="img-thumbnail" 
+               style="max-width: 80px; max-height: 80px;">
+          <span *ngIf="!sponsor.logo" class="text-muted">No logo</span>
+        </td>
+        <td>{{ sponsor.nomSponsor }}</td>
+        <td>{{ sponsor.descriptionSponsor }}</td>
+        <td>{{ sponsor.contact }}</td>
+       
+        <td>
+          <div class="btn-group" role="group">
+            <button (click)="deleteSponsor(sponsor.idSponsor)" class="btn delete">
+              <i class="fas fa-trash"></i>
+            </button>
+            <button class="btn edit" [routerLink]="['/updatesponsor', sponsor.idSponsor]" >
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>

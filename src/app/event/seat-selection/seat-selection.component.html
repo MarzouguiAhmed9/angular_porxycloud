@@ -1,0 +1,21 @@
+<p>seat-selection works!</p>
+<div class="seating-plan">
+    <div class="screen mb-4">SCREEN</div>
+    
+    <div *ngFor="let row of [].constructor(rows); let i = index" class="seat-row">
+      <div class="row-label">Row {{i + 1}}</div>
+      <button *ngFor="let col of [].constructor(cols); let j = index"
+              class="seat"
+              [class.taken]="isSeatTaken(i * cols + j + 1)"
+              [class.selected]="isSeatSelected(i * cols + j + 1)"
+              [disabled]="isSeatTaken(i * cols + j + 1)"
+              (click)="toggleSeat(i * cols + j + 1)">
+        {{i * cols + j + 1}}
+      </button>
+    </div>
+  </div>
+  
+  <div class="selection-summary mt-3">
+    <p>Selected seats: {{selectedSeats.join(', ') || 'None'}}</p>
+    <p>Total seats: {{selectedSeats.length}}</p>
+  </div>

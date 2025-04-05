@@ -1,0 +1,155 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Modifier l'événement</h2>
+    
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+      <!-- Nom de l'événement -->
+      <div class="mb-3">
+        <label for="nomEvent" class="form-label">Nom de l'événement *</label>
+        <input type="text" class="form-control" id="nomEvent" 
+               formControlName="nomEvent"
+               [ngClass]="{'is-invalid': eventForm.get('nomEvent')?.invalid && eventForm.get('nomEvent')?.touched}">
+        <div class="invalid-feedback">
+          <span *ngIf="eventForm.get('nomEvent')?.hasError('required')">Ce champ est obligatoire</span>
+          <span *ngIf="eventForm.get('nomEvent')?.hasError('minlength')">Minimum 3 caractères</span>
+        </div>
+      </div>
+  
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="descriptionEvent" class="form-label">Description *</label>
+        <textarea class="form-control" id="descriptionEvent" rows="3"
+                  formControlName="descriptionEvent"
+                  [ngClass]="{'is-invalid': eventForm.get('descriptionEvent')?.invalid && eventForm.get('descriptionEvent')?.touched}"></textarea>
+        <div class="invalid-feedback">
+          <span *ngIf="eventForm.get('descriptionEvent')?.hasError('required')">Ce champ est obligatoire</span>
+          <span *ngIf="eventForm.get('descriptionEvent')?.hasError('maxlength')">Maximum 500 caractères</span>
+        </div>
+      </div>
+  
+      <!-- Date de début -->
+      <div class="mb-3">
+        <label for="dateDebut" class="form-label">Date de début *</label>
+        <input type="date" class="form-control" id="dateDebut"
+               formControlName="dateDebut"
+               [ngClass]="{'is-invalid': eventForm.get('dateDebut')?.invalid && eventForm.get('dateDebut')?.touched}">
+        <div class="invalid-feedback">
+          <span *ngIf="eventForm.get('dateDebut')?.hasError('required')">Ce champ est obligatoire</span>
+        </div>
+      </div>
+  
+      <!-- Date de fin -->
+      <div class="mb-3">
+        <label for="dateFin" class="form-label">Date de fin *</label>
+        <input type="date" class="form-control" id="dateFin"
+               formControlName="dateFin"
+               [ngClass]="{'is-invalid': eventForm.get('dateFin')?.invalid && eventForm.get('dateFin')?.touched}">
+        <div class="invalid-feedback">
+          <span *ngIf="eventForm.get('dateFin')?.hasError('required')">Ce champ est obligatoire</span>
+        </div>
+      </div>
+  
+      <!-- Lieu -->
+      <div class="mb-3">
+        <label for="lieu" class="form-label">Lieu *</label>
+        <input type="text" class="form-control" id="lieu"
+               formControlName="lieu"
+               [ngClass]="{'is-invalid': eventForm.get('lieu')?.invalid && eventForm.get('lieu')?.touched}">
+        <div class="invalid-feedback">
+          <span *ngIf="eventForm.get('lieu')?.hasError('required')">Ce champ est obligatoire</span>
+          <span *ngIf="eventForm.get('lieu')?.hasError('maxlength')">Maximum 100 caractères</span>
+        </div>
+      </div>
+  
+      <!-- Capacité max -->
+      <div class="mb-3">
+        <label for="capaciteMax" class="form-label">Capacité maximale *</label>
+        <input type="number" class="form-control" id="capaciteMax"
+               formControlName="capaciteMax"
+               [ngClass]="{'is-invalid': eventForm.get('capaciteMax')?.invalid && eventForm.get('capaciteMax')?.touched}">
+        <div class="invalid-feedback">
+          <span *ngIf="eventForm.get('capaciteMax')?.hasError('required')">Ce champ est obligatoire</span>
+          <span *ngIf="eventForm.get('capaciteMax')?.hasError('min')">Minimum 1 place</span>
+        </div>
+      </div>
+  
+      <!-- Prix -->
+      <div class="mb-3">
+        <label for="prix" class="form-label">Prix (TND) *</label>
+        <input type="number" step="0.01" class="form-control" id="prix"
+               formControlName="prix"
+               [ngClass]="{'is-invalid': eventForm.get('prix')?.invalid && eventForm.get('prix')?.touched}">
+        <div class="invalid-feedback">
+          <span *ngIf="eventForm.get('prix')?.hasError('required')">Ce champ est obligatoire</span>
+          <span *ngIf="eventForm.get('prix')?.hasError('min')">Le prix ne peut pas être négatif</span>
+        </div>
+      </div>
+  
+      <!-- Statut -->
+      <div class="mb-3">
+        <label for="statut" class="form-label">Statut *</label>
+        <select class="form-control" id="statut"
+                formControlName="statut"
+                [ngClass]="{'is-invalid': eventForm.get('statut')?.invalid && eventForm.get('statut')?.touched}">
+          <option value="">Sélectionnez un statut</option>
+          <option value="Actif">Actif</option>
+          <option value="Annulé">Annulé</option>
+          <option value="Complet">Complet</option>
+          <option value="Terminé">Terminé</option>
+        </select>
+        <div class="invalid-feedback">
+          <span *ngIf="eventForm.get('statut')?.hasError('required')">Ce champ est obligatoire</span>
+          <span *ngIf="eventForm.get('statut')?.hasError('pattern')">Veuillez sélectionner un statut valide</span>
+        </div>
+      </div>
+  
+      <!-- Type d'événement -->
+      <div class="mb-3">
+        <label for="typeEvenement" class="form-label">Type d'événement *</label>
+        <input type="text" class="form-control" id="typeEvenement"
+               formControlName="typeEvenement"
+               [ngClass]="{'is-invalid': eventForm.get('typeEvenement')?.invalid && eventForm.get('typeEvenement')?.touched}">
+        <div class="invalid-feedback">
+          <span *ngIf="eventForm.get('typeEvenement')?.hasError('required')">Ce champ est obligatoire</span>
+          <span *ngIf="eventForm.get('typeEvenement')?.hasError('maxlength')">Maximum 50 caractères</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="imageEvent" class="form-label">Image de l'événement</label>
+        <input type="file" id="imageEvent" class="form-control" 
+               (change)="onFileSelected($event)" accept="image/*">
+        
+        <div *ngIf="imagePreview" class="mt-2">
+          <img [src]="imagePreview" alt="Preview" style="max-height: 200px;" class="img-thumbnail">
+        </div>
+        <div *ngIf="currentEvent?.imageEvent && !imagePreview" class="mt-2">
+          <p>Image actuelle:</p>
+          <img [src]="'http://localhost:8081/gestionEvent/uploads/' + currentEvent.imageEvent" 
+               alt="Current image" style="max-height: 200px;" class="img-thumbnail">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Sponsors</label>
+        <div *ngFor="let sponsor of sponsors" class="form-check">
+          <input class="form-check-input" 
+                 type="checkbox" 
+                 [id]="'sponsor-' + sponsor.idSponsor"
+                 [checked]="selectedSponsorIds.includes(sponsor.idSponsor!)"
+                 (change)="onSponsorSelect(sponsor.idSponsor!, $any($event.target).checked)">
+          <label class="form-check-label" [for]="'sponsor-' + sponsor.idSponsor">
+            {{ sponsor.nomSponsor }}
+            <img *ngIf="sponsor.logo" 
+                 [src]="'http://localhost:8081/gestionEvent/uploads/' + sponsor.logo" 
+                 alt="{{ sponsor.nomSponsor }} logo"
+                 style="max-height: 20px; margin-left: 5px;">
+          </label>
+        </div>
+      </div>
+  
+      <!-- Boutons -->
+      
+        <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">
+          <i class="bi bi-check-circle me-1"></i> Enregistrer
+        </button>
+     
+    </form>
+  </div>

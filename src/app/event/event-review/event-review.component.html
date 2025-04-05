@@ -1,0 +1,40 @@
+<div class="card mt-4" *ngIf="idEvent">
+  <div class="card-body">
+    <h5 class="card-title">Share Your Review</h5>
+    
+    <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label class="form-label">Rating</label>
+        <div class="star-rating mb-2">
+          <span *ngFor="let star of stars" 
+                (click)="setRating(star)"
+                [class.filled]="star <= selectedRating"
+                class="star">
+            <i class="fas fa-star"></i>
+          </span>
+        </div>
+        <input type="hidden" formControlName="rating">
+        <div *ngIf="reviewForm.get('rating')?.invalid && reviewForm.get('rating')?.touched" 
+             class="text-danger small">
+          Please select a rating (1-5 stars)
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="commentaire" class="form-label">Comment</label>
+        <textarea class="form-control" id="commentaire" rows="3"
+                  formControlName="commentaire"
+                  placeholder="Share your experience..."
+                  [class.is-invalid]="reviewForm.get('commentaire')?.invalid && reviewForm.get('commentaire')?.touched"></textarea>
+        <div class="invalid-feedback">
+          <span *ngIf="reviewForm.get('commentaire')?.hasError('required')">This field is required</span>
+          <span *ngIf="reviewForm.get('commentaire')?.hasError('maxlength')">Maximum 500 characters</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="reviewForm.invalid">
+        <i class="fas fa-paper-plane me-1"></i> Submit
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,176 @@
+<div class="container mt-4">
+  <div class="mb-4">
+    <button class="btn btn-outline-secondary" (click)="goBackToEvents()">
+      <i class="fas fa-arrow-left me-2"></i>Back to Events
+    </button>
+  </div>
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center mt-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error" class="alert alert-danger mt-3">
+    <i class="fas fa-exclamation-circle me-2"></i>
+    {{ error || 'An error occurred while loading event details' }}
+  </div>
+
+  <!-- Content when loaded -->
+  <div *ngIf="event && !isLoading">
+    <div class="row">
+      <!-- Event image -->
+      <div class="col-md-6">
+        <div class="event-image-container">
+          <img *ngIf="event.imageEvent" 
+               [src]="'http://localhost:8081/gestionEvent/uploads/' + event.imageEvent" 
+               class="event-image img-fluid rounded shadow"
+               [alt]="event.nomEvent || 'Event image'"
+               onerror="this.src='assets/default-event.jpg'">
+          <div *ngIf="!event.imageEvent" class="no-image-placeholder">
+            <i class="fas fa-calendar-alt fa-5x text-muted"></i>
+            <p class="mt-2">No event image available</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event details -->
+      <div class="col-md-6">
+        <h1 class="mb-3 event-title">{{ event.nomEvent }}</h1>
+        <p class="lead text-muted event-description">{{ event.descriptionEvent }}</p>
+        
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title text-primary">
+              <i class="fas fa-info-circle me-2"></i>Event Details
+            </h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Start Date:</span>
+                <span class="text-end">{{ event.dateDebut | date:'mediumDate' }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-bold">End Date:</span>
+                <span class="text-end">{{ event.dateFin | date:'mediumDate' }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Location:</span>
+                <span class="text-end">{{ event.lieu || 'Not specified' }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Max Capacity:</span>
+                <span class="text-end">{{ event.capaciteMax || 0 }} people</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Price:</span>
+                <span class="text-end">{{ event.prix || 0 }} TND</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Status:</span>
+                <span class="badge rounded-pill" 
+                      [ngClass]="{
+                        'bg-success': event.statut === 'Active',
+                        'bg-danger': event.statut === 'Cancelled',
+                        'bg-warning': event.statut === 'Full',
+                        'bg-secondary': event.statut === 'Completed'
+                      }">
+                  {{ event.statut || 'Unknown' }}
+                </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Type:</span>
+                <span class="text-end">{{ event.typeEvenement || 'Not specified' }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Action buttons 
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
+          <button class="btn btn-primary me-md-2">
+            <i class="fas fa-ticket-alt me-2"></i>Book Now
+          </button>
+          <button class="btn btn-outline-secondary">
+            <i class="fas fa-share-alt me-2"></i>Share
+          </button>
+        </div>-->
+        
+        <!-- Sponsors section -->
+        <div class="card shadow-sm" *ngIf="event.sponsors?.length">
+          <div class="card-body">
+            <h5 class="card-title text-primary">
+              <i class="fas fa-star me-2"></i>Sponsors
+            </h5>
+            <div class="d-flex flex-wrap gap-3">
+              <div *ngFor="let sponsor of event.sponsors" class="text-center">
+                <img *ngIf="sponsor.logo" 
+                     [src]="'http://localhost:8081/gestionEvent/uploads/' + sponsor.logo" 
+                     [alt]="sponsor.nomSponsor || 'Sponsor logo'"
+                     class="img-thumbnail mb-2 sponsor-logo"
+                     onerror="this.src='assets/default-sponsor.png'">
+                <p class="mb-0 small">{{ sponsor.nomSponsor }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews section -->
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title text-primary">
+              <i class="fas fa-comments me-2"></i>Participants' Reviews
+              <span class="badge bg-secondary ms-2">{{event.reviews?.length || 0}}</span>
+            </h5>
+            
+            <!-- Review form -->
+            <app-event-review 
+              *ngIf="event.idEvent"
+              [idEvent]="event.idEvent" 
+              (reviewAdded)="loadEventDetails(event.idEvent)">
+            </app-event-review>
+            
+            <!-- Reviews list -->
+            <div *ngIf="event.reviews?.length; else noReviews" class="mt-4">
+              <div *ngFor="let review of event.reviews" class="mb-3 p-3 border rounded review-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <!-- Star rating -->
+                  <div class="star-rating">
+                    <span *ngFor="let star of [1,2,3,4,5]">
+                      <i class="fas fa-star" [class.text-warning]="star <= (review.rating || 0)"></i>
+                    </span>
+                    <small class="ms-2 text-muted">{{ review.rating }}/5</small>
+                  </div>
+                  
+                  <!-- Review date -->
+                  <small class="text-muted">
+                    <i class="far fa-clock me-1"></i>
+                    {{ (review.dateReview | date:'medium') || 'Unknown date' }}
+                  </small>
+                </div>
+                
+                <!-- Review comment -->
+                <p class="mb-0 ps-3 border-start border-3 border-primary review-comment">
+                  <i class="fas fa-quote-left text-muted me-2"></i>
+                  {{ review.commentaire || 'No comment provided' }}
+                </p>
+              </div>
+            </div>
+            
+            <!-- No reviews template -->
+            <ng-template #noReviews>
+              <div class="alert alert-info mt-3 mb-0">
+                <i class="fas fa-info-circle me-2"></i>
+                No reviews yet. Be the first to share your experience!
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

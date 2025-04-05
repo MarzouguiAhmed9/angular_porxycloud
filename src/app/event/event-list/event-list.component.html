@@ -1,0 +1,81 @@
+<head>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Image</th>
+      <th scope="col">Event Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
+      <th scope="col">Location</th>
+      <th scope="col">Max Capacity</th>
+      <th scope="col">Price</th>
+      <th scope="col">Status</th>
+      <th scope="col">Event Type</th>
+      <th scope="col">Sponsors</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let event of events">
+      <td>
+        <img *ngIf="event.imageEvent" 
+             [src]="'http://localhost:8081/gestionEvent/uploads/' + event.imageEvent" 
+             alt="Event image" 
+             class="img-thumbnail" 
+             style="max-width: 80px; max-height: 80px;">
+        <span *ngIf="!event.imageEvent" class="text-muted">No image</span>
+      </td>
+      <td>{{ event.nomEvent }}</td>
+      <td>{{ event.descriptionEvent }}</td> 
+      <td>{{ event.dateDebut | date:'dd/MM/yyyy' }}</td>
+      <td>{{ event.dateFin | date:'dd/MM/yyyy' }}</td>
+      <td>{{ event.lieu }}</td>
+      <td>{{ event.capaciteMax }}</td>
+      <td>{{ event.prix }} TND</td>
+      <td>
+        <span [ngClass]="{
+          'badge bg-success': event.statut === 'Actif',
+          'badge bg-danger': event.statut === 'Annulé',
+          'badge bg-warning': event.statut === 'Complet',
+          'badge bg-secondary': event.statut === 'Terminé'
+        }">
+          {{ event.statut }}
+        </span>
+      </td>
+      <td>{{ event.typeEvenement }}</td>
+      <td>
+        <div *ngIf="hasSponsors(event); else noSponsors">
+          <div class="sponsors-container">
+            <span *ngFor="let sponsor of event.sponsors" class="sponsor-badge">
+              {{ sponsor.nomSponsor }}
+              <img *ngIf="sponsor.logo" 
+                   [src]="'http://localhost:8081/gestionEvent/uploads/' + sponsor.logo" 
+                   alt="{{ sponsor.nomSponsor }} logo"
+                   class="sponsor-logo">
+            </span>
+          </div>
+        </div>
+        <ng-template #noSponsors>
+          <span class="no-sponsors">NO sponsor</span>
+        </ng-template>
+      </td>
+      <td>
+        <div class="btn-group" role="group">
+          <button (click)="deleteEvent(event.idEvent)" class="btn delete">
+            <i class="fas fa-trash"></i>
+            
+          </button>
+          <button  class="btn edit" [routerLink]="['/updateevent', event.idEvent]">
+            <i class="fas fa-pencil-alt"></i>
+          
+          </button>
+        </div>
+     
+    </tr>
+  </tbody>
+</table>
