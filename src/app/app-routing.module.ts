@@ -10,45 +10,38 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+
+      { path: 'home', component: HomeComponent },
       {
         path: 'dashboard',
         loadComponent: () =>
           import('./demo/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
-      { path: '', redirectTo: 'documents', pathMatch: 'full' },
+      {
+        path: 'logout',
+        loadComponent: () =>
+          import('./demo/pages/authentication/logout/logout.component').then(m => m.LogoutComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./demo/pages/authentication/profile/profile.component').then(m => m.ProfileComponent)
+      },
       {
         path: 'documents',
         loadComponent: () =>
           import('./library/documents/document-manager/document-manager.component').then(m => m.DocumentManagerComponent)
       },
-
-      { path: '', redirectTo: 'categories', pathMatch: 'full' },
       {
         path: 'categories',
         loadComponent: () =>
           import('./library/categories/category/category.component').then(m => m.CategoryComponent)
       },
-
-      { path: '', redirectTo: 'departments', pathMatch: 'full' },
       {
         path: 'departments',
         loadComponent: () =>
           import('./library/departments/manage-departments/manage-departments.component').then(m => m.ManageDepartmentsComponent)
       },
-    
-{ path: 'logout', loadComponent: () => import('./demo/pages/authentication/logout/logout.component').then(m => m.LogoutComponent) }
-,
-
-{ path: 'profile', loadComponent: () => import('./demo/pages/authentication/profile/profile.component').then(m => m.ProfileComponent) }
-,
-
-
-      {
-        path: 'dashboard',
-        loadComponent: () => import('./demo/dashboard/dashboard.component').then(m => m.DashboardComponent)
-      },
-      
-      ,
       {
         path: 'basic',
         loadChildren: () =>
@@ -66,11 +59,11 @@ const routes: Routes = [
       },
       {
         path: 'apexchart',
-        // Define or lazy-load your ApexChart module/component as needed
+        // Add component or lazy-loaded module here if needed
       },
       {
         path: 'sample-page',
-        // Define or lazy-load your Sample Page module/component as needed
+        // Add component or lazy-loaded module here if needed
       },
     ]
   },
@@ -85,7 +78,7 @@ const routes: Routes = [
       }
     ]
   },
-  { path: '**', redirectTo: 'dashboard' }
+  { path: '**', redirectTo: 'auth' }
 ];
 
 @NgModule({
