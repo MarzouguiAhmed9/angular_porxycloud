@@ -39,7 +39,7 @@ export default class AuthSigninComponent {
           if (roles && roles.includes('ROLE_ADMIN')) {
             this.router.navigate(['/dashboard']);
           } else {
-            this.router.navigate(['/home']);
+            this.router.navigate(['/front/home']);
           }
         } else {
           console.error('❌ Token non trouvé dans la réponse');

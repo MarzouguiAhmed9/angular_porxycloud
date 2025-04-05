@@ -14,7 +14,7 @@ const routes: Routes = [
         redirectTo: 'dashboard',
         pathMatch: 'full'
       },
-      { path: 'home', component:HomeComponent },
+     
     
 { path: 'logout', loadComponent: () => import('./demo/pages/authentication/logout/logout.component').then(m => m.LogoutComponent) }
 ,
@@ -54,6 +54,10 @@ const routes: Routes = [
       {
         path: 'auth',
         loadChildren: () => import('./demo/pages/authentication/authentication.module').then(m => m.AuthenticationModule)
+      },
+      {
+        path: 'front',
+        loadChildren: () => import('../Front_client/front/front.module').then(m => m.FrontModule)
       }
     ]
   }
