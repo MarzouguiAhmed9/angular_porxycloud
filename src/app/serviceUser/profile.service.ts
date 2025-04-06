@@ -8,16 +8,19 @@ import { Observable } from 'rxjs';
 })
 export class ProfileService {
 
-  private apiUrl = 'http://localhost:8089/api/user/profile';  // L'URL de votre API
+  private apiUrl = 'http://localhost:8089/Projetback/api/auth';  // L'URL de votre API
 
   constructor(private http: HttpClient) {}
 
-  // Méthode pour récupérer le profil utilisateur
-  getUserProfile(): Observable<any> {
-    const token = localStorage.getItem('authToken');  // Supposons que le token JWT est stocké dans localStorage
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<any>(this.apiUrl, { headers });
+
+  getToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
+  getUserProfile(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/profile`, { headers });
   }
 }
 
