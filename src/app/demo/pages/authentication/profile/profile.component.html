@@ -4,15 +4,11 @@
       <div class="col-md-3 text-center">
        
          
-              <div class="text-center mb-4">
-                <img
-                  [src]="userProfile.imageUrl || 'https://via.placeholder.com/150'"
-                  class="rounded-circle shadow"
-                  alt="Photo de profil"
-                  width="150"
-                  height="150"
-                />
-              </div>
+        <img *ngIf="userProfile?.imageUrl; else noImage" [src]="userProfile.imageUrl" alt="Profile Image" />
+        <ng-template #noImage>
+          <img src="assets/images/logo.png" alt="Image par défaut" />
+        </ng-template>
+        
           
               <h3 class="text-center mb-4">{{ userProfile.username }}</h3>
           
@@ -46,6 +42,8 @@
       <!-- Actions -->
       <div class="col-md-6 offset-md-3 d-flex flex-column justify-content-around">
         <div class="mb-3 text-end">
+            <input type="file" (change)="onFileChange($event)" />
+      <button class="btn btn-primary" (click)="uploadImage()">Ajouter une image</button>
           <button class="btn btn-outline-secondary me-2">📥 Boîte de réception ({{ inboxCount }})</button>
           <button class="btn btn-outline-dark">⚙️ Paramètres</button>
         </div>
