@@ -11,8 +11,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { addoffre } from '../fn/offre-controller/addoffre';
-import { Addoffre$Params } from '../fn/offre-controller/addoffre';
+import { addOffre } from '../fn/offre-controller/add-offre';
+import { AddOffre$Params } from '../fn/offre-controller/add-offre';
 
 @Injectable({ providedIn: 'root' })
 export class OffreControllerService extends BaseService {
@@ -20,27 +20,27 @@ export class OffreControllerService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `addoffre()` */
-  static readonly AddoffrePath = '/offre/add';
+  /** Path part for operation `addOffre()` */
+  static readonly AddOffrePath = '/offre/add';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `addoffre()` instead.
+   * To access only the response body, use `addOffre()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addoffre$Response(params: Addoffre$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
-    return addoffre(this.http, this.rootUrl, params, context);
+  addOffre$Response(params: AddOffre$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+    return addOffre(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `addoffre$Response()` instead.
+   * To access the full response (for headers, for example), `addOffre$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addoffre(params: Addoffre$Params, context?: HttpContext): Observable<number> {
-    return this.addoffre$Response(params, context).pipe(
+  addOffre(params: AddOffre$Params, context?: HttpContext): Observable<number> {
+    return this.addOffre$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
     );
   }

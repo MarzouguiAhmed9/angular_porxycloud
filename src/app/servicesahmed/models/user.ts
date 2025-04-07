@@ -26,6 +26,6 @@ export interface User {
   offres?: Array<Offre>;
   password?: string;
   phone?: string;
-  roles?: Array<Role>;
+  role?: Role;
   username?: string;
 }

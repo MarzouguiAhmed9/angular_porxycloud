@@ -11,6 +11,10 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { getRolesForUser } from '../fn/auth-controller/get-roles-for-user';
+import { GetRolesForUser$Params } from '../fn/auth-controller/get-roles-for-user';
+import { getUserInfo } from '../fn/auth-controller/get-user-info';
+import { GetUserInfo$Params } from '../fn/auth-controller/get-user-info';
 import { login } from '../fn/auth-controller/login';
 import { Login$Params } from '../fn/auth-controller/login';
 import { register } from '../fn/auth-controller/register';
@@ -34,6 +38,7 @@ export class AuthControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   register$Response(params: Register$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+[key: string]: string;
 }>> {
     return register(this.http, this.rootUrl, params, context);
   }
@@ -45,10 +50,13 @@ export class AuthControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   register(params: Register$Params, context?: HttpContext): Observable<{
+[key: string]: string;
 }> {
     return this.register$Response(params, context).pipe(
       map((r: StrictHttpResponse<{
+[key: string]: string;
 }>): {
+[key: string]: string;
 } => r.body)
     );
   }
@@ -104,6 +112,64 @@ export class AuthControllerService extends BaseService {
   welcome(params?: Welcome$Params, context?: HttpContext): Observable<string> {
     return this.welcome$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `getUserInfo()` */
+  static readonly GetUserInfoPath = '/api/auth/user-info';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getUserInfo()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUserInfo$Response(params?: GetUserInfo$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return getUserInfo(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getUserInfo$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUserInfo(params?: GetUserInfo$Params, context?: HttpContext): Observable<{
+}> {
+    return this.getUserInfo$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
+    );
+  }
+
+  /** Path part for operation `getRolesForUser()` */
+  static readonly GetRolesForUserPath = '/api/auth/api/auth/users/{id}/roles';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getRolesForUser()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getRolesForUser$Response(params: GetRolesForUser$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return getRolesForUser(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getRolesForUser$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getRolesForUser(params: GetRolesForUser$Params, context?: HttpContext): Observable<{
+}> {
+    return this.getRolesForUser$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
     );
   }
 

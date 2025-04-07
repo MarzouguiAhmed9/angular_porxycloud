@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RHRoutingModule } from './RH-routing.module';
-import { ApplicationComponent } from "./application/application.component";  // Ensure your routing is set up
+import { ApplicationComponent } from "./application/application.component";
+import { OffreComponent } from "./offre/offre/offre.component";  // Ensure your routing is set up
 
 @NgModule({
   declarations: [
-    ApplicationComponent,  // Declare the component here
+    ApplicationComponent,
+    OffreComponent // Declare the component here
   ],
   imports: [
     CommonModule,

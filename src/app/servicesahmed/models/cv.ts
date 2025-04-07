@@ -10,6 +10,7 @@ export interface Cv {
   experience?: string;
   id?: number;
   name?: string;
+  pdfDownloadLink?: string;
   skills?: string;
   student?: User;
 }

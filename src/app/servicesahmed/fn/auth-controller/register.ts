@@ -15,6 +15,7 @@ export interface Register$Params {
 }
 
 export function register(http: HttpClient, rootUrl: string, params: Register$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+[key: string]: string;
 }>> {
   const rb = new RequestBuilder(rootUrl, register.PATH, 'post');
   if (params) {
@@ -27,6 +28,7 @@ export function register(http: HttpClient, rootUrl: string, params: Register$Par
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<{
+      [key: string]: string;
       }>;
     })
   );
