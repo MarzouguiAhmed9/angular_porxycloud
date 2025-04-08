@@ -7,9 +7,10 @@ import AuthSigninComponent from './auth-signin/auth-signin.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ForgotComponent } from './forgot/forgot.component';
+import { ListusersComponent } from './listusers/listusers.component';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, AuthenticationRoutingModule,FormsModule,AuthSigninComponent,ResetPasswordComponent,ProfileComponent,ForgotComponent]
+  imports: [CommonModule, AuthenticationRoutingModule,FormsModule,AuthSigninComponent,ResetPasswordComponent,ProfileComponent,ForgotComponent,ListusersComponent]
 })
 export class AuthenticationModule {}

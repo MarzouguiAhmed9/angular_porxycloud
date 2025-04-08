@@ -24,6 +24,7 @@ const routes: Routes = [
         loadComponent: () => import('./forgot/forgot.component').then(m => m.ForgotComponent)
 
       },
+
       {
         path: 'reset-password',
         component: ResetPasswordComponent

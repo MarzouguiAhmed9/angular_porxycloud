@@ -21,6 +21,8 @@ const routes: Routes = [
 
 { path: 'profile', loadComponent: () => import('./demo/pages/authentication/profile/profile.component').then(m => m.ProfileComponent) }
 ,
+{ path: 'list', loadComponent: () => import('./demo/pages/authentication/listusers/listusers.component').then(m => m.ListusersComponent) }
+,
 
 
       {

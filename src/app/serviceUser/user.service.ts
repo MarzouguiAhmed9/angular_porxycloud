@@ -3,10 +3,21 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, throwError, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+export interface User {
+  id: number;
+  firstname: string;
+  lastname: string;
+  dateNaissance: string;
+  address: string;
+  phone: string;
+  approved: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class UserService {
 
   private baseUrl = 'http://localhost:8089/Projetback/api/auth';  // Correction ici
@@ -144,6 +155,34 @@ export class UserService {
   }
 
  
+
+
+
+
+
+  // 🔹 URL de base pour les actions utilisateurs
+private userApiUrl = 'http://localhost:8089/Projetback/api/users'; // adapte selon ton backend
+
+// 🔸 Récupérer tous les utilisateurs
+getAllUsers(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.userApiUrl}`);
+}
+
+// 🔸 Supprimer un utilisateur
+deleteUser(id: number): Observable<void> {
+  return this.http.delete<void>(`${this.userApiUrl}/${id}`);
+}
+
+// 🔸 Mettre à jour un utilisateur
+updateUser(id: number, userData: any): Observable<any> {
+  return this.http.put<any>(`${this.userApiUrl}/${id}`, userData);
+}
+
+// 🔸 Changer le statut (approve / unapprove)
+toggleApproval(id: number): Observable<any> {
+  return this.http.put(`${this.userApiUrl}/${id}/toggle-approval`, {});
+}
+
   
   
 }

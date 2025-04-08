@@ -1,0 +1,35 @@
+<table>
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Date de Naissance</th>
+        <th>Adresse</th>
+        <th>Téléphone</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.firstname }}</td>
+        <td>{{ user.lastname }}</td>
+        <td>{{ user.dateNaissance }}</td>
+        <td>{{ user.address }}</td>
+        <td>{{ user.phone }}</td>
+        <td>
+          <span [ngClass]="{'text-success': user.approved, 'text-danger': !user.approved}">
+            {{ user.approved ? 'Approuvé' : 'Non Approuvé' }}
+          </span>
+        </td>
+        <td>
+          <button (click)="updateUser(user)">Modifier</button>
+          <button (click)="deleteUser(user.id)">Supprimer</button>
+          <button (click)="toggleApproval(user.id)">
+            {{ user.approved ? 'Désapprouver' : 'Approuver' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  

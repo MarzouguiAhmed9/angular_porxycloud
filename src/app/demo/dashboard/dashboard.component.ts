@@ -64,5 +64,9 @@ export class DashboardComponent implements OnInit {
   profile() {
     this.router.navigate(['/profile']);
   }
+
+  list() {
+    this.router.navigate(['/list']);
+  }
 }
 
