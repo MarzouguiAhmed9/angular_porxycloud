@@ -5,12 +5,12 @@ import { catchError, Observable, throwError, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 export interface User {
   id: number;
-  firstname: string;
-  lastname: string;
-  dateNaissance: string;
+  firstName: string;
+  lastName: string;
+  birthday: string;
   address: string;
   phone: string;
-  approved: boolean;
+  approuve: boolean;
 }
 
 @Injectable({
@@ -176,20 +176,18 @@ getAllUsers(headers: HttpHeaders): Observable<User[]> {
 
 
 
-// 🔸 Supprimer un utilisateur
 deleteUser(id: number): Observable<void> {
-  return this.http.delete<void>(`${this.userApiUrl}/${id}`);
+  return this.http.delete<void>(`${this.userApiUrl}/users/${id}`);
 }
 
-// 🔸 Mettre à jour un utilisateur
 updateUser(id: number, userData: any): Observable<any> {
-  return this.http.put<any>(`${this.userApiUrl}/${id}`, userData);
+  return this.http.put<any>(`${this.userApiUrl}/users/${id}`, userData);
 }
 
-// 🔸 Changer le statut (approve / unapprove)
 toggleApproval(id: number): Observable<any> {
-  return this.http.put(`${this.userApiUrl}/${id}/toggle-approval`, {});
+  return this.http.put(`${this.userApiUrl}/users/${id}/toggle-approval`, {});
 }
+
 
   
   

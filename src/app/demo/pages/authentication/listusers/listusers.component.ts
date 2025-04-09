@@ -13,7 +13,9 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 })
 
 export class ListusersComponent implements OnInit {
-
+  searchTerm: string = '';
+  selectedStatus: string = '';
+  filteredUsers: User[] = [];
  
     users: User[] = [];
   
@@ -29,6 +31,7 @@ export class ListusersComponent implements OnInit {
         this.userService.getAllUsers(headers).subscribe(
           data => {
             this.users = data;
+            this.filteredUsers = data; // ✅ necessary to populate table
           },
           error => {
             console.error('Failed to fetch users:', error);
@@ -39,20 +42,53 @@ export class ListusersComponent implements OnInit {
       }
     }
     
+
+    filterUserss(): void {
+      this.filteredUsers = this.users.filter(user => {
+        const matchesName =
+          user.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          user.lastName.toLowerCase().includes(this.searchTerm.toLowerCase());
+    
+        const matchesStatus =
+          this.selectedStatus === '' ||
+          String(user.approuve) === this.selectedStatus;
+    
+        return matchesName && matchesStatus;
+      });
+    }
+    
+    addUser(): void {
+      // Show a modal or navigate to a form to add a new user
+      alert('Add User clicked!');
+    }
+    
   
     deleteUser(id: number): void {
       this.userService.deleteUser(id).subscribe(() => this.fetchUsers());
     }
-  
+    
     toggleApproval(id: number): void {
-      this.userService.toggleApproval(id).subscribe(() => this.fetchUsers());
+      this.userService.toggleApproval(id).subscribe((updatedUser: User) => {
+        // Met à jour localement l'utilisateur dans la liste
+        const index = this.users.findIndex(u => u.id === id);
+        if (index !== -1) {
+          this.users[index].approuve = updatedUser.approuve;
+        }
+    
+        // Met à jour aussi la liste filtrée si filtre actif
+        const filteredIndex = this.filteredUsers.findIndex(u => u.id === id);
+        if (filteredIndex !== -1) {
+          this.filteredUsers[filteredIndex].approuve = updatedUser.approuve;
+        }
+      });
     }
-  
+    
+    
     updateUser(user: User): void {
-      // ici tu peux afficher une modale pour l'update (on peut la faire ensemble)
-      const updatedUser = { ...user, firstname: 'Test modif' }; // exemple
+      const updatedUser = { ...user, firstName: 'Test modif' }; // ✅ modifiable plus tard avec un formulaire réel
       this.userService.updateUser(user.id, updatedUser).subscribe(() => this.fetchUsers());
     }
+    
   }
   
 
