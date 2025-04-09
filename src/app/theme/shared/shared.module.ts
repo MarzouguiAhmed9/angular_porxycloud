@@ -27,6 +27,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     NgbModule,  // Importez RouterModule ici
     NgScrollbarModule,
     NgbCollapseModule,
+    
 
     
   ],
