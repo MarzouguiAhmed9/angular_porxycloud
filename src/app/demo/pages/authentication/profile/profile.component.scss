@@ -1,47 +1,61 @@
 /* Général */
 .container {
     margin-top: 30px;
+    background-color: transparent; /* Supprimer la couleur de fond */
+
   }
   
   .hi {
+    background-color: transparent; /* Supprimer la couleur de fond */
+
     display: flex;
     justify-content: space-between; /* Espace égal entre les colonnes */
     align-items: center; /* Centrage vertical des éléments */
+
   }
   
   /* Colonne Profil */
   .profile-column {
-    
+    background-color: transparent; /* Supprimer la couleur de fond */
     border-radius: 10px;
     padding: 30px;
     height: 100%;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+ 
     transition: all 0.3s ease;
     
     &:hover {
-      box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+        transform: scale(1.1);
     }
   
     h3.username {
-      font-size: 3.5rem;
+      font-size: 3rem;
       font-weight: bold;
-      color: #000;
+      color: #333;
+      text-transform: uppercase; /* Mettre en majuscule */
+      font-family: 'Roboto', sans-serif; /* Changer la police, vous pouvez remplacer par une autre police si nécessaire */
     }
+    
+    /* Si vous souhaitez ajouter une police personnalisée, vous pouvez l'importer ici */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
   
     .user-info {
       .row {
-        margin-bottom: 2rem;
+        display: flex; /* Using flexbox to display elements in a row */
+        align-items: center; /* Centering vertically */
       }
-  
+    
+      .value {
+        font-size: 1.8rem;
+        color: #555;
+        font-weight: bold;
+        margin-top: -55px;
+        margin-left: 100px; /* Adds space between value and label */
+      }
+    
       .label {
         font-weight: bold;
         color: #333;
-        font-size: 2.1rem;
-      }
-  
-      .value {
-        font-size: 2.1rem;
-        color: #555;
+        font-size: 1.4rem;
       }
     }
   }
@@ -81,9 +95,7 @@
     display: none;
   }
   
- 
-  
-  /* Icône d'Upload (aggrandir l'icône) */
+  /* Icône d'Upload (agrandir l'icône) */
   .upload-icon {
     margin-top: 30px;
     margin-left: 75px;
@@ -92,7 +104,6 @@
   }
   
   .file-input-label:hover {
-
     transform: scale(1.05);
   }
   
@@ -101,7 +112,6 @@
     padding: 10px 20px;
     font-size: 1.1rem;
     background-color: #00bbd4;
-    
     border: none;
     border-radius: 8px;
     transition: background-color 0.3s ease, transform 0.2s ease;
