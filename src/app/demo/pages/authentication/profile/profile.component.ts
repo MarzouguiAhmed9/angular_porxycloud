@@ -33,12 +33,16 @@ export class ProfileComponent implements OnInit {
     this.userProfileService.getUserProfile().subscribe(
       (profile) => {
         this.userProfile = profile;
+        console.log('Profil chargé :', this.userProfile); // 👈 ici
+      this.loadProfileImage();
+      
       },
       (error) => {
-        console.error('Error loading profile', error);
+        console.error('Erreur lors du chargement du profil', error);
       }
     );
   }
+  
   
   onEditProfile() {
     // À connecter avec une modale ou un autre composant pour l'édition
@@ -54,26 +58,17 @@ export class ProfileComponent implements OnInit {
     ];
   }
 
-  
   loadProfileImage() {
-    const imageName = this.userProfile.profileImage; // Suppose que l'URL de l'image est stockée dans userProfile.profileImage
+    const imageName = this.userProfile.imageUrl?.split('/').pop(); // extrait juste le nom
+
+    console.log('Nom de l’image reçu :', imageName); // 🔍
     if (imageName) {
-      const url = `http://localhost:8089/Projetback/api/auth/uploads/${imageName}`;
-  
-      this.http.get(url, { responseType: 'blob' }).subscribe(
-        (response: Blob) => {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            this.userProfile.profileImageUrl = reader.result as string; // Assigner l'URL base64 à userProfile.profileImageUrl
-          };
-          reader.readAsDataURL(response); // Convertir le blob en base64
-        },
-        (error) => {
-          console.error('Erreur lors du chargement de l\'image', error);
-        }
-      );
+      this.userProfile.profileImageUrl = `http://localhost:8089/Projetback/api/auth/uploads/${imageName}`;
+
     }
   }
+  
+  
   
 
   onFileSelected(event: Event) {
