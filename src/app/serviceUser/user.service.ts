@@ -152,6 +152,10 @@ export class UserService {
     return this.http.post(`${this.baseUrl}/reset-password`, null, {
       params
     });
+
+
+
+    
   }
 
  
@@ -161,12 +165,16 @@ export class UserService {
 
 
   // 🔹 URL de base pour les actions utilisateurs
-private userApiUrl = 'http://localhost:8089/Projetback/api/users'; // adapte selon ton backend
+private userApiUrl = 'http://localhost:8089/Projetback/api/auth'; // adapte selon ton backend
 
-// 🔸 Récupérer tous les utilisateurs
-getAllUsers(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.userApiUrl}`);
+
+
+// Ajouter dans le service Angular
+getAllUsers(headers: HttpHeaders): Observable<User[]> {
+  return this.http.get<User[]>(`${this.userApiUrl}/users`, { headers });
 }
+
+
 
 // 🔸 Supprimer un utilisateur
 deleteUser(id: number): Observable<void> {

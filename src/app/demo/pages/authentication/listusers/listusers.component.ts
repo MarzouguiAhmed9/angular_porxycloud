@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { User, UserService } from 'src/app/serviceUser/user.service';
@@ -21,12 +22,23 @@ export class ListusersComponent implements OnInit {
     ngOnInit(): void {
       this.fetchUsers();
     }
-  
     fetchUsers(): void {
-      this.userService.getAllUsers().subscribe(data => {
-        this.users = data;
-      });
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        this.userService.getAllUsers(headers).subscribe(
+          data => {
+            this.users = data;
+          },
+          error => {
+            console.error('Failed to fetch users:', error);
+          }
+        );
+      } else {
+        console.error('Token is missing or invalid');
+      }
     }
+    
   
     deleteUser(id: number): void {
       this.userService.deleteUser(id).subscribe(() => this.fetchUsers());
