@@ -1,0 +1,41 @@
+<app-card cardTitle="Cours Form" [options]="false">
+    
+    <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="javascript:" [routerLink]="['/cours/test']" >Previous</a>
+        </li>
+        
+      </ul>
+    
+    <h5 class="mt-5">Update Test</h5>
+    <hr />
+    <form [formGroup]="formR"   >
+      
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" id="description" formControlName="description" placeholder="Entrer la description du test" />
+      </div>
+      <div class="form-group">
+        <label for="questions">Questions</label>
+        <textarea  type="text" class="form-control" id="questions" formControlName="questions" placeholder="Donner les questions du test" ></textarea>
+      </div>
+      
+  
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="choices">Choix</label>
+          <textarea  type="text" class="form-control" id="choices" formControlName="choices" placeholder="Choix 1 , Choix 2 , etc." ></textarea>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="correctAnswers">Reponse correcte</label>
+            <textarea  type="text" class="form-control" id="correctAnswers" formControlName="correctAnswers" placeholder="Indice du Reponse correcte" ></textarea>
+        </div>
+      </div>
+
+  
+      <button type="submit"  class="btn btn-primary mt-3" (click)="update()">Update Test </button>
+      
+      
+    </form>
+  </app-card>
+  

@@ -1,0 +1,49 @@
+<app-card cardTitle="Study Plan Form" [options]="false">
+  <h5 class="mt-5">Add Study Plan to a University</h5>
+  <hr />
+  <form action="javascript:">
+    <div class="form-group">
+      <label for="universitySelect">Select University</label>
+      <select id="universitySelect" class="form-control">
+        <option selected>Choose...</option>
+        <option *ngFor="let university of universities" [value]="university.universityId">
+          {{ university.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="programName">Program Name</label>
+      <input type="text" class="form-control" id="programName" placeholder="Enter program name" />
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="degreeType">Degree Type</label>
+        <input type="text" class="form-control" id="degreeType" placeholder="Bachelor, Master, PhD, etc." />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="specialization">Specialization</label>
+        <input type="text" class="form-control" id="specialization" placeholder="Enter specialization" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="startDate">Start Date</label>
+        <input type="date" class="form-control" id="startDate" />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="endDate">End Date</label>
+        <input type="date" class="form-control" id="endDate" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="programWebsite">Program Website</label>
+      <input type="url" class="form-control" id="programWebsite" placeholder="https://example.com" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Add Study Plan</button>
+  </form>
+</app-card>

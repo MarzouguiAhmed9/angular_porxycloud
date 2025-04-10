@@ -2,6 +2,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpClientModule } from "@angular/common/http"; // For making HTTP requests
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Your components
 import { AppComponent } from './app.component'; // Replace this with your actual main component (AppComponent)
@@ -12,12 +13,13 @@ import { SharedModule } from './theme/shared/shared.module'; // Example of share
 @NgModule({
   declarations: [
     AppComponent, // Add your components here
-    // Add other components you want to use in the root module
   ],
   imports: [
     BrowserModule, // Necessary for running the app in the browser
     HttpClientModule, // Required for HTTP requests (important for your service)
     SharedModule, // Import your shared module if you have one
+    FormsModule,
+    ReactiveFormsModule,
     // You can add other modules like FormsModule, ReactiveFormsModule, etc.
   ],
   providers: [],

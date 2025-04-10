@@ -1,0 +1,31 @@
+<app-card cardTitle="Cours Form" [options]="false">
+    <h5 class="mt-5">Add Test</h5>
+    <hr />
+    <form [formGroup]="formR"   >
+      
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" id="description" formControlName="description" placeholder="Entrer la description du test" />
+      </div>
+      <div class="form-group">
+        <label for="questions">Questions</label>
+        <textarea  type="text" class="form-control" id="questions" formControlName="questions" placeholder="Donner les questions du test" ></textarea>
+      </div>
+      
+  
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="choix">Choix</label>
+          <textarea  type="text" class="form-control" id="choix" formControlName="choix" placeholder="Choix 1 , Choix 2 , etc." ></textarea>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="Rcorrecte">Reponse correcte</label>
+            <textarea  type="text" class="form-control" id="Rcorrecte" formControlName="Rcorrecte" placeholder="Indice du Reponse correcte" ></textarea>
+        </div>
+      </div>
+
+  
+      <button type="submit"  class="btn btn-primary mt-3" (click)="add()">Add Test </button>
+    </form>
+  </app-card>
+  

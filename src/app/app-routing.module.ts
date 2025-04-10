@@ -1,12 +1,7 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
-import { DashboardComponent } from './demo/dashboard/dashboard.component';
-import { FormElementsModule } from './demo/pages/form-elements/form-elements.module';
-import { UiBasicModule } from './demo/ui-elements/ui-basic/ui-basic.module';
-import { TablesModule } from './demo/pages/tables/tables.module';
-import { AuthenticationModule } from './demo/pages/authentication/authentication.module';
 
 const routes: Routes = [
   {
@@ -20,25 +15,33 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadComponent: () => import('./demo/dashboard/dashboard.component').then(m => m.DashboardComponent)
+        loadComponent: () => import('./demo/dashboard/dashboard.component').then((m) => m.DashboardComponent)
+      },
+      {
+        path: 'diploma',
+        loadChildren: () => import('./demo/diploma/diploma.module').then((m) => m.DiplomaModule)
+      },
+      {
+        path: 'cours',
+        loadChildren: () => import('./demo/cours/cours.module').then((m) => m.CoursModule)
       },
       {
         path: 'basic',
-        loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then(m => m.UiBasicModule)
+        loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then((m) => m.UiBasicModule)
       },
       {
         path: 'forms',
-        loadChildren: () => import('./demo/pages/form-elements/form-elements.module').then(m => m.FormElementsModule)
+        loadChildren: () => import('./demo/pages/form-elements/form-elements.module').then((m) => m.FormElementsModule)
       },
       {
         path: 'tables',
-        loadChildren: () => import('./demo/pages/tables/tables.module').then(m => m.TablesModule)
+        loadChildren: () => import('./demo/pages/tables/tables.module').then((m) => m.TablesModule)
       },
       {
-        path: 'apexchart',
+        path: 'apexchart'
       },
       {
-        path: 'sample-page',
+        path: 'sample-page'
       }
     ]
   },
@@ -48,7 +51,7 @@ const routes: Routes = [
     children: [
       {
         path: 'auth',
-        loadChildren: () => import('./demo/pages/authentication/authentication.module').then(m => m.AuthenticationModule)
+        loadChildren: () => import('./demo/pages/authentication/authentication.module').then((m) => m.AuthenticationModule)
       }
     ]
   }

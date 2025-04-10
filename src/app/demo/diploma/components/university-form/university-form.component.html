@@ -1,0 +1,44 @@
+<app-card cardTitle="University Form" [options]="false">
+  <h5 class="mt-5">University Information</h5>
+  <hr />
+  <form action="javascript:">
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="universityName">University Name</label>
+        <input type="text" class="form-control" id="universityName" placeholder="Enter university name" />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="ranking">Ranking</label>
+        <input type="number" class="form-control" id="ranking" placeholder="Enter university ranking" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">University Description</label>
+      <textarea class="form-control" id="description" rows="3" placeholder="Brief description"></textarea>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="city">City</label>
+        <input type="text" class="form-control" id="city" placeholder="Enter city" />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="country">Country</label>
+        <input type="text" class="form-control" id="country" placeholder="Enter country" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">University Email</label>
+      <input type="email" class="form-control" id="email" placeholder="university@example.com" />
+    </div>
+
+    <div class="form-group">
+      <label for="website">University Website</label>
+      <input type="url" class="form-control" id="website" placeholder="https://example.com" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Save University</button>
+  </form>
+</app-card>

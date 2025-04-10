@@ -19,7 +19,7 @@ export const NavigationItems: NavigationItem[] = [
     id: 'navigation',
     title: 'Navigation',
     type: 'group',
-    icon: 'icon-navigation',
+    icon: ' icon-navigation',
     children: [
       {
         id: 'dashboard',
@@ -28,6 +28,68 @@ export const NavigationItems: NavigationItem[] = [
         url: '/dashboard',
         icon: 'feather icon-home',
         classes: 'nav-item'
+      },
+      {
+        id: 'diploma',
+        title: 'Diploma',
+        type: 'collapse',
+        icon: 'feather icon-book',
+        children:[
+          {
+            id: 'university',
+            title: 'University',
+            type: 'item',
+            url: '/diploma/university'
+          },
+          {
+            id: 'studyplan',
+            title: 'Study Plan',
+            type: 'item',
+            url: '/diploma/studyplan'
+          },
+          
+        ]
+      },
+      {
+        id: 'cours',
+        title: 'cours',
+        type: 'collapse',
+        icon: 'feather icon-book',
+        children:[
+          {
+            id: 'cours',
+            title: 'cours',
+            type: 'item',
+            url: '/cours/cours'
+          },
+          {
+            id: 'certificat',
+            title: ' certificat',
+            type: 'item',
+            url: '/cours/certificat'
+          },
+          {
+            id: 'test',
+            title: ' test',
+            type: 'item',
+            url: '/cours/test'
+          },
+          {
+            id: 'updatetest',
+            title: 'updatetest',
+            type: 'item',
+            url: '/cours/updatetest',
+            hidden: true
+          },
+          {
+            id: 'updatecours',
+            title: 'updatecours',
+            type: 'item',
+            url: '/cours/updatecours',
+            hidden: true
+          },
+          
+        ]
       }
     ]
   },

@@ -1,0 +1,65 @@
+<div class="col-xl-12">
+    <app-card cardTitle="Study Plan List" [options]="false" blockClass="table-border-style">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>Titre</th>
+              <th>Auteur </th>
+              <th>Categorie </th>
+              <th>Description</th>
+              <th>Duree (Heurs)</th>
+              <th>Langue</th>
+              <th>Niveau</th>
+              <th>Prix (DT)</th>
+              <th>Test</th>
+      <!--        <th>Certificat</th> -->
+              <th>Document Pdf</th>
+              <th>Actions</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cours of listC; let i = index">
+
+              <td>{{ cours.id }}</td>
+              <td>{{ cours.titre }}</td>
+              <td>{{ cours.auteur }}</td>
+              <td>{{ cours.categorie }}</td>
+              <td>{{ cours.description }}</td>
+              <td>{{ cours.duree }}</td>
+              <td>{{ cours.langue }}</td>
+              <td>{{ cours.niveau }}</td>
+              <td>{{ cours.prix }}</td>
+              <td>{{ cours.test?.description }}</td>  <!-- Affichage du test -->
+              <td>
+                <button type="button" 
+                    class="btn btn-rounded btn-outline-secondary" 
+                    (click)="toggleDocumentViewer(cours.documentUrl, i)">
+                    {{ currentPdfUrl === cours.documentUrl ? 'Close' : 'View' }}
+                </button>
+              </td>  
+
+              <td>
+                <button type="button" class="btn btn-icon btn-rounded btn-outline-danger" (click)="supprimercours(cours.id)">
+                <i class="feather icon-slash"></i>
+              </button>
+              <button type="button" class="btn btn-icon btn-rounded btn-outline-success" [routerLink]="['/cours/updatecours',cours.id]" >
+                <i class="feather icon-check-circle"></i>
+                </button>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Affichage du PDF en plein écran sous le tableau -->
+<div *ngIf="currentPdfUrl !== null" class="fullscreen-pdf">
+  <iframe [src]="getSafeUrl(currentPdfUrl)" width="100%" height="800px" style="border: none;"></iframe>
+</div>
+
+      </div>
+    </app-card>
+  </div>
+  
