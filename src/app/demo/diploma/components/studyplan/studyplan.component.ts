@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { StudyplanFormComponent } from "../studyplan-form/studyplan-form.component";
-import { StudyplanTableComponent } from "../studyplan-table/studyplan-table.component";
+import { StudyplanFormComponent } from '../studyplan-form/studyplan-form.component';
+import { StudyplanTableComponent } from '../studyplan-table/studyplan-table.component';
 
 @Component({
   selector: 'app-studyplan',
@@ -8,6 +8,4 @@ import { StudyplanTableComponent } from "../studyplan-table/studyplan-table.comp
   templateUrl: './studyplan.component.html',
   styleUrl: './studyplan.component.scss'
 })
-export class StudyplanComponent {
-
-}
+export class StudyplanComponent {}

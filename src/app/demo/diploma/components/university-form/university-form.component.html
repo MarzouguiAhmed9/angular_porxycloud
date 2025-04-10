@@ -1,44 +1,248 @@
 <app-card cardTitle="University Form" [options]="false">
   <h5 class="mt-5">University Information</h5>
   <hr />
-  <form action="javascript:">
+  <form [formGroup]="universityForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="form-group col-md-6">
         <label for="universityName">University Name</label>
-        <input type="text" class="form-control" id="universityName" placeholder="Enter university name" />
+        <input type="text" class="form-control" id="universityName" formControlName="name" placeholder="Enter university name" />
+        @if (f['name'].touched && f['name'].invalid) {
+          <div class="text-danger">
+            @if (f['name'].hasError('required')) {
+              <small>University Name is required.</small>
+            }
+          </div>
+        }
       </div>
+
       <div class="form-group col-md-6">
         <label for="ranking">Ranking</label>
-        <input type="number" class="form-control" id="ranking" placeholder="Enter university ranking" />
+        <input type="number" class="form-control" id="ranking" formControlName="ranking" placeholder="Enter university ranking (e.g. 1)" />
+        @if (f['ranking'].touched && f['ranking'].invalid) {
+          <div class="text-danger">
+            @if (f['ranking'].hasError('required')) {
+              <small>Ranking is required.</small>
+            }
+            @if (f['ranking'].hasError('min')) {
+              <small>Ranking must be at least 1.</small>
+            }
+          </div>
+        }
       </div>
     </div>
 
     <div class="form-group">
       <label for="description">University Description</label>
-      <textarea class="form-control" id="description" rows="3" placeholder="Brief description"></textarea>
+      <textarea
+        class="form-control"
+        id="description"
+        formControlName="description"
+        rows="3"
+        placeholder="Brief description of the university"
+      ></textarea>
+      @if (f['description'].touched && f['description'].invalid) {
+        <div class="text-danger">
+          @if (f['description'].hasError('required')) {
+            <small>Description is required.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="programSpecialty">Program Specialty</label>
+      <input
+        type="text"
+        class="form-control"
+        id="programSpecialty"
+        formControlName="programSpecialty"
+        placeholder="Enter program specialty"
+      />
+      @if (f['programSpecialty'].touched && f['programSpecialty'].invalid) {
+        <div class="text-danger">
+          @if (f['programSpecialty'].hasError('required')) {
+            <small>Program specialty is required.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="establishedYear">Established Year</label>
+      <input
+        type="number"
+        class="form-control"
+        id="establishedYear"
+        formControlName="establishedYear"
+        placeholder="Enter the year the university was established"
+      />
+      @if (f['establishedYear'].touched && f['establishedYear'].invalid) {
+        <div class="text-danger">
+          @if (f['establishedYear'].hasError('required')) {
+            <small>Established year is required.</small>
+          }
+          @if (f['establishedYear'].hasError('min')) {
+            <small>Year must be reasonable (after 1000).</small>
+          }
+          @if (f['establishedYear'].hasError('max')) {
+            <small>Year must be before current year.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="address">University Address</label>
+      <input type="text" class="form-control" id="address" formControlName="address" placeholder="Enter the university's address" />
+      @if (f['address'].touched && f['address'].invalid) {
+        <div class="text-danger">
+          @if (f['address'].hasError('required')) {
+            <small>Address is required.</small>
+          }
+        </div>
+      }
     </div>
 
     <div class="row">
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-4">
         <label for="city">City</label>
-        <input type="text" class="form-control" id="city" placeholder="Enter city" />
+        <input type="text" class="form-control" id="city" formControlName="city" placeholder="Enter city" />
+        @if (f['city'].touched && f['city'].invalid) {
+          <div class="text-danger">
+            @if (f['city'].hasError('required')) {
+              <small>City is required.</small>
+            }
+          </div>
+        }
       </div>
-      <div class="form-group col-md-6">
-        <label for="country">Country</label>
-        <input type="text" class="form-control" id="country" placeholder="Enter country" />
+
+      <div class="form-group col-md-4">
+        <label for="state">State/Province</label>
+        <input type="text" class="form-control" id="state" formControlName="state" placeholder="Enter state/province" />
+        @if (f['state'].touched && f['state'].invalid) {
+          <div class="text-danger">
+            @if (f['state'].hasError('required')) {
+              <small>State/Province is required.</small>
+            }
+          </div>
+        }
       </div>
+
+      <div class="form-group col-md-4">
+        <label for="postalCode">Postal Code</label>
+        <input type="text" class="form-control" id="postalCode" formControlName="postalCode" placeholder="Enter postal code" />
+        @if (f['postalCode'].touched && f['postalCode'].invalid) {
+          <div class="text-danger">
+            @if (f['postalCode'].hasError('required')) {
+              <small>Postal code is required.</small>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="country">Country</label>
+      <input type="text" class="form-control" id="country" formControlName="country" placeholder="Enter country" />
+      @if (f['country'].touched && f['country'].invalid) {
+        <div class="text-danger">
+          @if (f['country'].hasError('required')) {
+            <small>Country is required.</small>
+          }
+        </div>
+      }
     </div>
 
     <div class="form-group">
       <label for="email">University Email</label>
-      <input type="email" class="form-control" id="email" placeholder="university@example.com" />
+      <input type="email" class="form-control" id="email" formControlName="email" placeholder="university@example.com" />
+      @if (f['email'].touched && f['email'].invalid) {
+        <div class="text-danger">
+          @if (f['email'].hasError('required')) {
+            <small>Email is required.</small>
+          }
+          @if (f['email'].hasError('email')) {
+            <small>Please enter a valid email address.</small>
+          }
+        </div>
+      }
     </div>
 
     <div class="form-group">
       <label for="website">University Website</label>
-      <input type="url" class="form-control" id="website" placeholder="https://example.com" />
+      <input type="url" class="form-control" id="website" formControlName="website" placeholder="https://example.com" />
+      @if (f['website'].touched && f['website'].invalid) {
+        <div class="text-danger">
+          @if (f['website'].hasError('required')) {
+            <small>Website is required.</small>
+          }
+          @if (f['website'].hasError('pattern')) {
+            <small>Please enter a valid URL (starting with http:// or https://).</small>
+          }
+        </div>
+      }
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3">Save University</button>
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number</label>
+      <input type="text" class="form-control" id="phoneNumber" formControlName="phoneNumber" placeholder="Enter phone number" />
+      @if (f['phoneNumber'].touched && f['phoneNumber'].invalid) {
+        <div class="text-danger">
+          @if (f['phoneNumber'].hasError('required')) {
+            <small>Phone number is required.</small>
+          }
+          @if (f['phoneNumber'].hasError('pattern')) {
+            <small>Please enter a valid phone number.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="type">University Type</label>
+      <select class="form-control" id="type" formControlName="type">
+        <option value="">Select type</option>
+        <option value="Public">Public</option>
+        <option value="Private">Private</option>
+        <option value="Non-profit">Non-profit</option>
+        <option value="For-profit">For-profit</option>
+      </select>
+      @if (f['type'].touched && f['type'].invalid) {
+        <div class="text-danger">
+          @if (f['type'].hasError('required')) {
+            <small>University type is required.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="accreditationStatus">Accreditation Status</label>
+      <select class="form-control" id="accreditationStatus" formControlName="accreditationStatus">
+        <option value="">Select status</option>
+        <option value="Accredited">Accredited</option>
+        <option value="Not Accredited">Not Accredited</option>
+        <option value="Pending">Pending Accreditation</option>
+      </select>
+      @if (f['accreditationStatus'].touched && f['accreditationStatus'].invalid) {
+        <div class="text-danger">
+          @if (f['accreditationStatus'].hasError('required')) {
+            <small>Accreditation status is required.</small>
+          }
+        </div>
+      }
+    </div>
+    <div class="d-flex justify-content-between gap-5">
+      <div class="form-group w-100">
+        <label class="mb-2" for="logo">University Logo</label>
+        <input type="file" class="form-control" id="logo" (change)="onFileSelected($event)" accept="image/*" />
+      </div>
+      <div class="form-group w-100">
+        <label class="mb-2" for="thumbnail">University Thumbnail</label>
+        <input type="file" class="form-control" id="thumbnail" (change)="onFileSelected($event)" accept="image/*" />
+      </div>
+    </div>
+
+    <button type="submit" class="btn mt-3 btn-primary" [disabled]="universityForm.invalid">Save University</button>
   </form>
 </app-card>

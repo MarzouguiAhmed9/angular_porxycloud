@@ -1,49 +1,249 @@
 <app-card cardTitle="Study Plan Form" [options]="false">
   <h5 class="mt-5">Add Study Plan to a University</h5>
   <hr />
-  <form action="javascript:">
+  <form [formGroup]="studyPlanForm" (ngSubmit)="onSubmit()">
+    <!-- University Selection -->
     <div class="form-group">
-      <label for="universitySelect">Select University</label>
-      <select id="universitySelect" class="form-control">
-        <option selected>Choose...</option>
-        <option *ngFor="let university of universities" [value]="university.universityId">
-          {{ university.name }}
-        </option>
+      <label for="university">Select University</label>
+      <select
+        id="university"
+        class="form-control"
+        formControlName="university"
+        [class.is-invalid]="getFormControl('university')?.invalid && (getFormControl('university')?.dirty || getFormControl('university')?.touched)"
+      >
+        <option [ngValue]="null" disabled hidden>Choose...</option>
+        @for (university of universities; track university.universityId) {
+          <option [ngValue]="{ universityId: university.universityId }">
+            {{ university.name }}
+          </option>
+        } @empty {
+          <option disabled>No universities available</option>
+        }
       </select>
+      @if (getFormControl('university')?.invalid && (getFormControl('university')?.dirty || getFormControl('university')?.touched)) {
+        <div class="invalid-feedback">Please select a university</div>
+      }
     </div>
 
-    <div class="form-group">
-      <label for="programName">Program Name</label>
-      <input type="text" class="form-control" id="programName" placeholder="Enter program name" />
-    </div>
-
+    <!-- Program Name and Code -->
     <div class="row">
-      <div class="form-group col-md-6">
-        <label for="degreeType">Degree Type</label>
-        <input type="text" class="form-control" id="degreeType" placeholder="Bachelor, Master, PhD, etc." />
+      <div class="form-group col-md-8">
+        <label for="programName">Program Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="programName"
+          formControlName="programName"
+          placeholder="Enter program name"
+          [class.is-invalid]="getFormControl('programName')?.invalid && (getFormControl('programName')?.dirty || getFormControl('programName')?.touched)"
+        />
+        @if (getFormControl('programName')?.invalid && (getFormControl('programName')?.dirty || getFormControl('programName')?.touched)) {
+          <div class="invalid-feedback">
+            Program name is required
+          </div>
+        }
       </div>
-      <div class="form-group col-md-6">
-        <label for="specialization">Specialization</label>
-        <input type="text" class="form-control" id="specialization" placeholder="Enter specialization" />
+      <div class="form-group col-md-4">
+        <label for="programCode">Program Code</label>
+        <input
+          type="text"
+          class="form-control"
+          id="programCode"
+          formControlName="programCode"
+          placeholder="Enter program code"
+          [class.is-invalid]="getFormControl('programCode')?.invalid && (getFormControl('programCode')?.dirty || getFormControl('programCode')?.touched)"
+        />
+        @if (getFormControl('programCode')?.invalid && (getFormControl('programCode')?.dirty || getFormControl('programCode')?.touched)) {
+          <div class="invalid-feedback">
+            Program code is required
+          </div>
+        }
       </div>
     </div>
 
+    <!-- Degree Information -->
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="degreeType">Degree Type</label>
+        <input
+          type="text"
+          class="form-control"
+          id="degreeType"
+          formControlName="degreeType"
+          placeholder="Bachelor, Master, PhD, etc."
+          [class.is-invalid]="getFormControl('degreeType')?.invalid && (getFormControl('degreeType')?.dirty || getFormControl('degreeType')?.touched)"
+        />
+        @if (getFormControl('degreeType')?.invalid && (getFormControl('degreeType')?.dirty || getFormControl('degreeType')?.touched)) {
+          <div class="invalid-feedback">
+            Degree type is required
+          </div>
+        }
+      </div>
+      <div class="form-group col-md-4">
+        <label for="specialization">Specialization</label>
+        <input
+          type="text"
+          class="form-control"
+          id="specialization"
+          formControlName="specialization"
+          placeholder="Enter specialization"
+        />
+      </div>
+      <div class="form-group col-md-4">
+        <label for="languageOfInstruction">Language of Instruction</label>
+        <input
+          type="text"
+          class="form-control"
+          id="languageOfInstruction"
+          formControlName="languageOfInstruction"
+          placeholder="English, French, etc."
+          [class.is-invalid]="getFormControl('languageOfInstruction')?.invalid && (getFormControl('languageOfInstruction')?.dirty || getFormControl('languageOfInstruction')?.touched)"
+        />
+        @if (getFormControl('languageOfInstruction')?.invalid && (getFormControl('languageOfInstruction')?.dirty || getFormControl('languageOfInstruction')?.touched)) {
+          <div class="invalid-feedback">
+            Language is required
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Academic Details -->
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="coreCourses">Core Courses</label>
+        <input
+          type="number"
+          class="form-control"
+          id="coreCourses"
+          formControlName="coreCourses"
+          min="0"
+          [class.is-invalid]="getFormControl('coreCourses')?.invalid && (getFormControl('coreCourses')?.dirty || getFormControl('coreCourses')?.touched)"
+        />
+        @if (getFormControl('coreCourses')?.invalid && (getFormControl('coreCourses')?.dirty || getFormControl('coreCourses')?.touched)) {
+          <div class="invalid-feedback">
+            Valid number required
+          </div>
+        }
+      </div>
+      <div class="form-group col-md-4">
+        <label for="totalCredits">Total Credits</label>
+        <input
+          type="number"
+          class="form-control"
+          id="totalCredits"
+          formControlName="totalCredits"
+          min="0"
+          [class.is-invalid]="getFormControl('totalCredits')?.invalid && (getFormControl('totalCredits')?.dirty || getFormControl('totalCredits')?.touched)"
+        />
+        @if (getFormControl('totalCredits')?.invalid && (getFormControl('totalCredits')?.dirty || getFormControl('totalCredits')?.touched)) {
+          <div class="invalid-feedback">
+            Valid number required
+          </div>
+        }
+      </div>
+      <div class="form-group col-md-4">
+        <label for="durationYears">Duration (Years)</label>
+        <input
+          type="number"
+          step="0.5"
+          class="form-control"
+          id="durationYears"
+          formControlName="durationYears"
+          min="0.5"
+          [class.is-invalid]="getFormControl('durationYears')?.invalid && (getFormControl('durationYears')?.dirty || getFormControl('durationYears')?.touched)"
+        />
+        @if (getFormControl('durationYears')?.invalid && (getFormControl('durationYears')?.dirty || getFormControl('durationYears')?.touched)) {
+          <div class="invalid-feedback">
+            Valid duration required
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Dates -->
     <div class="row">
       <div class="form-group col-md-6">
         <label for="startDate">Start Date</label>
-        <input type="date" class="form-control" id="startDate" />
+        <input
+          type="date"
+          class="form-control"
+          id="startDate"
+          formControlName="startDate"
+          [min]="minDate"
+          [class.is-invalid]="getFormControl('startDate')?.invalid && (getFormControl('startDate')?.dirty || getFormControl('startDate')?.touched)"
+        />
+        @if (getFormControl('startDate')?.invalid && (getFormControl('startDate')?.dirty || getFormControl('startDate')?.touched)) {
+          <div class="invalid-feedback">
+            Start date is required
+          </div>
+        }
       </div>
       <div class="form-group col-md-6">
         <label for="endDate">End Date</label>
-        <input type="date" class="form-control" id="endDate" />
+        <input
+          type="date"
+          class="form-control"
+          id="endDate"
+          formControlName="endDate"
+          [min]="studyPlanForm.get('startDate')?.value"
+          [class.is-invalid]="getFormControl('endDate')?.invalid && (getFormControl('endDate')?.dirty || getFormControl('endDate')?.touched)"
+        />
+        @if (getFormControl('endDate')?.invalid && (getFormControl('endDate')?.dirty || getFormControl('endDate')?.touched)) {
+          <div class="invalid-feedback">
+            Valid end date required
+          </div>
+        }
       </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="form-group">
+      <label for="programDescription">Program Description</label>
+      <textarea
+        class="form-control"
+        id="programDescription"
+        formControlName="programDescription"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="prerequisites">Prerequisites</label>
+      <textarea
+        class="form-control"
+        id="prerequisites"
+        formControlName="prerequisites"
+        rows="2"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="admissionRequirements">Admission Requirements</label>
+      <textarea
+        class="form-control"
+        id="admissionRequirements"
+        formControlName="admissionRequirements"
+        rows="2"
+      ></textarea>
     </div>
 
     <div class="form-group">
       <label for="programWebsite">Program Website</label>
-      <input type="url" class="form-control" id="programWebsite" placeholder="https://example.com" />
+      <input
+        type="url"
+        class="form-control"
+        id="programWebsite"
+        formControlName="programWebsite"
+        placeholder="https://example.com"
+        [class.is-invalid]="getFormControl('programWebsite')?.invalid && (getFormControl('programWebsite')?.dirty || getFormControl('programWebsite')?.touched)"
+      />
+      @if (getFormControl('programWebsite')?.errors?.['pattern']) {
+        <div class="invalid-feedback">Please enter a valid URL</div>
+      }
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3">Add Study Plan</button>
+    <button type="submit" class="btn btn-primary mt-3" [disabled]="studyPlanForm.invalid">
+      Add Study Plan
+    </button>
   </form>
 </app-card>

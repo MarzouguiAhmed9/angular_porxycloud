@@ -18,6 +18,7 @@ export class University {
   type!: string;
   accreditationStatus!: string;
   logo!: string;
+  thumbnail!: string;
   ranking!: number;
   studyPlans!: StudyPlan[];
   // users!: User[];

@@ -48,9 +48,9 @@ const routes: Routes = [
       {
         path: 'auth',
         loadChildren: () => import('./demo/pages/authentication/authentication.module').then((m) => m.AuthenticationModule)
-      }
+      },
     ]
-  }
+  },
 ];
 
 @NgModule({

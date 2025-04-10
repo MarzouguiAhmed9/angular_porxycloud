@@ -1,34 +1,77 @@
 <div class="col-xl-12">
-    <app-card cardTitle="Study Plan List" [options]="false" blockClass="table-border-style">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
+  <app-card cardTitle="Study Plan List" [options]="false" blockClass="table-border-style">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Program Name</th>
+            <th>Program Code</th>
+            <th>Degree Type</th>
+            <th>Specialization</th>
+            <th>Language</th>
+            <th>Duration</th>
+            <th>Credits</th>
+            <th>Core Courses</th>
+            <th>University</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (studyPlan of studyPlans; track studyPlan.studyPlanId; let i = $index) {
             <tr>
-              <th>#</th>
-              <th>Program Name</th>
-              <th>Degree Type</th>
-              <th>Specialization</th>
-              <th>Duration (Years)</th>
-              <th>University</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let studyPlan of studyPlans; let i = index">
               <th scope="row">{{ i + 1 }}</th>
               <td>{{ studyPlan.programName }}</td>
+              <td>{{ studyPlan.programCode || 'N/A' }}</td>
               <td>{{ studyPlan.degreeType }}</td>
-              <td>{{ studyPlan.specialization }}</td>
-              <td>{{ studyPlan.durationYears }}</td>
-              <td>{{ studyPlan.university?.name }}</td>
+              <td>{{ studyPlan.specialization || 'N/A' }}</td>
+              <td>{{ studyPlan.languageOfInstruction || 'N/A' }}</td>
+              <td>{{ studyPlan.durationYears }} yrs</td>
+              <td>{{ studyPlan.totalCredits }}</td>
+              <td>{{ studyPlan.coreCourses }}</td>
               <td>
-                <!-- <button class="btn btn-sm btn-primary" (click)="editStudyPlan(studyPlan)">Edit</button> -->
-                <!-- <button class="btn btn-sm btn-danger" (click)="deleteStudyPlan(studyPlan.studyPlanId)">Delete</button> -->
+                @if (getUniversityName(studyPlan.university)) {
+                  {{ getUniversityName(studyPlan.university) }}
+                } @else {
+                  N/A
+                }
+              </td>
+              <td>{{ studyPlan.startDate | date: 'mediumDate' }}</td>
+              <td>
+                @if (studyPlan.endDate) {
+                  {{ studyPlan.endDate | date: 'mediumDate' }}
+                } @else {
+                  Ongoing
+                }
+              </td>
+              <td>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Study Plan Actions">
+                  <button class="btn btn-primary" (click)="showStudyPlan(studyPlan.studyPlanId)" title="View" ngbTooltip="View">
+                    <i class="m-0 fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-success" (click)="editStudyPlan(studyPlan.studyPlanId)" ngbTooltip="Edit">
+                    <i class="m-0 fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger" (click)="deleteStudyPlan(studyPlan.studyPlanId)" ngbTooltip="Delete">
+                    <i class="m-0 fas fa-trash"></i>
+                  </button>
+                </div>
               </td>
             </tr>
-          </tbody>
-        </table>
-      </div>
-    </app-card>
-  </div>
-  
+          } @empty {
+            <tr>
+              <td colspan="13" class="text-center py-4">
+                <div class="d-flex flex-column align-items-center">
+                  <i class="fas fa-book-open fa-2x mb-2 text-muted"></i>
+                  <span class="text-muted">No study plans found</span>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+</div>

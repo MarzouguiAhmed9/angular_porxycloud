@@ -1,36 +1,88 @@
 <div class="col-xl-12">
-    <app-card cardTitle="University List" [options]="false" blockClass="table-border-style">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
+  <app-card cardTitle="University List" [options]="false" blockClass="table-border-style">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Thumbnail</th>
+            <th>Name</th>
+            <th>City/Country</th>
+            <th>Ranking</th>
+            <th>Type</th>
+            <th>Accreditation</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (university of universities; track university; let i = $index) {
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>City</th>
-              <th>Country</th>
-              <th>Ranking</th>
-              <th>Website</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let university of universities; let i = index">
               <th scope="row">{{ i + 1 }}</th>
-              <td>{{ university.name }}</td>
-              <td>{{ university.city }}</td>
-              <td>{{ university.country }}</td>
-              <td>{{ university.ranking }}</td>
               <td>
-                <a [href]="university.website" target="_blank">{{ university.website }}</a>
+                @if (university.thumbnail) {
+                  <img
+                    [src]="'/assets/uploads/placeholder.jpg'"
+                    alt="University thumbnail"
+                    class="img-thumbnail"
+                    style="width: 60px; height: 60px; object-fit: cover"
+                  />
+                } @else {
+                  <div class="no-thumbnail bg-light" style="width: 60px; height: 60px"></div>
+                }
               </td>
               <td>
-                <!-- <button class="btn btn-sm btn-primary" (click)="editUniversity(university)">Edit</button> -->
-                <!-- <button class="btn btn-sm btn-danger" (click)="deleteUniversity(university.universityId)">Delete</button> -->
+                <strong>{{ university.name }}</strong>
+                <div class="small text-muted">{{ university.email }}</div>
+                <div class="small">
+                  <a [href]="university.website" target="_blank" class="text-primary">Visit Website</a>
+                </div>
+              </td>
+              <td>
+                <div>{{ university.city }}</div>
+                <div class="small text-muted">{{ university.country }}</div>
+              </td>
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'bg-danger': university.ranking <= 100,
+                    'bg-warning': university.ranking > 100 && university.ranking <= 500,
+                    'bg-info': university.ranking > 500
+                  }"
+                >
+                  #{{ university.ranking }}
+                </span>
+              </td>
+              <td>{{ university.type }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'bg-success': university.accreditationStatus.toLocaleLowerCase() === 'accredited',
+                    'bg-danger': university.accreditationStatus.toLocaleLowerCase() === 'not accredited',
+                    'bg-warning': university.accreditationStatus.toLocaleLowerCase() === 'pending'
+                  }"
+                >
+                  {{ university.accreditationStatus }}
+                </span>
+              </td>
+              <td>
+                <div class="btn-group btn-group-sm" role="group">
+                  <button class="btn btn-primary" (click)="showUniversity(university.universityId)" title="View">
+                    <i class="m-0 fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-success" (click)="editUniversity(university)" title="Edit">
+                    <i class="m-0 fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger" (click)="deleteUniversity(university.universityId)" title="Delete">
+                    <i class="m-0 fas fa-trash"></i>
+                  </button>
+                </div>
               </td>
             </tr>
-          </tbody>
-        </table>
-      </div>
-    </app-card>
-  </div>
-  
+          }
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+</div>

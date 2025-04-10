@@ -1,12 +1,46 @@
-import { Component } from '@angular/core';
-import { CardComponent } from "../../../../theme/shared/components/card/card.component";
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { StudyplanService } from 'src/app/demo/services/diploma/studyplan-service.service';
+import { StudyPlan } from 'src/app/models/study-plan.model';
+import { University } from 'src/app/models/university.model';
+import { CardComponent } from '../../../../theme/shared/components/card/card.component';
+import { UniversityService } from 'src/app/demo/services/diploma/university-service.service';
 
 @Component({
   selector: 'app-studyplan-table',
-  imports: [CardComponent],
+  imports: [CardComponent, CommonModule],
   templateUrl: './studyplan-table.component.html',
   styleUrl: './studyplan-table.component.scss'
 })
-export class StudyplanTableComponent {
+export class StudyplanTableComponent implements OnInit {
+  universities: University[]=[];
+  constructor(
+    private studyService: StudyplanService,
+    private univerityService: UniversityService
+  ) {}
+  studyPlans: StudyPlan[] = [];
 
+  ngOnInit() {
+    this.studyService.getAllStudyPlan().subscribe((data) => {
+      this.studyPlans = data;
+    });
+    this.univerityService.getAllUniversities().subscribe((data) => {
+      this.universities = data;
+    });
+  }
+  editStudyPlan(id: number) {}
+  deleteStudyPlan(id: number) {
+    if (!confirm('Are you sure you want to delete this university?')) {
+      return;
+    }
+    this.studyService.deleteStudyPlan(id).subscribe(() => {
+      this.ngOnInit();
+    });
+  }
+  showStudyPlan(id: number) {}
+
+  getUniversityName(universityId: number | { universityId: number }): string {
+    const university = this.universities.find((uni) => uni.universityId === universityId);
+    return university ? university.name : 'Unknown University';
+  }
 }
