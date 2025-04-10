@@ -149,5 +149,19 @@
       }
     }
   }
-  
+  .close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: red;
+  }
+  .modal-content {
+    position: relative;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+  }
+    
   

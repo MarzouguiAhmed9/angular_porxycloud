@@ -11,6 +11,16 @@ export interface User {
   address: string;
   phone: string;
   approuve: boolean;
+  email: string;  // Ajout de la propriété email
+  enabled: boolean;
+  role: {
+    id: number;
+    name: string;
+    authority: string;
+  };
+  username: string;
+  password: string;
+  
 }
 
 @Injectable({
@@ -29,8 +39,10 @@ export class UserService {
       tap((response: any) => {
         if (response.token) {
           this.storeToken(response.token);
+          
           const role = this.getUserRole();
           this.redirectUser(role);
+          
         }
       }),
       catchError(error => {
@@ -65,7 +77,10 @@ export class UserService {
     }
 
     const decodedToken = this.decodeToken(token);
-    return decodedToken?.role || null; // 🔴 Erreur ici
+    return decodedToken?.role 
+    || decodedToken?.authorities?.[0] 
+    || decodedToken?.roles?.[0] 
+    || null; // 🔴 Erreur ici
 }
 
   register(user: any): Observable<any> {
@@ -173,15 +188,16 @@ private userApiUrl = 'http://localhost:8089/Projetback/api/auth'; // adapte selo
 getAllUsers(headers: HttpHeaders): Observable<User[]> {
   return this.http.get<User[]>(`${this.userApiUrl}/users`, { headers });
 }
-
-
+addUser(user: User, headers: HttpHeaders): Observable<User> {
+  return this.http.post<User>(`${this.userApiUrl}/users/add`, user, { headers });
+}
 
 deleteUser(id: number): Observable<void> {
   return this.http.delete<void>(`${this.userApiUrl}/users/${id}`);
 }
 
-updateUser(id: number, userData: any): Observable<any> {
-  return this.http.put<any>(`${this.userApiUrl}/users/${id}`, userData);
+ updateUser(id: number, user: User, headers: HttpHeaders): Observable<User> {
+  return this.http.put<User>(`${this.userApiUrl}/users/${id}`, user, { headers });
 }
 
 toggleApproval(id: number): Observable<any> {
