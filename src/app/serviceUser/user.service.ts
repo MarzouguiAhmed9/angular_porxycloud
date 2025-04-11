@@ -169,13 +169,12 @@ export class UserService {
     return this.http.post(`${this.baseUrl}/reset-password`, null, {
       params
     });
-
-
-
     
   }
 
- 
+  getUserStatistics(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/statistics`);
+  }
 
 
 

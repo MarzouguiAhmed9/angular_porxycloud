@@ -1,33 +1,48 @@
-<p>dsgffffffffff</p>
-<div class="dashboard-container">
-  <h1>Applications List</h1>
+<p>Dashboard Statistics</p>
 
-  <!-- Check if there are any applications to display -->
-  <div *ngIf="applications && applications.length > 0; else noDataTemplate">
-    <table class="applications-table">
-      <thead>
-      <tr>
-        <th>Status</th>
-        <th>Student ID</th>
-        <th>Motivated Letter</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let application of applications">
-        <td>{{ application.status }}</td>
-        <td>{{ application.studentId }}</td>
-        <td>{{ application.motivatedlettre }}</td>
-      </tr>
-      </tbody>
-    </table>
+ 
+
+<div class="container py-5 text-center" *ngIf="statistics">
+  <h2 class="mb-4 fw-bold text-primary">User Statistics</h2>
+  <div class="row justify-content-center gap-4">
+    <div class="col-md-3 circle-container">
+      <div class="circle">
+        <svg width="120" height="120">
+          <circle cx="60" cy="60" r="50" stroke="#4e54c8" stroke-width="12" fill="none" stroke-dasharray="314" stroke-dashoffset="94"></circle>
+          <circle cx="60" cy="60" r="50" stroke="#00c6ff" stroke-width="6" fill="none" stroke-dasharray="314" stroke-dashoffset="157"></circle>
+        </svg>
+        <div class="circle-value">{{ statistics.totalUsers }}</div>
+      </div>
+      <div class="label mt-2 fw-semibold">Total Users</div>
+    </div>
+
+    <div class="col-md-3 circle-container">
+      <div class="circle">
+        <svg width="120" height="120">
+          <circle cx="60" cy="60" r="50" stroke="#4e54c8" stroke-width="12" fill="none" stroke-dasharray="314" stroke-dashoffset="125"></circle>
+          <circle cx="60" cy="60" r="50" stroke="#00c6ff" stroke-width="6" fill="none" stroke-dasharray="314" stroke-dashoffset="157"></circle>
+        </svg>
+        <div class="circle-value">{{ statistics.approvedUsers }}</div>
+      </div>
+      <div class="label mt-2 fw-semibold">Approved</div>
+    </div>
+
+    <div class="col-md-3 circle-container">
+      <div class="circle">
+        <svg width="120" height="120">
+          <circle cx="60" cy="60" r="50" stroke="#4e54c8" stroke-width="12" fill="none" stroke-dasharray="314" stroke-dashoffset="180"></circle>
+          <circle cx="60" cy="60" r="50" stroke="#00c6ff" stroke-width="6" fill="none" stroke-dasharray="314" stroke-dashoffset="157"></circle>
+        </svg>
+        <div class="circle-value">{{ statistics.nonApprovedUsers }}</div>
+      </div>
+      <div class="label mt-2 fw-semibold">Not Approved</div>
+    </div>
   </div>
+</div>
 
-  <!-- Template for when no applications are available -->
-  <ng-template #noDataTemplate>
-    <p>No applications available.</p>
+
+  
     <button (click)="logout()">Logout</button>
     <button (click)="profile()">Profile</button>
     <button (click)="list()">List</button>
 
-  </ng-template>
-</div>
