@@ -6,10 +6,15 @@
     
     <p>
       <strong>Description:</strong>
-      <span class="description-short" (click)="openModalAtPosition($event, projet.description)">
+      <span class="description-short" (click)="openDescriptionModal(projet)">
         {{ projet.description.split(' ').slice(0, 2).join(' ') }}...
       </span>
     </p>
+    
+    <div  class="nbreGestions">
+      <strong>Nbre Gestion : </strong> <span>{{ projet.nbreGestions }} </span>
+    </div>
+
 
     <div class="date-info">
       <strong>Date:</strong> <span>{{ projet.dateDebut }} - {{ projet.dateFin }}</span>
@@ -36,9 +41,75 @@
     </div>
   </div>
 
-  <!-- Modal description -->
-  <div *ngIf="showModal" class="modal-content show" [ngStyle]="{ top: modalPosition.top + 'px', left: modalPosition.left + 'px' }">
+  <!-- Modal for description -->
+  <div *ngIf="showModal && isDescriptionModal" class="modal-content show" [ngStyle]="{ top: modalPosition.top + 'px', left: modalPosition.left + 'px' }">
     <span class="close-btn" (click)="closeModal()">&times;</span>
     <p>{{ selectedDescription }}</p>
+  </div>
+
+  <!-- Modal Form for Adding/Editing Projet -->
+  <div *ngIf="showModal && !isDescriptionModal" class="modal-content show" [ngStyle]="{ top: modalPosition.top + 'px', left: modalPosition.left + 'px' }">
+    <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()"></div>
+
+  
+      
+    
+   
+        
+    <div class="modal-body">
+      <h3>{{ isEditing ? 'Edit Project' : 'Add New Project' }}</h3>
+      <form (ngSubmit)="saveProjet()" #projetForm="ngForm">
+        <label for="nomProjet">Project Name</label>
+        <input
+          type="text"
+          id="nomProjet"
+          [(ngModel)]="currentProjet.nomProjet"
+          name="nomProjet"
+          required
+          #nomProjet="ngModel"
+          [class.is-invalid]="nomProjet.invalid && nomProjet.touched"
+        />
+        <div *ngIf="nomProjet.invalid && nomProjet.touched" class="error-message">Project Name is required.</div>
+
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          [(ngModel)]="currentProjet.description"
+          name="description"
+          required
+          #description="ngModel"
+          [class.is-invalid]="description.invalid && description.touched"
+        ></textarea>
+        <div *ngIf="description.invalid && description.touched" class="error-message">Description is required.</div>
+
+        <label for="dateDebut">Start Date</label>
+        <input
+        type="date"
+        id="dateDebut"
+        [(ngModel)]="currentProjet.dateDebut"
+        name="dateDebut"
+        required
+        #dateDebut="ngModel"
+        [class.is-invalid]="dateDebut.invalid && dateDebut.touched"
+        [disabled]="isEditing" 
+      />
+      
+        <div *ngIf="dateDebut.invalid && dateDebut.touched" class="error-message">Start Date is required.</div>
+
+        <label for="dateFin">End Date</label>
+        <input
+          type="date"
+          id="dateFin"
+          [(ngModel)]="currentProjet.dateFin"
+          name="dateFin"
+          required
+          #dateFin="ngModel"
+          [class.is-invalid]="dateFin.invalid && dateFin.touched"
+        />
+        <div *ngIf="dateFin.invalid && dateFin.touched" class="error-message">End Date is required.</div>
+
+        <button type="submit" [disabled]="projetForm.invalid">Save Project</button>
+      </form>
+    </div>
   </div>
 </div>
