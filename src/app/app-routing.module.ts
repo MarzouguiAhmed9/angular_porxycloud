@@ -51,7 +51,12 @@ const routes: Routes = [
         loadChildren: () => import('./demo/pages/authentication/authentication.module').then(m => m.AuthenticationModule)
       }
     ]
+  },
+  {
+    path: 'admin-items',
+    loadComponent: () => import('./admin-items/admin-items.component').then(m => m.AdminItemsComponent)
   }
+  
 ];
 
 @NgModule({

@@ -1,0 +1,22 @@
+<div class="items-container" *ngIf="items.length > 0; else noItems">
+    <ul class="items-list">
+      <li *ngFor="let item of items" class="item-card">
+        <div class="item-content">
+          <h3 class="item-title">{{ item.title }}</h3>
+          <p class="item-description">{{ item.description }}</p>
+          <span class="item-price">{{ item.price }} TND</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  
+  <ng-template #noItems>
+    <div class="no-items-message">
+      <div class="empty-state">
+        <svg class="empty-icon" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M7,10H17V12H7V10Z" />
+        </svg>
+        <p>No items found</p>
+      </div>
+    </div>
+  </ng-template>
