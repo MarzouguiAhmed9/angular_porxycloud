@@ -14,7 +14,7 @@
               <th>Niveau</th>
               <th>Prix (DT)</th>
               <th>Test</th>
-      <!--        <th>Certificat</th> -->
+              <th>Certificat</th> 
               <th>Document Pdf</th>
               <th>Actions</th>
               
@@ -33,6 +33,7 @@
               <td>{{ cours.niveau }}</td>
               <td>{{ cours.prix }}</td>
               <td>{{ cours.test?.description }}</td>  <!-- Affichage du test -->
+              <td>{{ cours.certificat?.nom }}</td>  <!-- Affichage du certificat -->
               <td>
                 <button type="button" 
                     class="btn btn-rounded btn-outline-secondary" 

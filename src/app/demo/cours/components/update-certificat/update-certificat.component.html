@@ -1,0 +1,42 @@
+<app-card cardTitle="Certificat Form" [options]="false">
+
+    <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="javascript:" [routerLink]="['/cours/certificat']" >Previous</a>
+        </li>
+        
+      </ul>
+
+    <h5 class="mt-5">Add certificat</h5>
+    <hr />
+    <form [formGroup]="formR"  >
+
+      <div class="form-group">
+        <label for="nom">Nom</label>
+        <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Entrer le nom du certificat" />
+      </div>
+  
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="instructeur">Instructeur</label>
+          <input type="text" class="form-control" id="instructeur" formControlName="instructeur" placeholder="Abdallah Saidane" />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="validite">Validite</label>
+          <input type="text" class="form-control" id="validite" formControlName="validite" placeholder="1 = 1 mois , 2 = 2 mois .etc" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="statut">Statut</label>
+            <input type="text" class="form-control" id="statut" formControlName="statut" placeholder="1 = valide  , 0 = invalide " />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="niveau">Niveau</label>
+            <input type="text" class="form-control" id="niveau" formControlName="niveau" placeholder="BASIQUE, INTERMEDIAIRE, AVANCE" />
+        </div>
+      </div>
+
+  
+      <button type="submit" (click)="update()" class="btn btn-primary mt-3">Update certificat </button>
+    </form>
+  </app-card>
+  

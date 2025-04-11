@@ -88,6 +88,13 @@ export const NavigationItems: NavigationItem[] = [
             url: '/cours/updatecours',
             hidden: true
           },
+          {
+            id: 'updatecertificat',
+            title: 'updatecertificat',
+            type: 'item',
+            url: '/cours/updatecertificat',
+            hidden: true
+          },
           
         ]
       }

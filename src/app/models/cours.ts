@@ -1,5 +1,6 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { Test } from './test';
+import { Certificat } from './certificat';
 
 // Créez une enum pour le niveau (si possible)
 export enum NiveauCours {
@@ -23,5 +24,6 @@ export class Cours {
     safeDocumentUrl?: SafeResourceUrl;  //pour voir le pdf dans la meme page 
 
     test:Test|undefined;
+    certificat:Certificat|undefined;
 
 }

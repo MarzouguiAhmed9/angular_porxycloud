@@ -1,1 +1,31 @@
-<p>affect-certificat-cours works!</p>
+
+
+<app-card cardTitle="Basic Component" [options]="false">
+    <h5>Affect Certificat To Cours </h5>
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
+        <form  [formGroup]="formR" action="javascript:">
+            <div class="form-group">
+                <label for="testSelect">Certificat </label>
+                <select id="testSelect" class="form-control" formControlName="certificat">
+                  <option selected>Choose...</option>
+                  <option *ngFor="let cert of listCert" [value]="cert.id">
+                    {{ cert.id }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="coursSelect">Cours </label>
+                <select id="coursSelect" class="form-control" formControlName="cours">
+                  <option selected>Choose...</option>
+                  <option *ngFor="let cours of listC" [value]="cours.id">
+                    {{ cours.id }}
+                  </option>
+                </select>
+              </div>
+          
+          <button type="submit" class="btn btn-primary" (click)="affect()">Affect</button>
+        </form>
+      </div>
+          

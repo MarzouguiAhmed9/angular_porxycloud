@@ -23,6 +23,9 @@ export class CoursService {
   affectTestToCours(idcours:any,idtest:any):Observable<any>{
     return this.http.put<any>(`${this.UrlCours}/cours/affectTestToCours/${idcours}/${idtest}`,null)
   }
+  affectCertificatToCours(idcours:any,idtcert:any):Observable<any>{
+    return this.http.put<any>(`${this.UrlCours}/cours/affectCertificatToCours/${idcours}/${idtcert}`,null)
+  }
 
   getCours(idcours:any):Observable<Cours>{
     return this.http.get<Cours>(`${this.UrlCours}/cours/getCoursById/${idcours}`)

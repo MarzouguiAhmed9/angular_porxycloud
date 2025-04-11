@@ -6,7 +6,7 @@ import { AffectTestCoursComponent } from '../affect-test-cours/affect-test-cours
 
 @Component({
   selector: 'app-cours',
-  imports: [CoursFormComponent, CoursTableComponent, AffectTestCoursComponent],
+  imports: [CoursFormComponent, CoursTableComponent, AffectTestCoursComponent,AffectCertificatCoursComponent],
   templateUrl: './cours.component.html',
   styleUrl: './cours.component.scss'
 })
