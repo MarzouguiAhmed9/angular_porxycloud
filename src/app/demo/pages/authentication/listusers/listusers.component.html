@@ -143,6 +143,14 @@
           <option value="true">Approved</option>
           <option value="false">Not Approved</option>
         </select>
+        <select [(ngModel)]="selectedRole" (change)="filterUsersss()">
+          <option value="">All Roles</option>
+          <option value="ROLE_ADMIN">Admin</option>
+          <option value="ROLE_CLIENT">Client</option>
+
+          <option *ngFor="let role of availableRoles" [value]="role.name">{{ role.name }}</option>
+        </select>
+        
 
         <button class="add-button" (click)="addUser()">
           <span>+</span> Add User

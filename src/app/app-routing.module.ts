@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
-import { HomeComponent } from 'src/Front_client/component/home/home.component';
 
 const routes: Routes = [
   {
@@ -15,7 +14,11 @@ const routes: Routes = [
         pathMatch: 'full'
       },
      
-    
+      
+
+{ path: 'projet', loadComponent: () => import('./demo/pages/Projet/projet/projet.component').then(m => m.ProjetComponent) }
+,
+
 { path: 'logout', loadComponent: () => import('./demo/pages/authentication/logout/logout.component').then(m => m.LogoutComponent) }
 ,
 

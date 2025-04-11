@@ -73,7 +73,24 @@ export class ListusersComponent implements OnInit {
     }
   }
   
+  selectedRole: string = '';
 
+  filterUsersss(): void {
+    this.filteredUsers = this.users.filter((user) => {
+      const matchesName =
+        user.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(this.searchTerm.toLowerCase());
+  
+      const matchesStatus =
+        this.selectedStatus === '' || String(user.approuve) === this.selectedStatus;
+  
+      const matchesRole = 
+        this.selectedRole === '' || user.role.name === this.selectedRole;
+  
+      return matchesName && matchesStatus && matchesRole;
+    });
+  }
+  
   fetchUsers(): void {
     const token = localStorage.getItem('authToken');
     if (token) {

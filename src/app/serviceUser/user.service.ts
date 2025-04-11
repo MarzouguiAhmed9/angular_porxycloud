@@ -114,7 +114,7 @@ export class UserService {
   }
 
   getRoles(userId: number): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.baseUrl}/users/${userId}/roles`).pipe(
+    return this.http.get<Role[]>(`${this.baseUrl}/api/auth/users/${userId}/roles`).pipe(
       catchError(error => {
         console.error('❌ Erreur lors de la récupération des rôles', error);
         return throwError('Impossible de récupérer les rôles.');

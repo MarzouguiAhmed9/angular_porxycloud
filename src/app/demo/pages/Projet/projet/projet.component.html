@@ -1,0 +1,44 @@
+<div class="projet-container">
+  <h2>Project List</h2>
+
+  <div *ngFor="let projet of projets" class="projet-card">
+    <h3>{{ projet.nomProjet }}</h3>
+    
+    <p>
+      <strong>Description:</strong>
+      <span class="description-short" (click)="openModalAtPosition($event, projet.description)">
+        {{ projet.description.split(' ').slice(0, 2).join(' ') }}...
+      </span>
+    </p>
+
+    <div class="date-info">
+      <strong>Date:</strong> <span>{{ projet.dateDebut }} - {{ projet.dateFin }}</span>
+    </div>
+
+    <span class="status-badge" [ngClass]="{ 'not-begin': projet.status !== 'BEGIN' }">
+      {{ projet.status === 'BEGIN' ? 'BEGIN' : 'NOT BEGIN' }}
+    </span>
+
+    <span class="creator">{{ projet.createurNom }}</span>
+
+    <div class="actions">
+      <button (click)="updateProjet(projet)" class="update">Update</button>
+      <button (click)="deleteProjet(projet.idProjet)" class="delete">Delete</button>
+    </div>
+
+    <div *ngIf="projet.taches?.length > 0" class="taches">
+      <h4>Associated Tasks:</h4>
+      <ul>
+        <li *ngFor="let tache of projet.taches">
+          {{ tache.nomTache }} - {{ tache.status }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Modal description -->
+  <div *ngIf="showModal" class="modal-content show" [ngStyle]="{ top: modalPosition.top + 'px', left: modalPosition.left + 'px' }">
+    <span class="close-btn" (click)="closeModal()">&times;</span>
+    <p>{{ selectedDescription }}</p>
+  </div>
+</div>

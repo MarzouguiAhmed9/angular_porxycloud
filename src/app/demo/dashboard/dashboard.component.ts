@@ -46,4 +46,8 @@ export class DashboardComponent implements OnInit {
   list() {
     this.router.navigate(['/list']);
   }
+  list2() {
+    this.router.navigate(['/projet']);
+  }
+  
 }
