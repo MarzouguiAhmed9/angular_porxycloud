@@ -1,5 +1,6 @@
 import { User } from "src/app/serviceUser/user.service";
 import { Tache } from "./tache";
+import { Status } from "./Status";
 
 export interface Projet {
   idProjet: number;
@@ -12,5 +13,5 @@ export interface Projet {
   createurNom: string;
   membres?: User[];
   taches?: Tache[];
-  status: string;
+  status: Status;
 }

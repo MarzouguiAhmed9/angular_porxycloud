@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {jwtDecode} from 'jwt-decode';
 
 import { Observable } from 'rxjs';
 import { Projet } from '../demo/pages/Projet/projet';
@@ -41,8 +42,32 @@ export class ProjetService {
   updateProjet(projet: Projet): Observable<Projet> {
     return this.http.put<Projet>(`${this.baseUrl}/${projet.idProjet}`, projet);
   }
-
-  addProjet(projet: Projet): Observable<Projet> {
-    return this.http.post<Projet>(this.baseUrl, projet);
+ 
+  private getAuthToken(): string | null {
+    return localStorage.getItem('authToken'); // Assurez-vous que le token est dans le localStorage
   }
+  
+  private getUserInfoFromToken(): any {
+    const token = this.getAuthToken();
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      return decodedToken; // Le decodedToken contiendra les informations du user (comme userId ou username)
+    }
+    return null;
+  }
+  
+  addProjet(projet: Projet): Observable<Projet> {
+    const token = this.getAuthToken();
+    const headers = this.getHeaders();
+    
+    const userInfo = this.getUserInfoFromToken();
+    if (userInfo) {
+      projet.createurNom = userInfo.username || 'Nom inconnu'; // Assurez-vous que 'username' est une clé dans votre token
+     
+    }
+    
+    return this.http.post<Projet>(this.baseUrl, projet, { headers });
+  }
+  
+  
 }

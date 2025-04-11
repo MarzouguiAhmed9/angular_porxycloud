@@ -4,6 +4,7 @@ import { Projet } from '../projet';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { Status } from '../Status';
 
 @Component({
   selector: 'app-projet',
@@ -11,16 +12,15 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './projet.component.html',
   styleUrls: ['./projet.component.scss']
 })
-
 export class ProjetComponent implements OnInit {
   projets: Projet[] = [];
   selectedDescription: string = '';
   showModal: boolean = false;
-  isDescriptionModal: boolean = false; // Variable pour savoir si c'est la description ou la modale d'édition
+  isDescriptionModal: boolean = false; // Pour savoir si c'est la description ou l'édition
   modalPosition: { top: number; left: number } = { top: 0, left: 0 };
   isEditing: boolean = false;
   currentProjet: Projet = this.initNewProjet();
-
+  statusEnum = Status; 
   constructor(private projetService: ProjetService) {}
 
   ngOnInit(): void {
@@ -55,23 +55,43 @@ export class ProjetComponent implements OnInit {
       nbreMembreDisponible: 0,
       dateDebut: '',
       dateFin: '',
-      createurNom: '',
-      status: 'NOT BEGIN',
+      createurNom: '', // Créateur actuel (authentifié)
+      status: Status.NOT_BEGIN,
       taches: []
     };
   }
 
   saveProjet(): void {
     if (this.isEditing) {
+      // Mise à jour d'un projet existant
+      this.currentProjet.status = Status.NOT_BEGIN; // Assurez-vous que le statut est valide
       this.projetService.updateProjet(this.currentProjet).subscribe(
         () => {
           this.loadProjets();
           this.closeModal();
         },
-        (error) => console.error('Erreur lors de la mise à jour du projet', error)
+        (error) => {
+          console.error('Erreur lors de la mise à jour du projet', error);
+        }
+      );
+    } else {
+      // Ajout d'un nouveau projet
+      this.currentProjet.status = Status.NOT_BEGIN; // Assurez-vous que le statut est valide
+      this.projetService.addProjet(this.currentProjet).subscribe(
+        () => {
+          this.loadProjets();
+          this.closeModal();
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout du projet', error);
+        }
       );
     }
   }
+  
+      
+
+ 
 
   closeModal(): void {
     this.showModal = false;
@@ -92,5 +112,9 @@ export class ProjetComponent implements OnInit {
 
   openDescriptionModal(projet: Projet): void {
     this.openModal(false, projet, true); // Ouvrir la modale pour afficher la description complète
+  }
+
+  filterProjets(status: string): void {
+    this.projets = this.projets.filter((projet) => projet.status === status);
   }
 }

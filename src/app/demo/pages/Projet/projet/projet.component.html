@@ -1,36 +1,38 @@
 <div class="projet-container">
   <h2>Project List</h2>
 
+  <button (click)="openModal(false, null)" class="add-project-button">Add Project</button>
+
+  <!-- Filtres -->
+  <div class="filters">
+    <button (click)="filterProjets('BEGIN')">BEGIN</button>
+    <button (click)="filterProjets('NOT BEGIN')">NOT BEGIN</button>
+    <button (click)="filterProjets('FINISHED')">FINISHED</button>
+  </div>
+
   <div *ngFor="let projet of projets" class="projet-card">
     <h3>{{ projet.nomProjet }}</h3>
-    
     <p>
       <strong>Description:</strong>
       <span class="description-short" (click)="openDescriptionModal(projet)">
         {{ projet.description.split(' ').slice(0, 2).join(' ') }}...
       </span>
     </p>
-    
-    <div  class="nbreGestions">
-      <strong>Nbre Gestion : </strong> <span>{{ projet.nbreGestions }} </span>
+    <div class="nbreGestions">
+      <strong>Nbre Gestion:</strong> <span>{{ projet.nbreGestions }}</span>
     </div>
-
-
     <div class="date-info">
       <strong>Date:</strong> <span>{{ projet.dateDebut }} - {{ projet.dateFin }}</span>
     </div>
-
-    <span class="status-badge" [ngClass]="{ 'not-begin': projet.status !== 'BEGIN' }">
-      {{ projet.status === 'BEGIN' ? 'BEGIN' : 'NOT BEGIN' }}
+    <span class="status-badge" [ngClass]="{ 'not-begin': projet.status !== statusEnum.NOT_BEGIN }">
+      {{ projet.status === statusEnum.NOT_BEGIN ? 'NOT BEGIN' : 'BEGIN' }}
     </span>
-
+    
     <span class="creator">{{ projet.createurNom }}</span>
-
     <div class="actions">
       <button (click)="updateProjet(projet)" class="update">Update</button>
       <button (click)="deleteProjet(projet.idProjet)" class="delete">Delete</button>
     </div>
-
     <div *ngIf="projet.taches?.length > 0" class="taches">
       <h4>Associated Tasks:</h4>
       <ul>
@@ -41,21 +43,9 @@
     </div>
   </div>
 
-  <!-- Modal for description -->
-  <div *ngIf="showModal && isDescriptionModal" class="modal-content show" [ngStyle]="{ top: modalPosition.top + 'px', left: modalPosition.left + 'px' }">
-    <span class="close-btn" (click)="closeModal()">&times;</span>
-    <p>{{ selectedDescription }}</p>
-  </div>
-
   <!-- Modal Form for Adding/Editing Projet -->
   <div *ngIf="showModal && !isDescriptionModal" class="modal-content show" [ngStyle]="{ top: modalPosition.top + 'px', left: modalPosition.left + 'px' }">
     <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()"></div>
-
-  
-      
-    
-   
-        
     <div class="modal-body">
       <h3>{{ isEditing ? 'Edit Project' : 'Add New Project' }}</h3>
       <form (ngSubmit)="saveProjet()" #projetForm="ngForm">
@@ -84,16 +74,15 @@
 
         <label for="dateDebut">Start Date</label>
         <input
-        type="date"
-        id="dateDebut"
-        [(ngModel)]="currentProjet.dateDebut"
-        name="dateDebut"
-        required
-        #dateDebut="ngModel"
-        [class.is-invalid]="dateDebut.invalid && dateDebut.touched"
-        [disabled]="isEditing" 
-      />
-      
+          type="date"
+          id="dateDebut"
+          [(ngModel)]="currentProjet.dateDebut"
+          name="dateDebut"
+          required
+          #dateDebut="ngModel"
+          [class.is-invalid]="dateDebut.invalid && dateDebut.touched"
+          [disabled]="isEditing" 
+        />
         <div *ngIf="dateDebut.invalid && dateDebut.touched" class="error-message">Start Date is required.</div>
 
         <label for="dateFin">End Date</label>
@@ -107,7 +96,18 @@
           [class.is-invalid]="dateFin.invalid && dateFin.touched"
         />
         <div *ngIf="dateFin.invalid && dateFin.touched" class="error-message">End Date is required.</div>
-
+        <label for="nbreGestions">Number of Managements</label>
+        <input
+          type="number"
+          id="nbreGestions"
+          [(ngModel)]="currentProjet.nbreGestions"
+          name="nbreGestions"
+          required
+          #nbreGestions="ngModel"
+          [class.is-invalid]="nbreGestions.invalid && nbreGestions.touched"
+        />
+        <div *ngIf="nbreGestions.invalid && nbreGestions.touched" class="error-message">Number of Managements is required.</div>
+        
         <button type="submit" [disabled]="projetForm.invalid">Save Project</button>
       </form>
     </div>
