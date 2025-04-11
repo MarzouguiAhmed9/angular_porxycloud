@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, throwError, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { Role } from './role/Role';
 export interface User {
   id: number;
   firstName: string;
@@ -112,15 +113,16 @@ export class UserService {
     this.router.navigate(['/login']);
   }
 
-  
-  getRoles(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/users/${userId}/roles`).pipe(
+  getRoles(userId: number): Observable<Role[]> {
+    return this.http.get<Role[]>(`${this.baseUrl}/users/${userId}/roles`).pipe(
       catchError(error => {
         console.error('❌ Erreur lors de la récupération des rôles', error);
         return throwError('Impossible de récupérer les rôles.');
       })
     );
   }
+  
+ 
   // 📌 Récupération des rôles de l'utilisateur connecté
   getUserRoles(): Observable<string> {
     const token = this.getToken();
@@ -181,6 +183,7 @@ export class UserService {
 
   // 🔹 URL de base pour les actions utilisateurs
 private userApiUrl = 'http://localhost:8089/Projetback/api/auth'; // adapte selon ton backend
+
 
 
 

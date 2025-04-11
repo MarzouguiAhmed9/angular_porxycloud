@@ -189,56 +189,56 @@
   </div>
 
   <!-- Modal for Add User -->
-  <div class="modal" *ngIf="newUser">
-    <div class="modal-content">
-      <span class="close-btn" (click)="closeModal()">&#x2716;</span>
-      
-      <h2>Add User</h2>
-      <form (ngSubmit)="saveUser()">
-        <label for="UserName">User Name:</label>
-        <input id="UserName" [(ngModel)]="newUser.username" name="firstName" required />
-  
-        <!-- First Name -->
-        <label for="firstName">First Name:</label>
-        <input id="firstName" [(ngModel)]="newUser.firstName" name="firstName" required />
-  
-        <!-- Last Name -->
-        <label for="lastName">Last Name:</label>
-        <input id="lastName" [(ngModel)]="newUser.lastName" name="lastName" required />
-  
-        <!-- Birthday -->
-        <label for="birthday">Birthday:</label>
-        <input type="date" id="birthday" [(ngModel)]="newUser.birthday" name="birthday" required />
-  
-        <!-- Address -->
-        <label for="address">Address:</label>
-        <input id="address" [(ngModel)]="newUser.address" name="address" />
-  
-        <!-- Phone -->
-        <label for="phone">Phone:</label>
-        <input id="phone" [(ngModel)]="newUser.phone" name="phone" />
-  
-        <!-- Email -->
-        <label for="email">Email:</label>
-        <input id="email" type="email" [(ngModel)]="newUser.email" name="email" required />
-  
-       
-  
-        <!-- Role -->
-        <label for="role">Role:</label>
-        <select id="role" [(ngModel)]="newUser.role.id" name="role">
-          <option [ngValue]="2">ROLE_CLIENT</option>
-          <option [ngValue]="1">ROLE_ADMIN</option>
-        </select>
-  
-        <!-- Submit and Cancel Buttons -->
-        <div class="modal-footer">
-          <button type="submit">Add</button>
-          <button type="button" (click)="closeModal()">Cancel</button>
-        </div>
-      </form>
-    </div>
+  <!-- Modal for Add User -->
+<div class="modal" *ngIf="isModalOpen"> <!-- Utilisation de isModalOpen pour contrôler l'affichage -->
+  <div class="modal-content">
+    <span class="close-btn" (click)="closeModal()">&#x2716;</span>
+
+    <h2>Add User</h2>
+    <form (ngSubmit)="saveUser()">
+      <label for="UserName">User Name:</label>
+      <input id="UserName" [(ngModel)]="newUser.username" name="firstName" required />
+
+      <!-- First Name -->
+      <label for="firstName">First Name:</label>
+      <input id="firstName" [(ngModel)]="newUser.firstName" name="firstName" required />
+
+      <!-- Last Name -->
+      <label for="lastName">Last Name:</label>
+      <input id="lastName" [(ngModel)]="newUser.lastName" name="lastName" required />
+
+      <!-- Birthday -->
+      <label for="birthday">Birthday:</label>
+      <input type="date" id="birthday" [(ngModel)]="newUser.birthday" name="birthday" required />
+
+      <!-- Address -->
+      <label for="address">Address:</label>
+      <input id="address" [(ngModel)]="newUser.address" name="address" />
+
+      <!-- Phone -->
+      <label for="phone">Phone:</label>
+      <input id="phone" [(ngModel)]="newUser.phone" name="phone" />
+
+      <!-- Email -->
+      <label for="email">Email:</label>
+      <input id="email" type="email" [(ngModel)]="newUser.email" name="email" required />
+
+      <!-- Role -->
+      <label for="role">Role:</label>
+      <select id="role" [(ngModel)]="newUser.role.id" name="role">
+        <option [ngValue]="2">ROLE_CLIENT</option>
+        <option [ngValue]="1">ROLE_ADMIN</option>
+      </select>
+
+      <!-- Submit and Cancel Buttons -->
+      <div class="modal-footer">
+        <button type="submit">Add</button>
+        <button type="button" (click)="closeModal()">Cancel</button>
+      </div>
+    </form>
   </div>
+</div>
+
   
 
   <!-- Modal for Edit User -->

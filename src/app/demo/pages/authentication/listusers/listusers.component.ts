@@ -4,28 +4,31 @@ import { User, UserService } from 'src/app/serviceUser/user.service';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { Role } from 'src/app/serviceUser/role/Role';
 
 @Component({
   selector: 'app-listusers',
-  imports: [RouterModule, SharedModule,FormsModule],
+  imports: [RouterModule, SharedModule, FormsModule],
   templateUrl: './listusers.component.html',
   styleUrls: ['./listusers.component.scss'],
   standalone: true,
-  
 })
 export class ListusersComponent implements OnInit {
   searchTerm: string = '';
   selectedStatus: string = '';
   filteredUsers: User[] = [];
   users: User[] = [];
+  availableRoles: Role[] = [];
 
   editingUser: User | null = null;
   newUser: User = this.initNewUser();
+  isModalOpen: boolean = false;
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.fetchUsers();
+    this.loadRoles();
   }
 
   initNewUser(): User {
@@ -41,13 +44,35 @@ export class ListusersComponent implements OnInit {
       enabled: true,
       username: '',
       password: '',
-      role: {
-        id: 2,
-        name: 'USER',
-        authority: 'USER'
-      }
+      role: { id: 2, name: 'ROLE_CLIENT', authority: 'ROLE_CLIENT' },
     };
   }
+
+  loadRoles() {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const decodedToken = this.userService.decodeToken(token);
+      const userId = decodedToken?.id; // Vous devez extraire l'ID de l'utilisateur du token
+  
+      if (userId) {
+        this.userService.getRoles(userId).subscribe(
+          (roles: Role[]) => {
+            this.availableRoles = roles;
+            if (!this.newUser.role) {
+              this.newUser.role = { id: 2, name: 'ROLE_CLIENT', authority: 'ROLE_CLIENT' }; // Default role
+            }
+          },
+          (error) => console.error('Error loading roles:', error)
+        );
+      } else {
+        console.error('ID utilisateur manquant');
+      }
+    } else {
+      console.error('Token is missing or invalid');
+    }
+  }
+  
 
   fetchUsers(): void {
     const token = localStorage.getItem('authToken');
@@ -66,7 +91,7 @@ export class ListusersComponent implements OnInit {
   }
 
   filterUserss(): void {
-    this.filteredUsers = this.users.filter(user => {
+    this.filteredUsers = this.users.filter((user) => {
       const matchesName =
         user.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         user.lastName.toLowerCase().includes(this.searchTerm.toLowerCase());
@@ -80,12 +105,14 @@ export class ListusersComponent implements OnInit {
 
   addUser(): void {
     this.newUser = this.initNewUser();
+    this.isModalOpen = true;
   }
 
   saveUser(): void {
     const token = localStorage.getItem('authToken');
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
       if (this.editingUser) {
         this.userService.updateUser(this.editingUser.id, this.editingUser, headers).subscribe(
           () => {
@@ -95,7 +122,22 @@ export class ListusersComponent implements OnInit {
           (error) => console.error('Error updating user:', error)
         );
       } else {
-        this.userService.addUser(this.newUser, headers).subscribe(
+        const newUserData: User = {
+          id: 0, // Add the id here
+          firstName: this.newUser.firstName,
+          lastName: this.newUser.lastName,
+          birthday: this.newUser.birthday,
+          address: this.newUser.address,
+          phone: this.newUser.phone,
+          email: this.newUser.email,
+          approuve: this.newUser.approuve,
+          enabled: this.newUser.enabled,
+          username: this.newUser.username,
+          password: this.newUser.password,
+          role: { id: this.newUser.role.id, name: this.newUser.role.name, authority: this.newUser.role.authority }, // Fix role structure
+        };
+
+        this.userService.addUser(newUserData, headers).subscribe(
           () => {
             this.fetchUsers();
             this.closeModal();
@@ -118,16 +160,16 @@ export class ListusersComponent implements OnInit {
 
   toggleApproval(id: number): void {
     this.userService.toggleApproval(id).subscribe((updatedUser: User) => {
-      const index = this.users.findIndex(u => u.id === id);
+      const index = this.users.findIndex((u) => u.id === id);
       if (index !== -1) this.users[index].approuve = updatedUser.approuve;
-      const filteredIndex = this.filteredUsers.findIndex(u => u.id === id);
+      const filteredIndex = this.filteredUsers.findIndex((u) => u.id === id);
       if (filteredIndex !== -1) this.filteredUsers[filteredIndex].approuve = updatedUser.approuve;
     });
   }
 
   closeModal() {
+    this.isModalOpen = false;
     this.editingUser = null;
     this.newUser = null;
   }
-  
 }
