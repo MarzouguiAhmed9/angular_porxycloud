@@ -1,0 +1,41 @@
+<div class="dashboard-container">
+  <!-- Applications List Section -->
+  <h1>Applications List</h1>
+
+  <!-- Check if there are any applications to display -->
+  <div *ngIf="applications && applications.length > 0; else noDataTemplate">
+    <table class="applications-table">
+      <thead>
+      <tr>
+        <th>Status</th>
+        <th>Motivated Letter</th>
+        <th>CV</th>
+        <th>condidat</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let application of applications">
+        <td>{{ application.status }}</td>
+        <td>{{ application.motivatedlettre }}</td>
+        <td>
+          <!-- Check if cv.id is present before rendering the download link -->
+          <a *ngIf="application.cv?.id"
+             [href]="'http://localhost:8089/Projetback/cv/download/' + application.cv.id"
+             download
+             target="_blank">
+            Download CV
+          </a>
+          <span *ngIf="!application.cv?.id">No CV available</span>
+        </td>
+        <td>{{ application.username }}</td>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Template for when no applications are available -->
+  <ng-template #noDataTemplate>
+    <p>No applications available.</p>
+  </ng-template>
+</div>

@@ -1,0 +1,83 @@
+<div class="dashboard-container">
+  <!-- Add New Offre Button -->
+  <div class="mb-3">
+    <button class="btn btn-success" (click)="addOffre()">Add Offre</button>
+  </div>
+
+  <!-- Form to add or view an "Offre" -->
+  <div class="offer-form">
+    <h2>{{ isEditing ? 'Add or Edit Offre' : 'View Offre' }}</h2>
+    <form (ngSubmit)="onSubmit()">
+
+      <!-- Title Input -->
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          type="text"
+          id="title"
+          [(ngModel)]="offre.title"
+          name="title"
+          required
+          class="form-control"
+          placeholder="Enter job title"
+          [readonly]="!isEditing" /> <!-- Enable/Disable based on isEditing -->
+      </div>
+
+      <!-- Skills Input -->
+      <div class="form-group">
+        <label for="skills">Skills</label>
+        <input
+          type="text"
+          id="skills"
+          [(ngModel)]="offre.skills"
+          name="skills"
+          required
+          class="form-control"
+          placeholder="Enter required skills"
+          [readonly]="!isEditing" /> <!-- Enable/Disable based on isEditing -->
+      </div>
+
+      <!-- Description Input -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          [(ngModel)]="offre.description"
+          name="description"
+          required
+          class="form-control"
+          placeholder="Enter job description"
+          [readonly]="!isEditing"></textarea> <!-- Enable/Disable based on isEditing -->
+      </div>
+
+      <!-- Submit Button -->
+      <button *ngIf="isEditing" type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+  <div>
+    <h2>Offres List</h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th>Skills</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let offree of applications">
+        <td>{{ offree.skills }}</td>
+        <td>{{ offree.title }}</td>
+        <td>{{ offree.description }}</td>
+        <td>
+          <button class="btn btn-success" (click)="viewOffre(offree)">View</button>
+          <button class="btn btn-info" (click)="editOffre(offree)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteOffre(offree.id)">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
