@@ -37,47 +37,13 @@
     }
   }
   
-  .modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
   
-    .modal {
-      background-color: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      width: 400px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  
-      h3 {
-        margin-bottom: 1rem;
-      }
-  
-      .form-control {
-        width: 100%;
-        margin-bottom: 1rem;
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-  
-      .modal-actions {
-        display: flex;
-        justify-content: space-between;
-      }
-    }
-  }
   .add-button {
     background-color: #10b981;
     color: white;
-    margin-left: 120px;
-    font-weight: 600;
+    margin-left: 130px;
+    margin-bottom: 20px;
+    font-weight: 800;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     border: none;
@@ -122,148 +88,167 @@
   .btn:hover {
     opacity: 0.85;
   }
-  .task-container {
-    max-width: 1000px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  
-    h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-  
-    .form-group {
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      select {
-        padding: 0.5rem;
-        border-radius: 5px;
-      }
-    }
-  
-    .add-button {
-      margin-bottom: 1rem;
-      padding: 0.6rem 1.2rem;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      span {
-        font-size: 1.4rem;
-      }
-    }
-  
-    table {
-      width: 100%;
-      border-collapse: collapse;
-  
-      th, td {
-        padding: 0.8rem;
-        text-align: left;
-      }
-  
-      thead {
-        background-color: #f0f0f0;
-      }
-  
-      .btn {
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.3rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-  
-        &.edit {
-          background-color: #007bff;
-          color: white;
-        }
-  
-        &.delete {
-          background-color: #dc3545;
-          color: white;
-        }
-      }
-    }
-  }
-  
-  // 💬 Modal avec fond gris transparent
-  .modal-backdrop {
+/* Modal */
+/* Modal */
+.modal {
+    display: flex;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4); // gris transparent
-    display: flex;
-    align-items: center;
+    right: 0;
+    bottom: 0;
     justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);  /* Opacité augmentée pour plus de contraste */
     z-index: 1000;
+    animation: fadeIn 0.3s ease-out;  /* Animation d'ouverture du modal */
+    
+    &.close {
+      animation: fadeOut 0.3s ease-in;  /* Animation de fermeture */
+    }
+  }
   
-    .modal {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      width: 400px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
-      animation: fadeIn 0.3s ease-in-out;
+  /* Animation d'apparition du modal */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
   
-      h3 {
-        margin-bottom: 1rem;
-      }
+  /* Animation de disparition du modal */
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  /* Contenu du Modal */
+  .modal-content {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);  /* Ombre plus marquée */
+    width: 600px;  /* Plus grand pour plus d'espace */
+    max-width: 90%;  /* Adaptabilité pour les petits écrans */
+    transition: transform 0.3s ease-in-out;  /* Transition pour les transformations */
+  
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+  
+    .form-group {
+      margin-bottom: 15px;
   
       label {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
         display: block;
-        margin-top: 1rem;
-        margin-bottom: 0.3rem;
       }
   
-      input, select {
+      input,
+      select {
         width: 100%;
-        padding: 0.5rem;
-        border-radius: 6px;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 8px;
         border: 1px solid #ccc;
+        transition: border-color 0.2s ease;
+  
+        &:focus {
+          border-color: #4caf50;  /* Changement de couleur au focus */
+          outline: none;
+        }
+  
+        &:invalid {
+          border-color: #f44336;  /* Bordure rouge si le champ est invalide */
+        }
+      }
+    }
+  
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      border: none;
+  
+      &.edit {
+        background-color: #4caf50;  /* Couleur verte pour l'édition */
+        color: white;
+  
+        &:hover {
+          background-color: #45a049;  /* Ombre plus foncée au survol */
+          transform: scale(1.05);  /* Légère animation au survol */
+        }
       }
   
-      .modal-actions {
-        margin-top: 1.5rem;
-        display: flex;
-        justify-content: space-between;
+      &.add {
+        background-color: #2196f3;  /* Couleur bleue pour l'ajout */
+        color: white;
   
-        .btn {
-          padding: 0.5rem 1rem;
-          border-radius: 6px;
-          font-weight: bold;
+        &:hover {
+          background-color: #0b7dda;
+          transform: scale(1.05);
+        }
+      }
   
-          &.btn-success {
-            background-color: #28a745;
-            color: white;
-          }
+      &.cancel {
+        background-color: #f44336;  /* Couleur rouge pour annuler */
+        color: white;
   
-          &.btn-secondary {
-            background-color: #6c757d;
-            color: white;
-          }
+        &:hover {
+          background-color: #d32f2f;
+          transform: scale(1.05);
         }
       }
     }
   }
   
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
+  /* Masquer modal quand il est fermé */
+  .modal-content.hidden {
+    display: none;
+  }
   
-    to {
-      opacity: 1;
-      transform: scale(1);
+  /* Responsive pour petits écrans */
+  @media (max-width: 768px) {
+    .modal-content {
+      width: 90%;  /* Adaptation à la taille de l'écran */
+      padding: 20px;
     }
+  }
+ /* Styles pour les badges de statut */
+.status-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    font-weight: 600;
+    display: inline-block;
+  }
+  
+  /* Style pour le statut "NOT BEGIN" */
+  .status-badge.not-begin {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  
+  /* Style pour le statut "IN PROGRESS" */
+  .status-badge.in-progress {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  /* Style pour le statut "COMPLETED" */
+  .status-badge.completed {
+    background-color: #d1fae5;
+    color: #16a34a;
   }
   

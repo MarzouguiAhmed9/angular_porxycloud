@@ -74,10 +74,11 @@ export class ProjetService {
     return this.http.get<Tache[]>(`${this.baseUrl}/${id}/taches`, { headers: this.getHeaders() });
   }
   
-  addTache(tache: Tache): Observable<Tache> {
-    return this.http.post<Tache>(`${this.baseUrl}/taches`, tache, { headers: this.getHeaders() });
+  addTache(tache: Tache, idProjet: number): Observable<Tache> {
+    return this.http.post<Tache>(`${this.baseUrl}/${idProjet}/taches`, tache, { headers: this.getHeaders() });
   }
-
+  
+  
  
 
   updateTache(tache: Tache): Observable<Tache> {
@@ -89,6 +90,9 @@ export class ProjetService {
       headers: this.getHeaders(),
       responseType: 'text' // S'attendre à une réponse en texte brut
     });
+  }
+  getAllTaches(): Observable<Tache[]> {
+    return this.http.get<Tache[]>(`${this.apiUrl}/projets/taches`, { headers: this.getHeaders() });
   }
   
     
