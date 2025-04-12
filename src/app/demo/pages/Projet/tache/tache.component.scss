@@ -1,0 +1,269 @@
+.task-container {
+    padding: 1rem;
+    background-color: #f9f9f9;
+  
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+  
+    .form-group {
+      margin-bottom: 1rem;
+  
+      label {
+        font-weight: bold;
+        margin-right: 0.5rem;
+      }
+  
+      select {
+        padding: 0.4rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+    }
+  
+    .add-task-btn {
+      margin-bottom: 1rem;
+    }
+  
+    table {
+      width: 100%;
+      background-color: #fff;
+  
+      th, td {
+        text-align: center;
+        vertical-align: middle;
+      }
+    }
+  }
+  
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    .modal {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 400px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  
+      h3 {
+        margin-bottom: 1rem;
+      }
+  
+      .form-control {
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+  
+      .modal-actions {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+  .add-button {
+    background-color: #10b981;
+    color: white;
+    margin-left: 120px;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    span {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    &:hover {
+      background-color: #059669;
+    }
+  }
+  .btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+  }
+
+  .edit {
+    background-color: #e0f2fe;
+    color: #0369a1;
+  }
+
+  .delete {
+    background-color: #fee2e2;
+    color: #b91c1c;
+  }
+
+  .toggle {
+    background-color: #ede9fe;
+    color: #5b21b6;
+  }
+
+  .btn:hover {
+    opacity: 0.85;
+  }
+  .task-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+  
+    .form-group {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      select {
+        padding: 0.5rem;
+        border-radius: 5px;
+      }
+    }
+  
+    .add-button {
+      margin-bottom: 1rem;
+      padding: 0.6rem 1.2rem;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      span {
+        font-size: 1.4rem;
+      }
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+  
+      th, td {
+        padding: 0.8rem;
+        text-align: left;
+      }
+  
+      thead {
+        background-color: #f0f0f0;
+      }
+  
+      .btn {
+        padding: 0.4rem 0.8rem;
+        margin-right: 0.3rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+  
+        &.edit {
+          background-color: #007bff;
+          color: white;
+        }
+  
+        &.delete {
+          background-color: #dc3545;
+          color: white;
+        }
+      }
+    }
+  }
+  
+  // 💬 Modal avec fond gris transparent
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); // gris transparent
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  
+    .modal {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 400px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 0.3s ease-in-out;
+  
+      h3 {
+        margin-bottom: 1rem;
+      }
+  
+      label {
+        display: block;
+        margin-top: 1rem;
+        margin-bottom: 0.3rem;
+      }
+  
+      input, select {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+  
+      .modal-actions {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+  
+        .btn {
+          padding: 0.5rem 1rem;
+          border-radius: 6px;
+          font-weight: bold;
+  
+          &.btn-success {
+            background-color: #28a745;
+            color: white;
+          }
+  
+          &.btn-secondary {
+            background-color: #6c757d;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  

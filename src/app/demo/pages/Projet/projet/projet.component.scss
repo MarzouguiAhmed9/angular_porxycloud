@@ -65,6 +65,17 @@
         text-align: right;
        
       }
+
+      .nbreMembreDisponible{
+        font-weight: bold;
+        font-size: 1.2em;  /* Taille du texte */
+        color: #258d38e3;    /* Couleur violet */
+        margin-top: 0.5rem;
+        display: block;
+        text-align: right;
+       
+      }
+      
   
       .date-info {
         font-weight: bold;
@@ -201,3 +212,48 @@
 .modal-content button:hover {
   background-color: #0056b3; /* Changer la couleur du bouton lors du survol */
 }
+.add-button {
+    background-color: #10b981;
+    color: white;
+    position: absolute;
+    top: 6rem;
+    right: 3.9rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    span {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    &:hover {
+      background-color: #059669;
+    }
+
+
+
+}
+
+.actions-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+
+    input[type="text"],
+    select {
+      padding: 0.5rem 0.8rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+    }}
+
+
+
+    

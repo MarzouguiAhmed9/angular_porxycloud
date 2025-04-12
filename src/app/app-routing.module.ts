@@ -14,7 +14,8 @@ const routes: Routes = [
         pathMatch: 'full'
       },
      
-      
+      { path: 'tache', loadComponent: () => import('./demo/pages/Projet/tache/tache.component').then(m => m.TacheComponent) }
+      ,   
 
 { path: 'projet', loadComponent: () => import('./demo/pages/Projet/projet/projet.component').then(m => m.ProjetComponent) }
 ,

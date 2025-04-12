@@ -4,6 +4,7 @@ import {jwtDecode} from 'jwt-decode';
 
 import { Observable } from 'rxjs';
 import { Projet } from '../demo/pages/Projet/projet';
+import { Tache } from '../demo/pages/Projet/tache';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { Projet } from '../demo/pages/Projet/projet';
 export class ProjetService {
   private baseUrl = 'http://localhost:8089/Projetback/api/projets'; // à adapter
 
- 
+  private apiUrl = 'http://localhost:8089/Projetback/api';
 
   constructor(private http: HttpClient) {}
   private getHeaders(): HttpHeaders {
@@ -69,5 +70,26 @@ export class ProjetService {
     return this.http.post<Projet>(this.baseUrl, projet, { headers });
   }
   
+  getTachesByProjet(id: number): Observable<Tache[]> {
+    return this.http.get<Tache[]>(`${this.baseUrl}/${id}/taches`, { headers: this.getHeaders() });
+  }
   
+  addTache(tache: Tache): Observable<Tache> {
+    return this.http.post<Tache>(`${this.baseUrl}/taches`, tache, { headers: this.getHeaders() });
+  }
+
+ 
+
+  updateTache(tache: Tache): Observable<Tache> {
+    return this.http.put<Tache>(`${this.apiUrl}/taches/${tache.idTache}`, tache, { headers: this.getHeaders() });
+  }
+  
+  deleteTache(idTache: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/taches/${idTache}`, {
+      headers: this.getHeaders(),
+      responseType: 'text' // S'attendre à une réponse en texte brut
+    });
+  }
+  
+    
 }

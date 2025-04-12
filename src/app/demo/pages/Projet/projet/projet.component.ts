@@ -14,36 +14,22 @@ import { Status } from '../Status';
 })
 export class ProjetComponent implements OnInit {
   projets: Projet[] = [];
+  allProjets: Projet[] = [];
+  selectedStatus: string = '';
+
   selectedDescription: string = '';
   showModal: boolean = false;
-  isDescriptionModal: boolean = false; // Pour savoir si c'est la description ou l'édition
+  isDescriptionModal: boolean = false;
   modalPosition: { top: number; left: number } = { top: 0, left: 0 };
   isEditing: boolean = false;
+
   currentProjet: Projet = this.initNewProjet();
-  statusEnum = Status; 
+  statusEnum = Status;
+
   constructor(private projetService: ProjetService) {}
 
   ngOnInit(): void {
     this.loadProjets();
-  }
-
-  loadProjets(): void {
-    this.projetService.getAllProjets().subscribe({
-      next: data => this.projets = data,
-      error: err => console.error("Erreur lors du chargement des projets :", err)
-    });
-  }
-
-  // Ouvrir la modale pour l'édition ou la description complète
-  openModal(isEditing: boolean, projet?: Projet, isDescription: boolean = false): void {
-    this.isEditing = isEditing;
-    this.isDescriptionModal = isDescription;
-    if (isEditing && projet) {
-      this.currentProjet = { ...projet }; // Préparer le projet pour l'édition
-    } else if (isDescription) {
-      this.selectedDescription = projet?.description || ''; // Afficher la description complète
-    }
-    this.showModal = true;
   }
 
   initNewProjet(): Projet {
@@ -55,66 +41,88 @@ export class ProjetComponent implements OnInit {
       nbreMembreDisponible: 0,
       dateDebut: '',
       dateFin: '',
-      createurNom: '', // Créateur actuel (authentifié)
+      createurNom: '',
       status: Status.NOT_BEGIN,
-      taches: []
+      taches: [],
     };
   }
 
+  loadProjets(): void {
+    this.projetService.getAllProjets().subscribe({
+      next: (data) => {
+        this.allProjets = data;
+        this.projets = [...this.allProjets];
+      },
+      error: (err) => console.error('Erreur lors du chargement des projets :', err),
+    });
+  }
+  openModal(isEditing: boolean, projet?: Projet, isDescription: boolean = false): void {
+    this.isEditing = isEditing;
+    this.isDescriptionModal = isDescription;
+  
+    if (isEditing && projet) {
+      this.currentProjet = { ...projet };
+    } else if (isDescription) {
+      this.selectedDescription = projet?.description || '';
+    }
+  
+    this.showModal = true;
+  }
+  
+  closeModal(): void {
+    this.showModal = false;
+    this.currentProjet = this.initNewProjet();
+  }
+
   saveProjet(): void {
+    this.currentProjet.status = Status.NOT_BEGIN;
+
     if (this.isEditing) {
-      // Mise à jour d'un projet existant
-      this.currentProjet.status = Status.NOT_BEGIN; // Assurez-vous que le statut est valide
       this.projetService.updateProjet(this.currentProjet).subscribe(
         () => {
           this.loadProjets();
           this.closeModal();
         },
-        (error) => {
-          console.error('Erreur lors de la mise à jour du projet', error);
-        }
+        (error) => console.error('Erreur lors de la mise à jour du projet', error)
       );
     } else {
-      // Ajout d'un nouveau projet
-      this.currentProjet.status = Status.NOT_BEGIN; // Assurez-vous que le statut est valide
       this.projetService.addProjet(this.currentProjet).subscribe(
         () => {
           this.loadProjets();
           this.closeModal();
         },
-        (error) => {
-          console.error('Erreur lors de l\'ajout du projet', error);
-        }
+        (error) => console.error("Erreur lors de l'ajout du projet", error)
       );
     }
+  }
+
+  deleteProjet(id: number): void {
+    if (confirm('Confirmer la suppression ?')) {
+      this.projetService.deleteProjet(id).subscribe(() => this.loadProjets());
+    }
+  }
+
+  updateProjet(projet: Projet): void {
+    this.openModal(true, projet);
+  }
+
+  openDescriptionModal(projet: Projet): void {
+    this.openModal(false, projet, true);
+  }
+
+  filterProjets(): void {
+    if (this.selectedStatus === '') {
+      this.projets = [...this.allProjets];
+    } else {
+      this.projets = this.allProjets.filter((p) => p.status === this.selectedStatus);
+    }
+  }
   }
   
       
 
  
 
-  closeModal(): void {
-    this.showModal = false;
-    this.currentProjet = this.initNewProjet(); // Réinitialiser après fermeture
-  }
 
-  deleteProjet(id: number): void {
-    if (confirm('Confirmer la suppression ?')) {
-      this.projetService.deleteProjet(id).subscribe(() => {
-        this.loadProjets();
-      });
-    }
-  }
+ 
 
-  updateProjet(projet: Projet): void {
-    this.openModal(true, projet); // Ouvrir la modale pour modifier un projet
-  }
-
-  openDescriptionModal(projet: Projet): void {
-    this.openModal(false, projet, true); // Ouvrir la modale pour afficher la description complète
-  }
-
-  filterProjets(status: string): void {
-    this.projets = this.projets.filter((projet) => projet.status === status);
-  }
-}
