@@ -6,16 +6,17 @@ import { OffreControllerService } from "../../../servicesahmed/services/offre-co
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { TokenService } from "../../../servicesahmed/token/token.service";
+import { Feedback } from "../../../servicesahmed/models/feedback"; // Assuming you have this model
 
 @Component({
-  standalone : false,
+  standalone: false,
   selector: 'app-application',
   templateUrl: './application.component.html',
   styleUrls: ['./application.component.scss']
 })
 export class ApplicationComponent implements OnInit {
   applications: Application[] = [];
-  offres: Offre[] = [];  // To store the list of offres
+  offres: Offre[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
   offre: Offre = {
@@ -33,14 +34,11 @@ export class ApplicationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Load applications
+    // Load applications and offres
     this.loadApplications();
-    // Load offres
     this.loadOffres();
-
-
+    console.log(this.applications);
   }
-
 
   private loadApplications(): void {
     this.isLoading = true;
@@ -80,37 +78,37 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    // Handle form submission
-    this.saveOffre();
-  }
+  setFeedbackRating(application: Application, star: number) {
+    if (application.feedback) {
+      application.feedback.note = star; // Update the local feedback object
 
-  saveOffre() {
-    console.log("Adding Offre:", this.offre);
-    this.isLoading = true;
-
-    this.offreservice.addOffre({ body: this.offre }).subscribe({
-      next: (response) => {
-        alert("Offre added successfully!");
-        console.log("Offre added successfully:", response);
-        this.resetForm();
-        this.loadOffres();  // Reload the list of offres
-      },
-      error: (error) => {
-        console.error('Error adding offre:', error);
-        this.isLoading = false;
-        if (error.status === 0) {
-          alert('Network error or server unreachable. Please check your network or server.');
-        } else {
-          alert('Failed to add offre. Please try again.');
+      // Send the updated feedback to the backend
+      this.applicationService.updateFeedback(application.feedback).subscribe({
+        next: () => {
+          console.log('Feedback rating updated successfully');
+        },
+        error: (err) => {
+          console.error('Error updating feedback:', err);
         }
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
+      });
+    }
   }
 
+
+  private updateFeedback(application: Application): void {
+    // Assuming your API endpoint is available for updating the feedback
+    this.applicationService.updateApplicationFeedback(application.id, application.feedback)
+      .subscribe({
+        next: (response) => {
+          console.log('Feedback updated successfully', response);
+        },
+        error: (error) => {
+          console.error('Error updating feedback:', error);
+        }
+      });
+  }
+
+  // Optional: Reset form (if required)
   private resetForm() {
     this.offre = {
       title: '',

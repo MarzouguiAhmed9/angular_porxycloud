@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OffreControllerService } from "../../../../servicesahmed/services/offre-controller.service";
 import { Offre } from "../../../../servicesahmed/models/offre";
 import { TokenService } from "../../../../servicesahmed/token/token.service";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-offre',
@@ -14,13 +15,15 @@ export class OffreComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = '';
   offre: Offre = { skills: '', description: '', title: '' };
+  imageFile: File | null = null; // To hold the selected image file
   isEditing: boolean = false;  // For handling view/edit/add mode
   selectedOffreId: number | null = null;
   username: string | null = null;  // Store the username
 
   constructor(
     private offreservice: OffreControllerService,
-    private tokenService: TokenService // Inject TokenService to get the token
+    private tokenService: TokenService, // Inject TokenService to get the token
+    private http: HttpClient // Inject HttpClient for form submission
   ) {}
 
   ngOnInit(): void {
@@ -28,7 +31,6 @@ export class OffreComponent implements OnInit {
 
     const token = this.tokenService.getToken();  // Get token from service
     if (token) {
-      // Decode the token and extract the username
       const decoded = this.decodeJwt(token);
       this.username = decoded?.sub;  // Assuming 'sub' is the username field in the token
       console.log(this.username);
@@ -39,8 +41,14 @@ export class OffreComponent implements OnInit {
     this.isLoading = true;
     this.offreservice.getAllOffres().subscribe({
       next: (data: Offre[]) => {
+        console.log("Loaded applications: ", data);  // Log the response to ensure data is received
         this.applications = data;
         this.isLoading = false;
+
+        // Log to check image URLs are being set properly
+        this.applications.forEach((offre) => {
+          console.log('Offer Image URL:', offre.imageUrl); // Log each image URL
+        });
       },
       error: (error) => {
         this.errorMessage = 'Failed to load offres.';
@@ -79,6 +87,11 @@ export class OffreComponent implements OnInit {
     this.selectedOffreId = null;  // No ID since it's a new offer
   }
 
+  onFileChange(event: any): void {
+    this.imageFile = event.target.files[0]; // Capture the selected file
+    console.log('Selected image:', this.imageFile);  // Log the selected file
+  }
+
   onSubmit(): void {
     if (this.isEditing && this.selectedOffreId) {
       this.updateOffre(this.selectedOffreId, this.offre);
@@ -93,25 +106,34 @@ export class OffreComponent implements OnInit {
     const token = this.tokenService.getToken();
     if (token) {
       const decodedToken = this.decodeJwt(token);
-      const username = decodedToken.sub; // or decodedToken.username if your token uses another field
+      const username = decodedToken.sub; // Attach the username
 
       // Attach username to the offer
       (this.offre as any).rh = username;
     }
 
-    this.offreservice.addOffre({ body: this.offre }).subscribe({
-      next: () => {
-        alert('Offre added successfully!');
+    // Create FormData object
+    const formData = new FormData();
+    formData.append('offre', JSON.stringify(this.offre));  // Add 'offre' object as a JSON string
+    if (this.imageFile) {
+      formData.append('image', this.imageFile);  // Add image file if available
+    }
+
+    // Send the FormData using the correct method from the service
+    this.offreservice.addOffre(formData).subscribe({
+      next: (response: number) => {  // Expecting the response to be the ID of the newly created offer
+        alert('Offre added successfully! ID: ' + response);
         this.resetForm();
         this.loadApplications();
       },
-      error: () => {
+
+      error: (error) => {
         this.isLoading = false;
+        console.error('Error:', error);
         alert('Failed to add offre. Please try again.');
       }
     });
   }
-
 
   updateOffre(id: number, updatedOffre: Offre): void {
     this.isLoading = true;
@@ -132,6 +154,7 @@ export class OffreComponent implements OnInit {
     this.offre = { skills: '', description: '', title: '' };
     this.isEditing = false;
     this.selectedOffreId = null;
+    this.imageFile = null; // Reset the image file input
   }
 
   deleteOffre(id: number): void {

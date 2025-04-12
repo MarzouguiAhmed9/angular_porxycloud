@@ -16,6 +16,7 @@ import { Addapplication$Params } from '../fn/application-controller/addapplicati
 import { Application } from '../models/application';
 import { getApplications } from '../fn/application-controller/get-applications';
 import { GetApplications$Params } from '../fn/application-controller/get-applications';
+import { Feedback } from "../models/feedback";
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationControllerService extends BaseService {
@@ -71,6 +72,15 @@ export class ApplicationControllerService extends BaseService {
     return this.getApplications$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<Application>>): Array<Application> => r.body)
     );
+  }
+  private apiUrl = 'http://localhost:8089/Projetback/api/applications'; // Adjust your backend URL
+
+  updateApplicationFeedback(applicationId: number, feedback: Feedback): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${applicationId}/feedback`, feedback);
+  }
+
+  updateFeedback(feedback: Feedback) {
+    return this.http.put<Feedback>(`http://localhost:8089/Projetback/feedback/${feedback.id}`, feedback);
   }
 
 }

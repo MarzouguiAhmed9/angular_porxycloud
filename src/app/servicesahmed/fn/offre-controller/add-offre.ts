@@ -11,12 +11,14 @@ import { RequestBuilder } from '../../request-builder';
 import { Offre } from '../../models/offre';
 
 export interface AddOffre$Params {
-      body: Offre
+      body?: {
+'offre': Offre;
+'image'?: Blob;
+}
 }
 
-export function addOffre(http: HttpClient, rootUrl: string, params: AddOffre$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+export function addOffre(http: HttpClient, rootUrl: string, params?: AddOffre$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
   const rb = new RequestBuilder(rootUrl, addOffre.PATH, 'post');
-
   if (params) {
     rb.body(params.body, 'application/json');
   }

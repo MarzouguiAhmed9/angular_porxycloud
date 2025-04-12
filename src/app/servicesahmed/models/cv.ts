@@ -7,9 +7,9 @@ export interface Cv {
   createdBy?: string;
   education?: string;
   experience?: string;
-  getstudentname?: string;
   id?: number;
   name?: string;
   pdfDownloadLink?: string;
   skills?: string;
+  username?: string;
 }

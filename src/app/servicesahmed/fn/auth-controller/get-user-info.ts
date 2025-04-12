@@ -18,10 +18,13 @@ export function getUserInfo(http: HttpClient, rootUrl: string, params?: GetUserI
   if (params) {
   }
 
-  return http.request(rb.build({ responseType: 'blob', accept: '*/*', context })).pipe(
+  return http.request(
+    rb.build({ responseType: 'blob', accept: '*/*', context })
+  ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<{}>;
+      return r as StrictHttpResponse<{
+      }>;
     })
   );
 }

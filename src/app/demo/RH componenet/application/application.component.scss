@@ -12,6 +12,45 @@
     color: #333;
     margin-bottom: 20px;
   }
+  .separator-image {
+    text-align: center;
+    margin: 20px 0;
+  }
+  .star {
+    font-size: 20px;
+    color: #ddd; /* Default color (empty star) */
+    cursor: pointer;
+  }
+  .star {
+    font-size: 24px;
+    color: #ddd; /* Default color (empty star) */
+    cursor: pointer;
+  }
+
+  .star.filled {
+    color: #ffdd00; /* Color when the star is filled (golden) */
+  }
+
+  .feedback-rating {
+    display: flex;
+    justify-content: flex-start;
+    width: 120px;
+  }
+
+  .star.filled {
+    color: #ffdd00; /* Color when the star is filled (golden) */
+  }
+
+  .feedback-rating {
+    display: flex;
+    justify-content: space-between;
+    width: 120px;
+  }
+
+  .separator-img {
+    width: 100%;
+    max-width: 500px; /* Optional to limit the max width */
+  }
 
   /* Table Styles */
   .applications-table {

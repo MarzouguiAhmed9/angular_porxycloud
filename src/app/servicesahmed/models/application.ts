@@ -4,12 +4,16 @@
 
 import { Cv } from '../models/cv';
 import { Feedback } from '../models/feedback';
+import { Offre } from '../models/offre';
 export interface Application {
   createdBy?: number;
   cv?: Cv;
+  cvid?: number;
   feedback?: Feedback;
   id?: number;
   motivatedlettre?: string;
+  offre?: Offre;
+  offreId?: number;
   pdfDownloadLink?: string;
   status?: 'PENDING' | 'ACCEPTED' | 'REJECTED';
   studentId?: number;

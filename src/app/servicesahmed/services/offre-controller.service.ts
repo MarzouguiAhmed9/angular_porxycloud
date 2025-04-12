@@ -49,9 +49,7 @@ export class OffreControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editOffre(params: EditOffre$Params, context?: HttpContext): Observable<Offre> {
-    return this.editOffre$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Offre>): Offre => r.body)
-    );
+    return this.editOffre$Response(params, context).pipe(map((r: StrictHttpResponse<Offre>): Offre => r.body));
   }
 
   /** Path part for operation `addOffre()` */
@@ -63,7 +61,7 @@ export class OffreControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addOffre$Response(params: AddOffre$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  addOffre$Response(params?: AddOffre$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
     return addOffre(this.http, this.rootUrl, params, context);
   }
 
@@ -73,10 +71,11 @@ export class OffreControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addOffre(params: AddOffre$Params, context?: HttpContext): Observable<number> {
-    return this.addOffre$Response(params, context).pipe(
-      map((r: StrictHttpResponse<number>): number => r.body)
-    );
+  addOffre(params: FormData, context?: HttpContext): Observable<number> {
+    return this.http.post<number>(this.rootUrl + '/offre/add', params, { context })  // Expect a number response
+      .pipe(
+        map((response: number) => response)  // Directly map the response to number
+      );
   }
 
   /** Path part for operation `getOffreById()` */
@@ -99,9 +98,7 @@ export class OffreControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   getOffreById(params: GetOffreById$Params, context?: HttpContext): Observable<Offre> {
-    return this.getOffreById$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Offre>): Offre => r.body)
-    );
+    return this.getOffreById$Response(params, context).pipe(map((r: StrictHttpResponse<Offre>): Offre => r.body));
   }
 
   /** Path part for operation `getAllOffres()` */
@@ -124,9 +121,7 @@ export class OffreControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   getAllOffres(params?: GetAllOffres$Params, context?: HttpContext): Observable<Array<Offre>> {
-    return this.getAllOffres$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<Offre>>): Array<Offre> => r.body)
-    );
+    return this.getAllOffres$Response(params, context).pipe(map((r: StrictHttpResponse<Array<Offre>>): Array<Offre> => r.body));
   }
 
   /** Path part for operation `deleteOffre()` */
@@ -149,9 +144,6 @@ export class OffreControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   deleteOffre(params: DeleteOffre$Params, context?: HttpContext): Observable<void> {
-    return this.deleteOffre$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
-    );
+    return this.deleteOffre$Response(params, context).pipe(map((r: StrictHttpResponse<void>): void => r.body));
   }
-
 }

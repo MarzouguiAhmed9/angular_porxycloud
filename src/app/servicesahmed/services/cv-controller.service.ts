@@ -15,6 +15,8 @@ import { addCv } from '../fn/cv-controller/add-cv';
 import { AddCv$Params } from '../fn/cv-controller/add-cv';
 import { downloadCv } from '../fn/cv-controller/download-cv';
 import { DownloadCv$Params } from '../fn/cv-controller/download-cv';
+import { getCvByUsername } from '../fn/cv-controller/get-cv-by-username';
+import { GetCvByUsername$Params } from '../fn/cv-controller/get-cv-by-username';
 
 @Injectable({ providedIn: 'root' })
 export class CvControllerService extends BaseService {
@@ -44,6 +46,35 @@ export class CvControllerService extends BaseService {
   addCv(params: AddCv$Params, context?: HttpContext): Observable<number> {
     return this.addCv$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
+    );
+  }
+
+  /** Path part for operation `getCvByUsername()` */
+  static readonly GetCvByUsernamePath = '/cv/user/{username}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getCvByUsername()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getCvByUsername$Response(params: GetCvByUsername$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return getCvByUsername(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getCvByUsername$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getCvByUsername(params: GetCvByUsername$Params, context?: HttpContext): Observable<{
+}> {
+    return this.getCvByUsername$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
     );
   }
 

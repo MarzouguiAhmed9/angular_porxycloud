@@ -10,7 +10,8 @@
         <th>Status</th>
         <th>Motivated Letter</th>
         <th>CV</th>
-        <th>condidat</th>
+        <th>Candidate</th>
+        <th>Feedback</th>
       </tr>
       </thead>
       <tbody>
@@ -28,6 +29,19 @@
           <span *ngIf="!application.cv?.id">No CV available</span>
         </td>
         <td>{{ application.username }}</td>
+
+        <!-- Feedback Star Rating -->
+        <!-- Inside the table where you list applications -->
+        <td>
+          <div class="feedback-rating">
+    <span *ngFor="let star of [1, 2, 3, 4, 5]"
+          (click)="setFeedbackRating(application, star)"
+          [class.filled]="star <= (application.feedback?.note || 0)"
+          class="star">
+      ★
+    </span>
+          </div>
+        </td>
 
       </tr>
       </tbody>

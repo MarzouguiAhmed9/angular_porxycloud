@@ -12,6 +12,14 @@
 
 /* important element */
 @import 'scss/menu/menu-lite';
+body {
+  background-color: #111827;
+  color: white; /* Adjust text color for better readability */
+}
+
+.dashboard-container {
+  background-color: #1f2937; /* A lighter shade of #111827 for the container */
+}
 
 /* basic elements */
 @import 'scss/theme-elements/theme-elements';
