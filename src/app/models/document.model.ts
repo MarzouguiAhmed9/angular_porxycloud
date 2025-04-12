@@ -1,10 +1,11 @@
 export enum DocumentType {
-  MEMOIRE = 'MEMOIRE',
-  RAPPORT = 'RAPPORT',
-  PFE = 'PFE',
-  IMMERSION = 'IMMERSION',
+  THESIS = 'THESIS',
+  REPORT = 'REPORT',
+  FINAL_YEAR_PROJECT = 'FINAL_YEAR_PROJECT',
+  INTERNSHIP = 'INTERNSHIP',
   OTHER = 'OTHER'
 }
+
 
 export enum DocumentStatus {
   PENDING = 'PENDING',
