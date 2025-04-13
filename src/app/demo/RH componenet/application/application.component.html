@@ -1,8 +1,6 @@
 <div class="dashboard-container">
-  <!-- Applications List Section -->
   <h1>Applications List</h1>
 
-  <!-- Check if there are any applications to display -->
   <div *ngIf="applications && applications.length > 0; else noDataTemplate">
     <table class="applications-table">
       <thead>
@@ -12,6 +10,7 @@
         <th>CV</th>
         <th>Candidate</th>
         <th>Feedback</th>
+        <th>Score</th>
       </tr>
       </thead>
       <tbody>
@@ -19,37 +18,57 @@
         <td>{{ application.status }}</td>
         <td>{{ application.motivatedlettre }}</td>
         <td>
-          <!-- Check if cv.id is present before rendering the download link -->
           <a *ngIf="application.cv?.id"
              [href]="'http://localhost:8089/Projetback/cv/download/' + application.cv.id"
-             download
-             target="_blank">
+             download target="_blank">
             Download CV
           </a>
-          <span *ngIf="!application.cv?.id">No CV available</span>
+          <button *ngIf="application.cv?.id" (click)="viewCv(application.cv.id)" class="view-btn">
+            View CV
+          </button>
         </td>
         <td>{{ application.username }}</td>
-
-        <!-- Feedback Star Rating -->
-        <!-- Inside the table where you list applications -->
         <td>
           <div class="feedback-rating">
-    <span *ngFor="let star of [1, 2, 3, 4, 5]"
-          (click)="setFeedbackRating(application, star)"
-          [class.filled]="star <= (application.feedback?.note || 0)"
-          class="star">
-      ★
-    </span>
+              <span *ngFor="let star of [1, 2, 3, 4, 5]"
+                    (click)="setFeedbackRating(application, star)"
+                    [class.filled]="star <= (application.feedback?.note || 0)"
+                    class="star">★</span>
           </div>
         </td>
-
+        <td>Score will show below ⬇️</td>
       </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Template for when no applications are available -->
   <ng-template #noDataTemplate>
     <p>No applications available.</p>
   </ng-template>
+</div>
+
+<!-- CV Viewer -->
+<div *ngIf="selectedCvUrl" class="cv-viewer">
+  <h3>CV Preview:</h3>
+  <button (click)="closeCv()" class="close-btn">Close Preview</button>
+  <iframe [src]="selectedCvUrl" width="100%" height="600px"></iframe>
+</div>
+
+<!-- Circle Progress at Bottom -->
+<!-- Circle Score at the Bottom for Each Application -->
+<div class="bottom-score" *ngIf="applications.length > 0 && offres.length > 0">
+  <div *ngFor="let application of applications">
+    <ng-container *ngIf="application.cv?.skills && offres[0]?.skills">
+      <div class="progress-circle"
+           [ngClass]="'p' + (calculateScore(application.cv.skills.split(','), offres[0].skills.split(',')) | number:'1.0-0')">
+        <span>
+          {{ calculateScore(application.cv.skills.split(','), offres[0].skills.split(',')) | number:'1.0-0' }}%
+        </span>
+        <div class="left-half-clipper">
+          <div class="first50-bar"></div>
+          <div class="value-bar"></div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </div>

@@ -18,4 +18,6 @@ export interface Application {
   status?: 'PENDING' | 'ACCEPTED' | 'REJECTED';
   studentId?: number;
   username?: string;
+  score?: Number;
+
 }

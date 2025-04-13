@@ -6,7 +6,8 @@ import { OffreControllerService } from "../../../servicesahmed/services/offre-co
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { TokenService } from "../../../servicesahmed/token/token.service";
-import { Feedback } from "../../../servicesahmed/models/feedback"; // Assuming you have this model
+import { Feedback } from "../../../servicesahmed/models/feedback";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 
 @Component({
   standalone: false,
@@ -19,6 +20,8 @@ export class ApplicationComponent implements OnInit {
   offres: Offre[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
+  selectedCvUrl: SafeResourceUrl = null;
+
   offre: Offre = {
     title: '',
     skills: '',
@@ -30,14 +33,13 @@ export class ApplicationComponent implements OnInit {
     private offreservice: OffreControllerService,
     private router: Router,
     private http: HttpClient,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
-    // Load applications and offres
     this.loadApplications();
     this.loadOffres();
-    console.log(this.applications);
   }
 
   private loadApplications(): void {
@@ -47,11 +49,9 @@ export class ApplicationComponent implements OnInit {
     this.applicationService.getApplications().subscribe({
       next: (data: Application[]) => {
         this.applications = data;
-        console.log('Fetched applications:', this.applications);
       },
       error: (error) => {
         this.errorMessage = 'Failed to load applications. Please try again later.';
-        console.error('Error fetching applications:', error);
       },
       complete: () => {
         this.isLoading = false;
@@ -66,11 +66,9 @@ export class ApplicationComponent implements OnInit {
     this.offreservice.getAllOffres().subscribe({
       next: (data: Offre[]) => {
         this.offres = data;
-        console.log('Fetched offres:', this.offres);
       },
       error: (error) => {
         this.errorMessage = 'Failed to load offres. Please try again later.';
-        console.error('Error fetching offres:', error);
       },
       complete: () => {
         this.isLoading = false;
@@ -78,11 +76,35 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
-  setFeedbackRating(application: Application, star: number) {
-    if (application.feedback) {
-      application.feedback.note = star; // Update the local feedback object
+  // Calculate score based on CV and offer skills
+  calculateScore(cvSkills: string[], offerSkills: string[]): number {
+    const matchedSkills = cvSkills.filter(skill => offerSkills.includes(skill));
+    return (matchedSkills.length / offerSkills.length) * 100;
+  }
 
-      // Send the updated feedback to the backend
+  // Method to view the CV as a PDF
+  viewCv(cvId: number): void {
+    const url = `http://localhost:8089/Projetback/cv/view/${cvId}`;
+    this.http.get(url, { responseType: 'blob' }).subscribe(
+      (response: Blob) => {
+        const fileURL = URL.createObjectURL(response);
+        this.selectedCvUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+      },
+      (error) => {
+        this.selectedCvUrl = null;
+      }
+    );
+  }
+
+  // Optional: Method to close the CV preview
+  closeCv(): void {
+    this.selectedCvUrl = null;
+  }
+  setFeedbackRating(application: Application, star: number): void {
+    if (application.feedback) {
+      application.feedback.note = star; // Update the local feedback note
+
+      // Optionally, send the updated feedback to the backend here
       this.applicationService.updateFeedback(application.feedback).subscribe({
         next: () => {
           console.log('Feedback rating updated successfully');
@@ -94,26 +116,21 @@ export class ApplicationComponent implements OnInit {
     }
   }
 
+  // Method to calculate and update the circle color dynamically
+  updateScoreAndColor(application: Application, offre: Offre): void {
+    const cvSkills = application.cv.skills.split(','); // assuming skills are stored as a comma-separated string
+    const offerSkills = offre.skills.split(',');
+    const score = this.calculateScore(cvSkills, offerSkills);
+    const circle = document.querySelector(`#circle-${application.id}`);
+    console.log(cvSkills, offerSkills, score);
+    console.log("rrr" + offerSkills)
 
-  private updateFeedback(application: Application): void {
-    // Assuming your API endpoint is available for updating the feedback
-    this.applicationService.updateApplicationFeedback(application.id, application.feedback)
-      .subscribe({
-        next: (response) => {
-          console.log('Feedback updated successfully', response);
-        },
-        error: (error) => {
-          console.error('Error updating feedback:', error);
-        }
-      });
+
+    // Update the circle's color based on the score
+    circle?.setAttribute('data-score', score.toString());
+    console.log("Score calculated and circle updated with score:", score);
+
+    console.log("Score calculated and circle updated with score:", score);
   }
 
-  // Optional: Reset form (if required)
-  private resetForm() {
-    this.offre = {
-      title: '',
-      skills: '',
-      description: ''
-    };
-  }
 }

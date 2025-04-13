@@ -26,6 +26,489 @@
     color: #ddd; /* Default color (empty star) */
     cursor: pointer;
   }
+  /* application.component.css */
+  .cv-viewer {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  .cv-viewer {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .cv-viewer iframe {
+    border: none;
+  }
+  .toggle-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .toggle-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+  }
+  .dashboard-container {
+    padding: 20px;
+  }
+
+  .applications-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .applications-table th, .applications-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .radio-buttons {
+    display: flex;
+    gap: 20px;
+  }
+
+  .radio-buttons label {
+    font-size: 14px;
+  }
+
+  .radio-buttons input[type="radio"] {
+    margin-right: 5px;
+  }
+
+  .feedback-rating {
+    display: flex;
+    gap: 5px;
+  }
+
+  .feedback-rating .star {
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .feedback-rating .star.filled {
+    color: gold;
+  }
+  .container {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .radio-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .radio-label {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    font-size: 17px;
+    color: #333;
+  }
+
+  .radio-label input {
+    margin-right: 5px;
+  }
+
+  .feedback-rating {
+    .star {
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.3s;
+    }
+
+    .star.filled {
+      color: #ffcc00;
+    }
+  }
+
+  .cv-viewer {
+    margin-top: 20px;
+  }
+
+  .cv-viewer iframe {
+    border: none;
+  }
+  .view-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.3s ease;
+    color: #333;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+    .dashboard-container {
+      padding: 20px;
+    }
+
+    .applications-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .applications-table th, .applications-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .score-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: lightgray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .score-circle[data-score="0"] {
+      background-color: red;
+    }
+
+    .score-circle[data-score="1"], .score-circle[data-score="2"] {
+      background-color: orange;
+    }
+
+    .score-circle[data-score="3"], .score-circle[data-score="4"] {
+      background-color: yellow;
+    }
+
+    .score-circle[data-score="5"], .score-circle[data-score="6"] {
+      background-color: green;
+    }
+
+    .score-circle[data-score="7"], .score-circle[data-score="8"] {
+      background-color: blue;
+    }
+
+    .score-circle[data-score="9"], .score-circle[data-score="10"] {
+      background-color: purple;
+    }
+    .score-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: inline-block;
+      margin: 10px;
+      background-color: gray; /* Default color */
+    }
+
+    .score-display {
+      font-size: 16px;
+      color: #333;
+      margin-top: 5px;
+    }
+
+    .star {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .star.filled {
+      color: gold;
+    }
+
+    .view-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .progress-circle {
+      font-size: 1.2rem;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #e5e5e5;
+      position: relative;
+      display: inline-block;
+      margin: 20px;
+    }
+
+    .progress-circle span {
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      text-align: center;
+      transform: translateY(-50%);
+      font-weight: bold;
+    }
+
+    .left-half-clipper {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      clip: rect(0, 120px, 120px, 60px);
+      position: relative;
+    }
+
+    .first50-bar, .value-bar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: absolute;
+      clip: rect(0, 60px, 120px, 0);
+    }
+    .bottom-score {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+    }
+
+    .progress-circle {
+      font-size: 20px;
+      margin: 0 auto;
+      width: 100px;
+      height: 100px;
+      background-color: #eee;
+      border-radius: 50%;
+      position: relative;
+      text-align: center;
+      line-height: 100px;
+      color: #555;
+    }
+
+    .progress-circle .left-half-clipper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      clip: rect(0, 100px, 100px, 50px);
+    }
+
+    .progress-circle .first50-bar {
+      background: #3498db;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: absolute;
+      clip: rect(0, 50px, 100px, 0);
+    }
+
+    .progress-circle .value-bar {
+      background: #3498db;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: absolute;
+      clip: rect(0, 50px, 100px, 0);
+      transform: rotate(0deg);
+    }
+
+    /* Dynamic rotation via classes */
+    @for $i from 0 through 100 {
+      .p#{$i} .value-bar {
+        transform: rotate(#{(360/100)*$i}deg);
+      }
+    }
+    .bottom-score {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+
+    .progress-circle {
+      font-size: 20px;
+      width: 100px;
+      height: 100px;
+      background-color: #eee;
+      border-radius: 50%;
+      position: relative;
+      text-align: center;
+      line-height: 100px;
+      color: #555;
+    }
+
+    .progress-circle .left-half-clipper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      clip: rect(0, 100px, 100px, 50px);
+    }
+
+    .progress-circle .first50-bar {
+      background: #3498db;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: absolute;
+      clip: rect(0, 50px, 100px, 0);
+    }
+
+    .progress-circle .value-bar {
+      background: #3498db;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: absolute;
+      clip: rect(0, 50px, 100px, 0);
+      transform: rotate(0deg);
+    }
+
+    @for $i from 0 through 100 {
+      .p#{$i} .value-bar {
+        transform: rotate(#{(360/100)*$i}deg);
+      }
+    }
+    .progress-circle {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: lightgray;
+      margin: 20px auto;
+      text-align: center;
+      line-height: 100px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .progress-circle .left-half-clipper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      clip: rect(0, 100px, 100px, 50px);
+    }
+
+    .progress-circle .first50-bar,
+    .progress-circle .value-bar {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 10px solid green;
+      clip: rect(0, 50px, 100px, 0);
+    }
+
+    /* example classes for p0 to p100 */
+    .p0 .value-bar { transform: rotate(0deg); }
+    .p25 .value-bar { transform: rotate(90deg); }
+    .p50 .value-bar { transform: rotate(180deg); }
+    .p75 .value-bar { transform: rotate(270deg); }
+    .p100 .value-bar { transform: rotate(360deg); }
+
+    .first50-bar {
+      background-color: #4caf50;  // green for 50%
+      transform: rotate(180deg);
+    }
+
+    .value-bar {
+      background-color: #4caf50;
+      transform: rotate(0deg);
+    }
+
+    // Loop for percentages from 0 to 100
+    @for $i from 1 through 100 {
+      .p#{$i} .value-bar {
+        transform: rotate(#{$i * 3.6}deg);
+      }
+    }
+
+    .view-btn:hover {
+      background-color: #45a049;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .view-btn svg {
+    color: #4b4b4b;
+  }
+
+  .view-btn:hover svg {
+    color: #3b82f6; /* Add hover color */
+  }
+
+  .close-btn {
+    background-color: #ff3b3b;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .close-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin: 20px 0;
+  }
+
+  .close-btn:hover {
+    background-color: #ff1a1a;
+  }
+
+  .toggle-btn.active {
+    background-color: #f44336;
+  }
+
+  .toggle-btn:hover {
+    background-color: #45a049;
+  }
+
+  .close-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .close-btn:hover {
+    background-color: #e53935;
+  }
+
+  .close-btn {
+    margin-top: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+  }
 
   .star.filled {
     color: #ffdd00; /* Color when the star is filled (golden) */
