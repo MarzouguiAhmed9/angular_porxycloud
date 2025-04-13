@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CardComponent } from 'src/app/theme/shared/components/card/card.component';
 import { TestService } from '../../services/test.service';
 import { Router } from '@angular/router';
 import { Test } from 'src/app/models/test';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-test-form',
-  imports: [CardComponent ,FormsModule,ReactiveFormsModule],
+  imports: [CardComponent ,FormsModule,ReactiveFormsModule,CommonModule],
   templateUrl: './test-form.component.html',
   styleUrl: './test-form.component.scss'
 })
@@ -20,13 +21,24 @@ export class TestFormComponent implements OnInit {
 
 
   ngOnInit(): void {
-      this.formR = new FormGroup({
-        description:new FormControl('',),
-        questions:new FormControl('',),
-        choix:new FormControl('',),
-        Rcorrecte:new FormControl('',),  
-  
-      })
+    this.formR = new FormGroup({
+      description: new FormControl('', [
+        Validators.required, 
+        Validators.minLength(5)
+      ]),
+      questions: new FormControl('', [
+        Validators.required, 
+        Validators.minLength(5)
+      ]),
+      choix: new FormControl('', [
+        Validators.required, 
+        Validators.minLength(5)
+      ]),
+      Rcorrecte: new FormControl('', [
+        Validators.required, 
+        Validators.pattern("^([0-9]+,)*[0-9]+$") // liste d'indices séparés par des virgules (ex : 0,1,2)
+      ])
+    })
     }
     get description(){
       return this.formR.get('description')

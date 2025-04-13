@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CertificatService } from '../../services/certificat.service';
 import { Router } from '@angular/router';
 import { CardComponent } from 'src/app/theme/shared/components/card/card.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-certificat-form',
-  imports: [CardComponent ,FormsModule,ReactiveFormsModule],
+  imports: [CardComponent ,FormsModule,ReactiveFormsModule,CommonModule],
   templateUrl: './certificat-form.component.html',
   styleUrl: './certificat-form.component.scss'
 })
@@ -19,15 +20,21 @@ export class CertificatFormComponent implements OnInit{
 
 
   ngOnInit(): void {
-      this.formR = new FormGroup({
-        nom:new FormControl('',),
-        instructeur:new FormControl('',),
-        validite:new FormControl('',),
-        statut:new FormControl('',),
-        niveau:new FormControl('',),
- 
-      })
-    }
+    this.formR = new FormGroup({
+      nom: new FormControl('', [Validators.required, Validators.minLength(2)]),
+      instructeur: new FormControl('', [Validators.required, Validators.minLength(2)]),
+      validite: new FormControl('', [
+        Validators.required,
+        Validators.pattern("^[0-9]*$"),
+        Validators.min(1),
+        Validators.max(48)
+      ]),
+      niveau: new FormControl('', [
+        Validators.required,
+        Validators.pattern("^(BASIQUE|INTERMEDIAIRE|AVANCE)$")
+      ]),
+    });
+  }
 
     get nom(){
       return this.formR.get('nom')
@@ -37,9 +44,6 @@ export class CertificatFormComponent implements OnInit{
     }
     get validite(){
       return this.formR.get('validite')
-    }
-    get statut(){
-      return this.formR.get('statut')
     }
     get niveau(){
       return this.formR.get('niveau')

@@ -6,10 +6,20 @@
       <div class="form-group">
         <label for="description">Description</label>
         <input type="text" class="form-control" id="description" formControlName="description" placeholder="Entrer la description du test" />
+        <div *ngIf="description?.invalid && (description?.dirty || description?.touched)" class="text-danger">
+          <div *ngIf="description?.errors?.['required']">La description est requise.</div>
+          <div *ngIf="description?.errors?.['minlength']">La description doit contenir au moins 5 caractères.</div>
+        </div>
+        
       </div>
       <div class="form-group">
         <label for="questions">Questions</label>
         <textarea  type="text" class="form-control" id="questions" formControlName="questions" placeholder="Donner les questions du test" ></textarea>
+        <div *ngIf="questions?.invalid && (questions?.dirty || questions?.touched)" class="text-danger">
+          <div *ngIf="questions?.errors?.['required']">Les questions sont requises.</div>
+          <div *ngIf="questions?.errors?.['minlength']">Les questions doivent contenir au moins 5 caractères.</div>
+        </div>
+        
       </div>
       
   
@@ -17,15 +27,26 @@
         <div class="form-group col-md-6">
           <label for="choix">Choix</label>
           <textarea  type="text" class="form-control" id="choix" formControlName="choix" placeholder="Choix 1 , Choix 2 , etc." ></textarea>
+          <div *ngIf="choix?.invalid && (choix?.dirty || choix?.touched)" class="text-danger">
+            <div *ngIf="choix?.errors?.['required']">Les choix sont requis.</div>
+            <div *ngIf="choix?.errors?.['minlength']">Les choix doivent contenir au moins 5 caractères.</div>
+          </div>
+          
         </div>
         <div class="form-group col-md-6">
             <label for="Rcorrecte">Reponse correcte</label>
             <textarea  type="text" class="form-control" id="Rcorrecte" formControlName="Rcorrecte" placeholder="Indice du Reponse correcte" ></textarea>
+            <div *ngIf="Rcorrecte?.invalid && (Rcorrecte?.dirty || Rcorrecte?.touched)" class="text-danger">
+              <div *ngIf="Rcorrecte?.errors?.['required']">Les indices des bonnes réponses sont requis.</div>
+              <div *ngIf="Rcorrecte?.errors?.['pattern']">Les indices doivent être des entiers séparés par des virgules (ex : 0,1,2).</div>
+            </div>
+            
         </div>
       </div>
 
   
-      <button type="submit"  class="btn btn-primary mt-3" (click)="add()">Add Test </button>
+      <button type="submit" class="btn btn-primary mt-3" (click)="add()" [disabled]="formR.invalid">Add Test</button>
+
     </form>
   </app-card>
   

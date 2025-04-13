@@ -6,24 +6,46 @@
       <div class="form-group">
         <label for="titre">Titre</label>
         <input type="text" class="form-control" id="titre" formControlName="titre" placeholder="Entrer le titre du cours" />
+        <div *ngIf="titre?.invalid && (titre?.dirty || titre?.touched)" class="text-danger">
+          <small *ngIf="titre?.errors?.['required']">Le titre est requis.</small>
+          <small *ngIf="titre?.errors?.['minlength']">Le titre doit faire au moins 3 caractères.</small>
+        </div>
       </div>
   
       <div class="row">
         <div class="form-group col-md-6">
           <label for="auteur">Auteur</label>
           <input type="text" class="form-control" id="auteur" formControlName="auteur" placeholder="Abdallah Saidane" />
+          <div *ngIf="auteur?.invalid && (auteur?.dirty || auteur?.touched)" class="text-danger">
+            <small *ngIf="auteur?.errors?.['required']">L'auteur est requis.</small>
+          </div>
+          
         </div>
         <div class="form-group col-md-6">
           <label for="categorie">Categorie</label>
           <input type="text" class="form-control" id="categorie" formControlName="categorie" placeholder="Angular , Spring , etc." />
+          <div *ngIf="categorie?.invalid && (categorie?.dirty || categorie?.touched)" class="text-danger">
+            <small *ngIf="categorie?.errors?.['required']">La catégorie est requise.</small>
+          </div>
+          
         </div>
         <div class="form-group col-md-6">
             <label for="description">Description</label>
             <input type="text" class="form-control" id="description" formControlName="description" placeholder="Enter une description" />
+            <div *ngIf="description?.invalid && (description?.dirty || description?.touched)" class="text-danger">
+              <small *ngIf="description?.errors?.['required']">La description est requise.</small>
+              <small *ngIf="description?.errors?.['minlength']">La description doit faire au moins 10 caractères.</small>
+            </div>
+            
         </div>
         <div class="form-group col-md-6">
             <label for="niveau">Niveau</label>
             <input type="text" class="form-control" id="niveau" formControlName="niveau" placeholder="DEBUTANT, INTERMEDIAIRE, AVANCE" />
+            <div *ngIf="niveau?.invalid && (niveau?.dirty || niveau?.touched)" class="text-danger">
+              <small *ngIf="niveau?.errors?.['required']">Le niveau est requis.</small>
+              <div *ngIf="niveau?.errors?.['pattern']">Le niveau doit être : DEBUTANT, INTERMEDIAIRE ou AVANCE.</div>
+            </div>
+            
         </div>
         <div class="form-group col-md-6">
             <label for="prix">Prix</label>
@@ -31,18 +53,32 @@
                   <span class="input-group-text">$</span>
                   <span class="input-group-text">0.00</span>
                   <input type="number" class="form-control" id="prix" formControlName="prix" placeholder="prix en DT" aria-label="Dollar amount (with dot and two decimal places)" />
+                  <div *ngIf="prix?.invalid && (prix?.dirty || prix?.touched)" class="text-danger">
+                    <small *ngIf="prix?.errors?.['required']">Le prix est requis.</small>
+                    <small *ngIf="prix?.errors?.['min']">Le prix ne peut pas être négatif.</small>
+                  </div>
+                  
                 </div>
           </div>
           
           <div class="form-group col-md-6">
             <label for="langue">Langue</label>
             <input type="text" class="form-control" id="langue" formControlName="langue" placeholder="Enter la langue" />
+            <div *ngIf="langue?.invalid && (langue?.dirty || langue?.touched)" class="text-danger">
+              <small *ngIf="langue?.errors?.['required']">La langue est requise.</small>
+            </div>
+            
           </div>
       </div>
   
       <div class="form-group">
         <label for="duree">Duree </label>
         <input type="number" class="form-control" id="duree" formControlName="duree" placeholder="Entrer la duree du cours" />
+        <div *ngIf="duree?.invalid && (duree?.dirty || duree?.touched)" class="text-danger">
+          <small *ngIf="duree?.errors?.['required']">La durée est requise.</small>
+          <small *ngIf="duree?.errors?.['min']">La durée doit être d'au moins 1 heure.</small>
+        </div>
+        
       </div>
 
       <div class="input-group mb-3">
@@ -59,7 +95,7 @@
           </div>
       </div>
   
-      <button type="submit" (click)="add()" class="btn btn-primary mt-3">Add Cours </button>
+      <button type="submit" (click)="add()" [disabled]="formR.invalid" class="btn btn-primary mt-3" >Add Cours </button>
     </form>
   </app-card>
   

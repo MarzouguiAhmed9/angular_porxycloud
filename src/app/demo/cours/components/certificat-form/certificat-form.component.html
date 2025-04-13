@@ -6,29 +6,48 @@
       <div class="form-group">
         <label for="nom">Nom</label>
         <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Entrer le nom du certificat" />
+        <div *ngIf="nom?.invalid && (nom?.dirty || nom?.touched)" class="text-danger">
+          <div *ngIf="nom?.errors?.['required']">Le nom est requis.</div>
+          <div *ngIf="nom?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères.</div>
+        </div>
+        
       </div>
   
       <div class="row">
         <div class="form-group col-md-6">
           <label for="instructeur">Instructeur</label>
           <input type="text" class="form-control" id="instructeur" formControlName="instructeur" placeholder="Abdallah Saidane" />
+          <div *ngIf="instructeur?.invalid && (instructeur?.dirty || instructeur?.touched)" class="text-danger">
+            <div *ngIf="instructeur?.errors?.['required']">L'instructeur est requis.</div>
+            <div *ngIf="instructeur?.errors?.['minlength']">Le nom de l'instructeur doit contenir au moins 2 caractères.</div>
+          </div>
+          
         </div>
         <div class="form-group col-md-6">
           <label for="validite">Validite</label>
           <input type="text" class="form-control" id="validite" formControlName="validite" placeholder="1 = 1 mois , 2 = 2 mois .etc" />
-        </div>
-        <div class="form-group col-md-6">
-            <label for="statut">Statut</label>
-            <input type="text" class="form-control" id="statut" formControlName="statut" placeholder="1 = valide  , 0 = invalide " />
+          <div *ngIf="validite?.invalid && (validite?.dirty || validite?.touched)" class="text-danger">
+            <div *ngIf="validite?.errors?.['required']">La validité est requise.</div>
+            <div *ngIf="validite?.errors?.['pattern']">La validité doit être un nombre.</div>
+            <div *ngIf="validite?.errors?.['min']">La validité minimale est 1 mois.</div>
+            <div *ngIf="validite?.errors?.['max']">La validité maximale est 48 mois.</div>
+          </div>
+          
         </div>
         <div class="form-group col-md-6">
             <label for="niveau">Niveau</label>
             <input type="text" class="form-control" id="niveau" formControlName="niveau" placeholder="BASIQUE, INTERMEDIAIRE, AVANCE" />
+            <div *ngIf="niveau?.invalid && (niveau?.dirty || niveau?.touched)" class="text-danger">
+              <div *ngIf="niveau?.errors?.['required']">Le niveau est requis.</div>
+              <div *ngIf="niveau?.errors?.['pattern']">Le niveau doit être : BASIQUE, INTERMEDIAIRE ou AVANCE.</div>
+            </div>
+            
         </div>
       </div>
 
   
-      <button type="submit" (click)="add()" class="btn btn-primary mt-3">Add certificat </button>
+      <button type="submit" (click)="add()" class="btn btn-primary mt-3"[disabled]="formR.invalid">Add certificat</button>
+
     </form>
   </app-card>
   

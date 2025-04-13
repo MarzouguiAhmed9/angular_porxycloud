@@ -3,13 +3,13 @@ import { CardComponent } from "../../../../theme/shared/components/card/card.com
 import { CommonModule } from '@angular/common';
 import { CoursService } from '../../services/cours.service';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 //import { ReactiveFormsModule } from '@angular/forms'; // <-- Import here
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cours-form',
-  imports: [CardComponent ,FormsModule,ReactiveFormsModule],
+  imports: [CardComponent ,FormsModule,ReactiveFormsModule,CommonModule],
   templateUrl: './cours-form.component.html',
   styleUrl: './cours-form.component.scss'
 })
@@ -25,19 +25,20 @@ export class CoursFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.formR = new FormGroup({
-      titre:new FormControl('',),
-      description:new FormControl('',),
-      auteur:new FormControl('',),
-      categorie:new FormControl('',),
-      langue:new FormControl('',),
-      duree:new FormControl('',),
-      prix:new FormControl('',),
-      niveau:new FormControl('',), 
-      image:new FormControl('',), // Ajout de l'attribut image
-      document:new FormControl('',) // Ajout de l'attribut document
-      
-
-    })
+      titre: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      description: new FormControl('', [Validators.required, Validators.minLength(10)]),
+      auteur: new FormControl('', [Validators.required]),
+      categorie: new FormControl('', [Validators.required]),
+      langue: new FormControl('', [Validators.required]),
+      duree: new FormControl('', [Validators.required, Validators.min(1)]),
+      prix: new FormControl('', [Validators.required, Validators.min(0)]),
+      niveau: new FormControl('', [
+        Validators.required,
+        Validators.pattern("^(DEBUTANT|INTERMEDIAIRE|AVANCE)$")
+      ]),
+      image: new FormControl(''),
+      document: new FormControl('')
+    });
   }
  
   get titre(){
@@ -103,4 +104,6 @@ export class CoursFormComponent implements OnInit {
       });
     });
   }
+
+
 }

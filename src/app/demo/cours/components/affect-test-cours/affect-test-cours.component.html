@@ -11,7 +11,7 @@
                 <select id="testSelect" class="form-control" formControlName="test">
                   <option selected>Choose...</option>
                   <option *ngFor="let test of listT" [value]="test.id">
-                    {{ test.id }}
+                    {{ test.description }}
                   </option>
                 </select>
               </div>
@@ -20,7 +20,7 @@
                 <select id="coursSelect" class="form-control" formControlName="cours">
                   <option selected>Choose...</option>
                   <option *ngFor="let cours of listC" [value]="cours.id">
-                    {{ cours.id }}
+                    {{ cours.titre }}
                   </option>
                 </select>
               </div>
