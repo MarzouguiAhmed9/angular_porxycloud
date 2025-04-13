@@ -1,0 +1,79 @@
+<div class="task-container">
+    <h2>Task List</h2>
+  
+    <div class="form-group">
+      <label for="projectSelect">Select a project:</label>
+      <select id="projectSelect" [(ngModel)]="selectedProjet" (change)="loadTaches(selectedProjet?.idProjet)">
+        <option [ngValue]="null">All Projects</option>
+        <option *ngFor="let projet of projets" [ngValue]="projet">
+          {{ projet.nomProjet }}
+        </option>
+      </select>
+    </div>
+  
+    <button (click)="showModal = true; isEditing = false;" class="add-button">
+      <span>+</span> Add Task
+    </button>
+  
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Task Name</th>
+          <th>Status</th>
+          <th>DD</th>
+          <th>DF</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>{{ task.nomTache }}</td>
+          <td>
+            <span class="status-badge"
+      [ngClass]="{
+        'not-begin': task.status === 'NOT_BEGIN',
+        'in-progress': task.status === 'EN_COURS',
+        'completed': task.status === 'FINISHED'
+      }">
+      {{ task.status }}
+    </span>
+          </td>
+          <td>{{ task.dateDebut }}</td>
+          <td>{{ task.dateFin}}</td>
+          <td>
+           <!-- <button (click)="openEditTaskModal(task)" class="btn edit">Edit</button>-->
+            <button (click)="deleteTask(task.idTache)" class="btn delete">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Modal Form for Task -->
+    <div *ngIf="showModal" class="modal">
+      <div class="modal-content">
+        <h2>{{ isEditing ? 'Edit Task' : 'Add Task' }}</h2>
+        <form (ngSubmit)="saveTask()" [formGroup]="taskForm">
+          <div class="form-group">
+            <label for="taskName">Task Name:</label>
+            <input id="taskName" type="text" formControlName="nomTache" required />
+          </div>
+  
+          
+  
+          <div class="form-group">
+            <label for="taskStartDate">Start Date:</label>
+            <input id="taskStartDate" type="date" formControlName="dateDebut" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="taskEndDate">End Date:</label>
+            <input id="taskEndDate" type="date" formControlName="dateFin" required />
+          </div>
+  
+          <button type="submit" [disabled]="taskForm.invalid">{{ isEditing ? 'Update' : 'Add' }}</button>
+          <button type="button" (click)="closeModal()">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

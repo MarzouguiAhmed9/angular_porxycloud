@@ -1,0 +1,138 @@
+<div class="projet-container">
+  <h2>Project List</h2>
+
+  <button (click)="openModal(false, null)" class="add-button">Add Project</button>
+
+  <!-- Filtres -->
+<div class="actions-bar">
+  <label for="statusFilter">Filter by Status:</label>
+  <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="filterProjets()">
+    <option value="">All Status</option>
+    <option value="NOT_BEGIN">NOT BEGIN</option>
+    <option value="BEGIN">BEGIN</option>
+    <option value="FINISHED">FINISHED</option>
+  </select>
+</div>
+
+
+  <div *ngFor="let projet of projets" class="projet-card">
+    <h3>{{ projet.nomProjet }}</h3>
+    <p>
+      <strong>Description:</strong>
+      <span class="description-short" (click)="openDescriptionModal(projet)">
+        {{ projet.description.split(' ').slice(0, 2).join(' ') }}...
+      </span>
+    </p>
+    <div class="nbreGestions">
+      <strong>Nbre Gestion:</strong> <span>{{ projet.nbreGestions }}</span>
+     
+    </div>
+    <div class="nbreMembreDisponible">
+  
+      <strong>Nbre Membre:</strong> <span>{{ projet.nbreMembreDisponible }}</span>
+    </div>
+    <div class="date-info">
+      <strong>Date:</strong> <span>{{ projet.dateDebut }} - {{ projet.dateFin }}</span>
+    </div>
+    <span class="status-badge" [ngClass]="{ 'not-begin': projet.status !== statusEnum.NOT_BEGIN }">
+      {{ projet.status === statusEnum.NOT_BEGIN ? 'NOT BEGIN' : 'BEGIN' }}
+    </span>
+    
+    <span class="creator">{{ projet.createurNom }}</span>
+    <div class="actions">
+      <button (click)="updateProjet(projet)" class="update">Update</button>
+      <button (click)="deleteProjet(projet.idProjet)" class="delete">Delete</button>
+    </div>
+    <div *ngIf="projet.taches?.length > 0" class="taches">
+      <h4>Associated Tasks:</h4>
+      <ul>
+        <li *ngFor="let tache of projet.taches">
+          {{ tache.nomTache }} - {{ tache.status }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Modal Form for Adding/Editing Projet -->
+  <div *ngIf="showModal && !isDescriptionModal" class="modal-content show" [ngStyle]="{ top: modalPosition.top + 'px', left: modalPosition.left + 'px' }">
+    <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()"></div>
+    <div class="modal-body">
+      <h3>{{ isEditing ? 'Edit Project' : 'Add New Project' }}</h3>
+      <form (ngSubmit)="saveProjet()" #projetForm="ngForm">
+        <label for="nomProjet">Project Name</label>
+        <input
+          type="text"
+          id="nomProjet"
+          [(ngModel)]="currentProjet.nomProjet"
+          name="nomProjet"
+          required
+          #nomProjet="ngModel"
+          [class.is-invalid]="nomProjet.invalid && nomProjet.touched"
+        />
+        <div *ngIf="nomProjet.invalid && nomProjet.touched" class="error-message">Project Name is required.</div>
+
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          [(ngModel)]="currentProjet.description"
+          name="description"
+          required
+          #description="ngModel"
+          [class.is-invalid]="description.invalid && description.touched"
+        ></textarea>
+        <div *ngIf="description.invalid && description.touched" class="error-message">Description is required.</div>
+
+        <label for="dateDebut">Start Date</label>
+        <input
+          type="date"
+          id="dateDebut"
+          [(ngModel)]="currentProjet.dateDebut"
+          name="dateDebut"
+          required
+          #dateDebut="ngModel"
+          [class.is-invalid]="dateDebut.invalid && dateDebut.touched"
+          [disabled]="isEditing" 
+        />
+        <div *ngIf="dateDebut.invalid && dateDebut.touched" class="error-message">Start Date is required.</div>
+
+        <label for="dateFin">End Date</label>
+        <input
+          type="date"
+          id="dateFin"
+          [(ngModel)]="currentProjet.dateFin"
+          name="dateFin"
+          required
+          #dateFin="ngModel"
+          [class.is-invalid]="dateFin.invalid && dateFin.touched"
+        />
+        <div *ngIf="dateFin.invalid && dateFin.touched" class="error-message">End Date is required.</div>
+        <label for="nbreGestions">Number of Managements</label>
+        <input
+          type="number"
+          id="nbreGestions"
+          [(ngModel)]="currentProjet.nbreGestions"
+          name="nbreGestions"
+          required
+          #nbreGestions="ngModel"
+          [class.is-invalid]="nbreGestions.invalid && nbreGestions.touched"
+        />
+        <div *ngIf="nbreGestions.invalid && nbreGestions.touched" class="error-message">Number of Managements is required.</div>
+        
+        <button type="submit" [disabled]="projetForm.invalid">Save Project</button>
+        <button type="submit" (click)="closeModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Modal pour afficher la description complète -->
+<div *ngIf="showModal && isDescriptionModal" class="modal-content show" [ngStyle]="{ top: modalPosition.top + 'px', left: modalPosition.left + 'px' }">
+  <div class="modal-overlay" (click)="closeModal()"></div>
+  <div class="modal-body">
+    <h3>Description complète</h3>
+    <p>{{ selectedDescription }}</p>
+    <button (click)="closeModal()">Fermer</button>
+  </div>
+</div>
+
+</div>

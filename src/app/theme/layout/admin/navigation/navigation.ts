@@ -32,79 +32,50 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
   {
-    id: 'ui-element',
-    title: 'UI ELEMENT',
+    id: 'Service',
+    title: 'SERVICES',
     type: 'group',
     icon: 'icon-ui',
     children: [
       {
-        id: 'basic',
-        title: 'Component',
+        id: 'Projects & Tasks',
+        title: 'Projects & Tasks ',
         type: 'collapse',
         icon: 'feather icon-box',
         children: [
           {
-            id: 'button',
-            title: 'Button',
+            id: 'projet',
+            title: 'Projects',
             type: 'item',
-            url: '/basic/button'
+            url: '/projet'
           },
           {
-            id: 'badges',
-            title: 'Badges',
+            id: 'Tasks',
+            title: 'Tasks',
             type: 'item',
-            url: '/basic/badges'
+            url: '/tache'
           },
-          {
-            id: 'breadcrumb-pagination',
-            title: 'Breadcrumb & Pagination',
-            type: 'item',
-            url: '/basic/breadcrumb-paging'
-          },
-          {
-            id: 'collapse',
-            title: 'Collapse',
-            type: 'item',
-            url: '/basic/collapse'
-          },
-          {
-            id: 'tabs-pills',
-            title: 'Tabs & Pills',
-            type: 'item',
-            url: '/basic/tabs-pills'
-          },
-          {
-            id: 'typography',
-            title: 'Typography',
-            type: 'item',
-            url: '/basic/typography'
-          }
+          
         ]
       }
     ]
   },
   {
-    id: 'forms',
-    title: 'Forms & Tables',
+    id: 'Users',
+    title: 'Users',
     type: 'group',
     icon: 'icon-group',
     children: [
       {
-        id: 'forms-element',
-        title: 'Form Elements',
+        id: 'ListUsers',
+        title: 'ListUsers',
         type: 'item',
-        url: '/forms/basic',
+        url: '/list',
         classes: 'nav-item',
         icon: 'feather icon-file-text'
       },
-      {
-        id: 'tables',
-        title: 'Tables',
-        type: 'item',
-        url: '/tables/bootstrap',
-        classes: 'nav-item',
-        icon: 'feather icon-server'
-      }
+      
+    
     ]
   },
   {
@@ -148,6 +119,22 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Sign in',
             type: 'item',
             url: '/auth/signin',
+            target: true,
+            breadcrumbs: false
+          },
+          {
+            id: 'logout',
+            title: 'Logout',
+            type: 'item',
+            url: '/logout',
+            target: true,
+            breadcrumbs: false
+          },
+          {
+            id: 'profile',
+            title: 'Profile',
+            type: 'item',
+            url: '/profile',
             target: true,
             breadcrumbs: false
           }

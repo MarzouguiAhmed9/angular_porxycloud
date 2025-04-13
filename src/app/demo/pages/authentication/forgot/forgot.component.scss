@@ -1,0 +1,137 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+   
+    background-color: #f4f4f9;
+    font-family: 'Poppins', sans-serif; 
+  }
+  
+  // ✅ wrapper pour centrer verticalement et horizontalement
+  .forgot-password-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; // pour centrer verticalement
+    padding: 20px;
+  }
+  
+  // ✅ container avec largeur max
+  .forgot-password-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 0 20px;
+  }
+  
+  .form-card {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  
+    .form-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+  
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+  
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+  
+        label {
+          font-size: 1rem;
+          color: #333;
+          margin-bottom: 5px;
+        }
+  
+        input {
+          width: 100%;
+          padding: 12px 15px;
+          border: 1px solid #ccc;
+          border-radius: 0.8rem;
+          font-size: 1rem;
+          background-color: #f9f9f9;
+          transition: border 0.3s ease, background-color 0.3s ease;
+  
+          &:focus {
+            border-color: #4caf50;
+            background-color: #eafaf0;
+            outline: none;
+          }
+        }
+  
+        .error-message {
+          font-size: 0.9rem;
+          color: red;
+          margin-top: 5px;
+        }
+      }
+  
+      button {
+        padding: 12px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius:0.8rem;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+  
+        &:hover {
+          background-color: #45a049;
+        }
+  
+        &:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+        }
+      }
+      button:disabled {
+        background-color: #b3d7ff;
+        cursor: not-allowed;
+      }
+    }
+  
+    .message {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+  
+      &.success-message {
+        background-color: #d4edda;
+        color: #155724;
+      }
+  
+      &.error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+    }
+  }
+  
+  // 📱 Responsive
+  @media (max-width: 480px) {
+    .form-card {
+      padding: 30px 20px;
+    }
+  }
+  

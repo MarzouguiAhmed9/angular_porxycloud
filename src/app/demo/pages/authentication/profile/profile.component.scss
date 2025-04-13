@@ -1,0 +1,128 @@
+/* Général */
+.container {
+    margin-top: 30px;
+    background-color: transparent; /* Supprimer la couleur de fond */
+
+  }
+  
+  .hi {
+    background-color: transparent; /* Supprimer la couleur de fond */
+
+    display: flex;
+    justify-content: space-between; /* Espace égal entre les colonnes */
+    align-items: center; /* Centrage vertical des éléments */
+
+  }
+  
+  /* Colonne Profil */
+  .profile-column {
+    background-color: transparent; /* Supprimer la couleur de fond */
+    border-radius: 10px;
+    padding: 30px;
+    height: 100%;
+ 
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: scale(1.1);
+    }
+  
+    h3.username {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #333;
+      text-transform: uppercase; /* Mettre en majuscule */
+      font-family: 'Roboto', sans-serif; /* Changer la police, vous pouvez remplacer par une autre police si nécessaire */
+    }
+    
+    /* Si vous souhaitez ajouter une police personnalisée, vous pouvez l'importer ici */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+  
+    .user-info {
+      .row {
+        display: flex; /* Using flexbox to display elements in a row */
+        align-items: center; /* Centering vertically */
+      }
+    
+      .value {
+        font-size: 1.8rem;
+        color: #555;
+        font-weight: bold;
+        margin-top: -55px;
+        margin-left: 100px; /* Adds space between value and label */
+      }
+    
+      .label {
+        font-weight: bold;
+        color: #333;
+        font-size: 1.4rem;
+      }
+    }
+  }
+  
+  /* Image de Profil (Centrée et agrandie) */
+  .profile-img {
+    width: 250px; /* Augmenter la taille de l'image */
+    height: 250px; /* Garder une taille égale */
+    border: 5px solid #ddd;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    object-fit: cover; /* Pour que l'image soit bien découpée et ne dépasse pas */
+    margin-left: 210px; /* Centrer l'image */
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  
+  /* Section Upload */
+  .upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  /* Wrapper pour l'input de fichier */
+  .file-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  input[type="file"] {
+    display: none;
+  }
+  
+  /* Icône d'Upload (agrandir l'icône) */
+  .upload-icon {
+    margin-top: 30px;
+    margin-left: 75px;
+    width: 80px; /* Augmenter la taille de l'icône */
+    height: 80px;
+  }
+  
+  .file-input-label:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Bouton d'enregistrement */
+  .btn-upload {
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    background-color: #00bbd4;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+    display: block;
+    width: 180px;
+    text-align: center;
+  }
+  
+  .btn-upload:hover {
+    background-color: #009fa5;
+    transform: scale(1.05);
+  }
+  

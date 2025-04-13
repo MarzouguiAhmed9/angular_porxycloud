@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 // Third party
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
+
 @NgModule({
   declarations: [],
   imports: [
@@ -23,9 +24,12 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     FormsModule,
     ReactiveFormsModule,
     CardComponent,
-    NgbModule,
+    NgbModule,  // Importez RouterModule ici
     NgScrollbarModule,
-    NgbCollapseModule
+    NgbCollapseModule,
+    
+
+    
   ],
   exports: [
     CommonModule,
