@@ -97,7 +97,9 @@ export class ItemService {
         })
     );
 }
-  
+getImageUrl(imagePath: string): string {
+  return `${this.apiUrl}/uploads/${imagePath}`;
+}
   private parseBackendErrors(error: any): string {
     if (error?.errors) {
       return error.errors.join('\n');
@@ -127,24 +129,36 @@ export class ItemService {
 
   updateItem(id: number, formData: FormData): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, formData, {
-      headers: this.getAuthHeaders()
+        headers: this.getAuthHeaders()
     }).pipe(
-      catchError(this.handleError)
+        catchError(this.handleError)
     );
-  }
+}
 
-
-  deleteItem(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, {
-      headers: this.getAuthHeaders()
-    }).pipe(
-      tap(response => console.log('Delete item response:', response)),
+deleteItem(id: number): Observable<any> {
+  console.log(`Sending delete request for item ${id}`); // Log de débogage
+  
+  return this.http.delete(`${this.apiUrl}/${id}`, {
+      headers: this.getAuthHeaders(),
+      observe: 'response' // Pour voir la réponse complète
+  }).pipe(
+      tap(response => {
+          console.log('Delete response:', response);
+          if (response.status === 204) {
+              console.log('Item deleted successfully');
+          }
+      }),
+      map(response => response.body),
       catchError(error => {
-        console.error('Error deleting item:', error);
-        throw error;
+          console.error('Detailed delete error:', error);
+          return throwError(() => ({
+              message: error.error?.message || 'Delete failed',
+              status: error.status,
+              details: error.error
+          }));
       })
-    );
-  }
+  );
+}
   getItemById(id: number): Observable<any> {
     // Mock implementation, replace with actual API call
     return of({

@@ -57,6 +57,7 @@
                                     
                                     <div class="image-preview-container" *ngIf="item.images && item.images.length > 0">
                                         <div *ngFor="let img of item.images" class="image-thumbnail">
+                                            <!-- Utilisez directement l'URL stockée en base -->
                                             <img [src]="img" alt="Item image" class="img-thumbnail">
                                         </div>
                                     </div>
@@ -64,10 +65,10 @@
                                 
                                 <div class="btn-group ms-3">
                                     <button (click)="prepareEdit(item)" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="bi bi-pencil"></i> Modifier
                                     </button>
                                     <button (click)="deleteItem(item.id)" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash"></i> Supprimer
                                     </button>
                                 </div>
                             </div>
@@ -79,46 +80,92 @@
 
         <div class="col-lg-4">
             <div class="card">
-                <div class="card-header bg-white">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">{{ isEditing ? 'Modifier un Item' : 'Créer un Nouvel Item' }}</h4>
+                    <button *ngIf="isEditing" (click)="prepareCreate()" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-plus"></i> Nouveau
+                    </button>
                 </div>
                 
                 <div class="card-body">
-                    <form (ngSubmit)="saveItem()" #itemForm="ngForm">
+                    <form [formGroup]="itemForm" (ngSubmit)="saveItem()">
                         <div class="mb-3">
                             <label for="title" class="form-label">Titre *</label>
                             <input type="text" class="form-control" id="title" 
-                                   [(ngModel)]="currentItem.title" name="title" required>
-                            <div *ngIf="itemForm.submitted && !currentItem.title" class="invalid-feedback d-block">
-                                Le titre est obligatoire
+                                   formControlName="title"
+                                   [ngClass]="{ 'is-invalid': itemForm.get('title')?.invalid && 
+                                   (itemForm.get('title')?.dirty || itemForm.get('title')?.touched) }">
+                            <div *ngIf="itemForm.get('title')?.invalid && 
+                                      (itemForm.get('title')?.dirty || itemForm.get('title')?.touched)"
+                                 class="invalid-feedback">
+                                <div *ngIf="itemForm.get('title')?.errors?.['required']">
+                                    Le titre est obligatoire
+                                </div>
+                                <div *ngIf="itemForm.get('title')?.errors?.['minlength']">
+                                    Minimum 3 caractères
+                                </div>
+                                <div *ngIf="itemForm.get('title')?.errors?.['maxlength']">
+                                    Maximum 100 caractères
+                                </div>
                             </div>
                         </div>
                         
                         <div class="mb-3">
                             <label for="description" class="form-label">Description *</label>
-                            <textarea class="form-control" id="description" rows="3"
-                                      [(ngModel)]="currentItem.description" name="description" required></textarea>
-                            <div *ngIf="itemForm.submitted && !currentItem.description" class="invalid-feedback d-block">
-                                La description est obligatoire
+                            <textarea class="form-control" id="description" rows="4"
+                                      formControlName="description"
+                                      [ngClass]="{ 'is-invalid': itemForm.get('description')?.invalid && 
+                                      (itemForm.get('description')?.dirty || itemForm.get('description')?.touched) }"></textarea>
+                            <div *ngIf="itemForm.get('description')?.invalid && 
+                                      (itemForm.get('description')?.dirty || itemForm.get('description')?.touched)"
+                                 class="invalid-feedback">
+                                <div *ngIf="itemForm.get('description')?.errors?.['required']">
+                                    La description est obligatoire
+                                </div>
+                                <div *ngIf="itemForm.get('description')?.errors?.['minlength']">
+                                    Minimum 10 caractères
+                                </div>
+                                <div *ngIf="itemForm.get('description')?.errors?.['maxlength']">
+                                    Maximum 500 caractères
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="mb-3">
-                            <label for="price" class="form-label">Prix (€) *</label>
-                            <input type="number" class="form-control" id="price" 
-                                   [(ngModel)]="currentItem.price" name="price" 
-                                   step="0.01" min="0.01" required>
-                            <div *ngIf="itemForm.submitted && currentItem.price <= 0" class="invalid-feedback d-block">
-                                Le prix doit être positif
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="price" class="form-label">Prix (€) *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">€</span>
+                                    <input type="number" class="form-control" id="price" 
+                                           formControlName="price" step="0.01" min="0.01"
+                                           [ngClass]="{ 'is-invalid': itemForm.get('price')?.invalid && 
+                                           (itemForm.get('price')?.dirty || itemForm.get('price')?.touched) }">
+                                </div>
+                                <div *ngIf="itemForm.get('price')?.invalid && 
+                                          (itemForm.get('price')?.dirty || itemForm.get('price')?.touched)"
+                                     class="invalid-feedback">
+                                    <div *ngIf="itemForm.get('price')?.errors?.['required']">
+                                        Le prix est obligatoire
+                                    </div>
+                                    <div *ngIf="itemForm.get('price')?.errors?.['min']">
+                                        Le prix doit être positif
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="category" class="form-label">Catégorie *</label>
-                            <select class="form-select" id="category" 
-                                    [(ngModel)]="currentItem.category" name="category" required>
-                                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-                            </select>
+                            <div class="col-md-6">
+                                <label for="category" class="form-label">Catégorie *</label>
+                                <select class="form-select" id="category" 
+                                        formControlName="category"
+                                        [ngClass]="{ 'is-invalid': itemForm.get('category')?.invalid && 
+                                        (itemForm.get('category')?.dirty || itemForm.get('category')?.touched) }">
+                                    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                                </select>
+                                <div *ngIf="itemForm.get('category')?.invalid && 
+                                          (itemForm.get('category')?.dirty || itemForm.get('category')?.touched)"
+                                     class="invalid-feedback">
+                                    La catégorie est obligatoire
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="mb-4">
@@ -127,7 +174,7 @@
                                    (change)="onFileSelected($event)" multiple accept="image/*">
                             
                             <div class="mt-3" *ngIf="selectedFiles.length > 0">
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap gap-2 mb-2">
                                     <div *ngFor="let file of selectedFiles; let i = index" class="file-preview">
                                         <div class="file-info">
                                             <span class="file-name" [title]="file.name">
@@ -143,13 +190,16 @@
                         </div>
                         
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi" [class.bi-save]="isEditing" [class.bi-plus]="!isEditing"></i>
-                                {{ isEditing ? 'Mettre à jour' : 'Créer' }}
+                            <button type="submit" class="btn btn-primary" [disabled]="itemForm.invalid || isSubmitting">
+                                <span *ngIf="!isSubmitting">
+                                    <i class="bi" [class.bi-save]="isEditing" [class.bi-plus]="!isEditing"></i>
+                                    {{ isEditing ? 'Mettre à jour' : 'Créer' }}
+                                </span>
+                                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm"></span>
                             </button>
                             
                             <button type="button" class="btn btn-outline-secondary" 
-                                    (click)="prepareCreate()" *ngIf="isEditing">
+                                    (click)="prepareCreate()" *ngIf="isEditing && !isSubmitting">
                                 <i class="bi bi-x"></i> Annuler
                             </button>
                         </div>
