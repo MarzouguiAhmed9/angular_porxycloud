@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
+import { ClientComponent } from '../app/client/client.component'; // Vous devrez créer ce composant
 
 const routes: Routes = [
   {
@@ -13,22 +14,26 @@ const routes: Routes = [
         redirectTo: 'dashboard',
         pathMatch: 'full'
       },
-     
-      { path: 'tache', loadComponent: () => import('./demo/pages/Projet/tache/tache.component').then(m => m.TacheComponent) }
-      ,   
-
-{ path: 'projet', loadComponent: () => import('./demo/pages/Projet/projet/projet.component').then(m => m.ProjetComponent) }
-,
-
-{ path: 'logout', loadComponent: () => import('./demo/pages/authentication/logout/logout.component').then(m => m.LogoutComponent) }
-,
-
-{ path: 'profile', loadComponent: () => import('./demo/pages/authentication/profile/profile.component').then(m => m.ProfileComponent) }
-,
-{ path: 'list', loadComponent: () => import('./demo/pages/authentication/listusers/listusers.component').then(m => m.ListusersComponent) }
-,
-
-
+      { 
+        path: 'tache', 
+        loadComponent: () => import('./demo/pages/Projet/tache/tache.component').then(m => m.TacheComponent) 
+      },
+      { 
+        path: 'projet', 
+        loadComponent: () => import('./demo/pages/Projet/projet/projet.component').then(m => m.ProjetComponent) 
+      },
+      { 
+        path: 'logout', 
+        loadComponent: () => import('./demo/pages/authentication/logout/logout.component').then(m => m.LogoutComponent) 
+      },
+      { 
+        path: 'profile', 
+        loadComponent: () => import('./demo/pages/authentication/profile/profile.component').then(m => m.ProfileComponent) 
+      },
+      { 
+        path: 'list', 
+        loadComponent: () => import('./demo/pages/authentication/listusers/listusers.component').then(m => m.ListusersComponent) 
+      },
       {
         path: 'dashboard',
         loadComponent: () => import('./demo/dashboard/dashboard.component').then(m => m.DashboardComponent)
@@ -54,6 +59,16 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'client',
+    component: ClientComponent,
+    children: [
+      { 
+        path: '', 
+        loadChildren: () => import('../app/client/client-routing.module').then(m => m.ClientRoutingModule)
+      }
+    ]
+  },,
+  {
     path: '',
     component: GuestComponent,
     children: [
@@ -61,12 +76,8 @@ const routes: Routes = [
         path: 'auth',
         loadChildren: () => import('./demo/pages/authentication/authentication.module').then(m => m.AuthenticationModule)
       },
-      {
-        path: 'front',
-        loadChildren: () => import('../Front_client/front/front.module').then(m => m.FrontModule)
-      }
     ]
-  }
+  },
 ];
 
 @NgModule({

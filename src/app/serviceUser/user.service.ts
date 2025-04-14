@@ -64,7 +64,7 @@ export class UserService {
         this.router.navigate(['/admin/dashboard']);
         break;
       case 'ROLE_CLIENT':
-        this.router.navigate(['/user/home']);
+        this.router.navigate(['/client/dashborad']);
         break;
       default:
         this.router.navigate(['/auth/signin']); // Par défaut, rediriger vers la page de connexion
@@ -105,7 +105,31 @@ export class UserService {
   getToken(): string | null {
     return localStorage.getItem('authToken');
   }
-
+  isTokenValid(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+  
+    try {
+      const payload = this.decodeToken(token);
+      const now = Date.now() / 1000;
+      
+      if (payload.exp < now) {
+        console.log('Token expired at:', new Date(payload.exp * 1000));
+        return false;
+      }
+      
+      // Vérification supplémentaire du rôle
+      if (payload.role !== 'ROLE_CLIENT') {
+        console.log('User role not authorized:', payload.role);
+        return false;
+      }
+      
+      return true;
+    } catch (e) {
+      console.error('Invalid token:', e);
+      return false;
+    }
+  }
   // 🔓 Déconnexion utilisateur
   logout(): void {
     localStorage.removeItem('authToken');
@@ -150,8 +174,15 @@ export class UserService {
     const token = this.getToken();
     if (token) {
       const payload = this.decodeToken(token);
-      console.log('Payload décodé:', payload); // Afficher le contenu du token
-      return payload ? payload.user : null;
+      console.log('Decoded token payload:', payload);
+      return {
+        id: payload.id,
+        firstName: payload.firstName || '', // Ajoutez ces champs si disponibles
+        lastName: payload.lastName || '',
+        email: payload.email || '',
+        username: payload.username,
+        role: payload.role
+      };
     }
     return null;
   }

@@ -1,0 +1,19 @@
+<div class="pending-items-container">
+    <h2>Items en attente d'approbation</h2>
+    
+    <div *ngIf="pendingItems.length === 0" class="no-items">
+      Aucun item en attente d'approbation.
+    </div>
+  
+    <div *ngFor="let item of pendingItems" class="item-card">
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.description }}</p>
+      <p>Prix: {{ item.price | currency }}</p>
+      <p>Catégorie: {{ item.category }}</p>
+      
+      <div class="item-actions">
+        <button (click)="approveItem(item.id)" class="approve-btn">Approuver</button>
+        <button (click)="rejectItem(item.id)" class="reject-btn">Rejeter</button>
+      </div>
+    </div>
+  </div>

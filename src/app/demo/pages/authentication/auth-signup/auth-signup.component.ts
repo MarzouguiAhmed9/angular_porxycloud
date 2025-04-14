@@ -103,10 +103,26 @@ export default class AuthSignupComponent {
   onSubmit(): void {
     if (this.registerForm.valid) {
       const formValue = this.registerForm.value;
+      
+      // Créez l'objet utilisateur selon ce qu'attend votre API
       const userData = {
-        ...formValue,
-        role: { id: formValue.role }
+        username: formValue.username,
+        password: formValue.password,
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
+        email: formValue.email,
+        phone: formValue.phone,
+        address: formValue.address,
+        birthday: formValue.birthday,
+        enabled: formValue.enabled,
+        approuve: false, // Ajoutez si nécessaire
+        role: {
+          id: formValue.role,
+          name: formValue.role === 2 ? 'CLIENT' : 'ADMIN' // Adaptez selon vos rôles
+        }
       };
+  
+      console.log('Données envoyées:', userData); // Pour débogage
   
       this.userService.register(userData).subscribe(
         response => {
@@ -115,7 +131,8 @@ export default class AuthSignupComponent {
         },
         error => {
           console.error('❌ Erreur lors de l\'inscription', error);
-          alert(error.error?.error || "Une erreur est survenue. Veuillez réessayer.");
+          // Affichez plus de détails sur l'erreur
+          alert(error.error?.message || error.message || "Une erreur est survenue. Veuillez réessayer.");
         }
       );
     }

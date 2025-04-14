@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from "@angular/common/http"; // For making HTTP requests
-
+import { ClientComponent } from './client/client.component'; // Import your component here
 // Your components
 import { AppComponent } from './app.component'; // Replace this with your actual main component (AppComponent)
 
@@ -11,15 +11,19 @@ import { SharedModule } from './theme/shared/shared.module'; // Example of share
 
 @NgModule({
   declarations: [
-    AppComponent, // Add your components here
+    // Add your components here
+     // Declare your component here
   ],
   imports: [
+    AppComponent, // Import your standalone component here
     BrowserAnimationsModule, // Necessary for running the app in the browser with animations
     HttpClientModule, // Required for HTTP requests (important for your service)
-    SharedModule, // Import your shared module if you have one
+    SharedModule,
+    ClientComponent,
+    // Import your shared module if you have one
     // You can add other modules like FormsModule, ReactiveFormsModule, etc.
   ],
   providers: [],
-  bootstrap: [AppComponent], // Bootstraps the main component of your app
+  // Removed bootstrap array as AppComponent is a standalone component
 })
 export class AppModule {}

@@ -1,0 +1,40 @@
+<div class="client-dashboard">
+    <h2>Mon Tableau de Bord</h2>
+  
+    <div class="actions">
+      <button routerLink="/client/items/new" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Ajouter un item
+      </button>
+      <button routerLink="/client/cart" class="btn btn-secondary">
+        <i class="fas fa-shopping-cart"></i> Voir mon panier
+      </button>
+    </div>
+  
+    <div class="my-items">
+      <h3>Mes Items</h3>
+      
+      <div *ngIf="myItems.length === 0" class="no-items">
+        Vous n'avez pas encore créé d'items.
+      </div>
+  
+      <div *ngFor="let item of myItems" class="item-card">
+        <h4>{{ item.title }}</h4>
+        <p>{{ item.description }}</p>
+        <p>Prix: {{ item.price | currency:'EUR' }}</p>
+        <p>Statut: {{ item.status }}</p>
+        
+        <div class="item-actions">
+          <button 
+            [routerLink]="['/client/items/edit', item.id]" 
+            class="btn btn-edit">
+            <i class="fas fa-edit"></i> Modifier
+          </button>
+          <button 
+            (click)="deleteItem(item.id)" 
+            class="btn btn-delete">
+            <i class="fas fa-trash"></i> Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

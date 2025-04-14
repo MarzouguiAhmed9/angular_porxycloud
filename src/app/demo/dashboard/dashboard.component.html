@@ -1,49 +1,115 @@
-<p>Dashboard Statistics</p>
-
- 
-
-<div class="container py-5 text-center" *ngIf="statistics">
-  <h2 class="mb-4 fw-bold text-primary">User Statistics</h2>
-  <div class="row justify-content-center gap-4">
-    <div class="col-md-3 circle-container">
-      <div class="circle">
-        <svg width="120" height="120">
-          <circle cx="60" cy="60" r="50" stroke="#4e54c8" stroke-width="12" fill="none" stroke-dasharray="314" stroke-dashoffset="94"></circle>
-          <circle cx="60" cy="60" r="50" stroke="#00c6ff" stroke-width="6" fill="none" stroke-dasharray="314" stroke-dashoffset="157"></circle>
-        </svg>
-        <div class="circle-value">{{ statistics.totalUsers }}</div>
-      </div>
-      <div class="label mt-2 fw-semibold">Total Users</div>
-    </div>
-
-    <div class="col-md-3 circle-container">
-      <div class="circle">
-        <svg width="120" height="120">
-          <circle cx="60" cy="60" r="50" stroke="#4e54c8" stroke-width="12" fill="none" stroke-dasharray="314" stroke-dashoffset="125"></circle>
-          <circle cx="60" cy="60" r="50" stroke="#00c6ff" stroke-width="6" fill="none" stroke-dasharray="314" stroke-dashoffset="157"></circle>
-        </svg>
-        <div class="circle-value">{{ statistics.approvedUsers }}</div>
-      </div>
-      <div class="label mt-2 fw-semibold">Approved</div>
-    </div>
-
-    <div class="col-md-3 circle-container">
-      <div class="circle">
-        <svg width="120" height="120">
-          <circle cx="60" cy="60" r="50" stroke="#4e54c8" stroke-width="12" fill="none" stroke-dasharray="314" stroke-dashoffset="180"></circle>
-          <circle cx="60" cy="60" r="50" stroke="#00c6ff" stroke-width="6" fill="none" stroke-dasharray="314" stroke-dashoffset="157"></circle>
-        </svg>
-        <div class="circle-value">{{ statistics.nonApprovedUsers }}</div>
-      </div>
-      <div class="label mt-2 fw-semibold">Not Approved</div>
+<div class="admin-dashboard">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1>Tableau de bord Administrateur</h1>
+    <div class="admin-actions">
+      <button class="btn btn-profile" (click)="profile()">
+        <i class="fas fa-user"></i> Profil
+      </button>
+      <button class="btn btn-logout" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i> Déconnexion
+      </button>
     </div>
   </div>
+
+  <!-- Navigation tabs -->
+  <div class="dashboard-tabs">
+    <button 
+      [class.active]="activeTab === 'statistics'"
+      (click)="setActiveTab('statistics')"
+    >
+      <i class="fas fa-chart-bar"></i> Statistiques
+    </button>
+    <button 
+      [class.active]="activeTab === 'pendingItems'"
+      (click)="setActiveTab('pendingItems')"
+    >
+      <i class="fas fa-clock"></i> Items en attente
+      <span class="badge">{{stats.pendingItems}}</span>
+    </button>
+  </div>
+
+  <!-- Statistics Tab -->
+  @if (activeTab === 'statistics') {
+    <div class="statistics-container">
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-value">{{ statistics?.totalUsers || 0 }}</div>
+          <div class="stat-label">Utilisateurs totaux</div>
+          <i class="stat-icon fas fa-users"></i>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-value">{{ statistics?.approvedUsers || 0 }}</div>
+          <div class="stat-label">Utilisateurs approuvés</div>
+          <i class="stat-icon fas fa-user-check"></i>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-value">{{ statistics?.nonApprovedUsers || 0 }}</div>
+          <div class="stat-label">Utilisateurs en attente</div>
+          <i class="stat-icon fas fa-user-clock"></i>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <button class="btn btn-action" (click)="list()">
+          <i class="fas fa-list"></i> Gérer les utilisateurs
+        </button>
+        <button class="btn btn-action" (click)="list2()">
+          <i class="fas fa-project-diagram"></i> Gérer les projets
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Pending Items Tab -->
+  @if (activeTab === 'pendingItems') {
+    <div class="pending-items-container">
+      @if (isLoading) {
+        <div class="loading-spinner">
+          <i class="fas fa-spinner fa-spin"></i>
+          Chargement en cours...
+        </div>
+      }
+      @else if (errorMessage) {
+        <div class="error-message">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ errorMessage }}
+          <button (click)="loadPendingItems()">Réessayer</button>
+        </div>
+      }
+      @else if (pendingItems.length === 0) {
+        <div class="no-items">
+          <i class="fas fa-check-circle"></i>
+          <p>Aucun item en attente d'approbation</p>
+        </div>
+      } @else {
+        <div class="items-grid">
+          @for (item of pendingItems; track item.id) {
+            <div class="item-card">
+              <div class="item-header">
+                <h3>{{ item.title }}</h3>
+                <span class="item-category">{{ item.category }}</span>
+              </div>
+              
+              <p class="item-description">{{ item.description }}</p>
+              
+              <div class="item-footer">
+                <div class="item-price">{{ formatPrice(item.price) }}</div>
+                <div class="item-actions">
+                  <button class="btn-approve" (click)="approveItem(item.id)">
+                    <i class="fas fa-check"></i> Approuver
+                  </button>
+                  <button class="btn-reject" (click)="rejectItem(item.id)">
+                    <i class="fas fa-times"></i> Rejeter
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
 </div>
-
-
-  
-    <button (click)="logout()">Logout</button>
-    <button (click)="profile()">Profile</button>
-    <button (click)="list()">List</button>
-    <button (click)="list2()">Projet</button>
-
