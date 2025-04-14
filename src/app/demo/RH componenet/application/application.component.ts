@@ -78,9 +78,35 @@ export class ApplicationComponent implements OnInit {
 
   // Calculate score based on CV and offer skills
   calculateScore(cvSkills: string[], offerSkills: string[]): number {
-    const matchedSkills = cvSkills.filter(skill => offerSkills.includes(skill));
-    return (matchedSkills.length / offerSkills.length) * 100;
+    // Trim spaces from both CV skills and offer skills before comparing
+    const trimmedCvSkills = cvSkills.map(skill => skill.trim());
+    const trimmedOfferSkills = offerSkills.map(skill => skill.trim());
+
+    // Log the trimmed skills for debugging
+    console.log('Trimmed CV Skills:', trimmedCvSkills);
+    console.log('Trimmed Offer Skills:', trimmedOfferSkills);
+
+    // Calculate the number of matched skills
+    const matchedSkills = trimmedCvSkills.filter(skill => trimmedOfferSkills.includes(skill));
+
+    // Log the matched skills
+    console.log('Matched Skills:', matchedSkills);
+
+    // Set the score based on matching skills
+    let score = (matchedSkills.length / trimmedOfferSkills.length) * 100;
+
+    // Apply normalization to decrease the score for fewer matches
+    if (matchedSkills.length === 1) {
+      score = score * 0.5; // Decrease the score by half for only one match
+    } else if (matchedSkills.length === 0) {
+      score = 0; // If no match, set the score to 0
+    }
+
+    // Ensure the score doesn't exceed 100%
+    return Math.min(score, 100);
   }
+
+
 
   // Method to view the CV as a PDF
   viewCv(cvId: number): void {

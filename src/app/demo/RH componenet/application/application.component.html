@@ -36,7 +36,12 @@
                     class="star">★</span>
           </div>
         </td>
-        <td>Score will show below ⬇️</td>
+        <td>
+          <!-- Displaying Score dynamically -->
+          <span *ngIf="application.cv && offres[0]">
+              {{ calculateScore(application.cv.skills.split(','), offres[0].skills.split(',')) | number:'1.0-0' }}%
+            </span>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -52,23 +57,4 @@
   <h3>CV Preview:</h3>
   <button (click)="closeCv()" class="close-btn">Close Preview</button>
   <iframe [src]="selectedCvUrl" width="100%" height="600px"></iframe>
-</div>
-
-<!-- Circle Progress at Bottom -->
-<!-- Circle Score at the Bottom for Each Application -->
-<div class="bottom-score" *ngIf="applications.length > 0 && offres.length > 0">
-  <div *ngFor="let application of applications">
-    <ng-container *ngIf="application.cv?.skills && offres[0]?.skills">
-      <div class="progress-circle"
-           [ngClass]="'p' + (calculateScore(application.cv.skills.split(','), offres[0].skills.split(',')) | number:'1.0-0')">
-        <span>
-          {{ calculateScore(application.cv.skills.split(','), offres[0].skills.split(',')) | number:'1.0-0' }}%
-        </span>
-        <div class="left-half-clipper">
-          <div class="first50-bar"></div>
-          <div class="value-bar"></div>
-        </div>
-      </div>
-    </ng-container>
-  </div>
 </div>
