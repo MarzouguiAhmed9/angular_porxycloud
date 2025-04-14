@@ -52,11 +52,7 @@
     <div *ngIf="showModal" class="modal">
       <div class="modal-content">
         <h2>{{ isEditing ? 'Edit Task' : 'Add Task' }}</h2>
-        <form (ngSubmit)="saveTask()" [formGroup]="taskForm">
-          <div class="form-group">
-            <label for="taskName">Task Name:</label>
-            <input id="taskName" type="text" formControlName="nomTache" required />
-          </div>
+      
   
           
   
@@ -72,7 +68,7 @@
   
           <button type="submit" [disabled]="taskForm.invalid">{{ isEditing ? 'Update' : 'Add' }}</button>
           <button type="button" (click)="closeModal()">Cancel</button>
-        </form>
+     
       </div>
     </div>
   </div>

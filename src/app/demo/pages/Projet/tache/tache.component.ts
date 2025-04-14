@@ -57,7 +57,7 @@ export class TacheComponent {
   }
 
   
-  
+ /* 
   saveTask(): void {
     if (this.selectedProjet) {
       if (this.isEditing) {
@@ -102,7 +102,7 @@ export class TacheComponent {
       console.error('Le projet n\'est pas défini pour cette tâche.');
     }
   }
-  
+  */
     
   
 

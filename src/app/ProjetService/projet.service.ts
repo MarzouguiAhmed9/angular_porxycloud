@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Projet } from '../demo/pages/Projet/projet';
 import { Tache } from '../demo/pages/Projet/tache';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,9 +16,13 @@ export class ProjetService {
   private apiUrl = 'http://localhost:8089/Projetback/api';
 
   constructor(private http: HttpClient) {}
+  private TOKEN_KEY = 'authToken'; // Constante pour clé du token
+  
+  
+
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken'); // stocké après login
-    console.log('Token récupéré:', token); // Affiche le token dans la console pour vérifier son contenu
+    const token = localStorage.getItem(this.TOKEN_KEY); // Utilisez la même clé partout
+    console.log('Token récupéré:', token);
   
     if (!token || !token.includes('.')) {
       throw new Error('Token JWT malformé');
@@ -28,11 +33,31 @@ export class ProjetService {
       'Content-Type': 'application/json'
     });
   }
-  
+
+  ajouterProjet(formData: FormData): Observable<any> {
+    const token = localStorage.getItem(this.TOKEN_KEY); // Récupérer le token
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.post(`${this.baseUrl}/add`, formData, { headers });
+  }
+
+  // Exemple de gestion des erreurs
+  handleError(error: any): Observable<never> {
+    // Logique pour gérer les erreurs, par exemple rediriger vers la page de login si non autorisé
+    console.error('Erreur:', error);
+    throw error; // ou gérer en affichant un message utilisateur
+  }
+ 
+ 
+  getProjetById(id: number): Observable<Projet> {
+    return this.http.get<Projet>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+  }
   
   getAllProjets(): Observable<Projet[]> {
-    return this.http.get<Projet[]>(this.baseUrl, { headers: this.getHeaders() });
+    return this.http.get<Projet[]>(`${this.baseUrl}/all`, { headers: this.getHeaders() });
   }
+  
+  
   
 
   deleteProjet(id: number): Observable<void> {
@@ -74,9 +99,7 @@ export class ProjetService {
     return this.http.get<Tache[]>(`${this.baseUrl}/${id}/taches`, { headers: this.getHeaders() });
   }
   
-  addTache(tache: Tache, idProjet: number): Observable<Tache> {
-    return this.http.post<Tache>(`${this.baseUrl}/${idProjet}/taches`, tache, { headers: this.getHeaders() });
-  }
+
   
   
  
@@ -96,4 +119,43 @@ export class ProjetService {
   }
   
     
+
+
+  addProjets(projet: Projet): Observable<Projet> {
+    const token = this.getAuthToken();
+    const headers = this.getHeaders();
+  
+    const userInfo = this.getUserInfoFromToken();
+    if (userInfo) {
+      projet.createurNom = userInfo.username || 'Nom inconnu'; // Assurez-vous que 'username' est une clé dans votre token
+    }
+    
+    return this.http.post<Projet>(this.baseUrl, projet, { headers });
+  }
+  
+  addTache(tache: Tache, projetId: number, userId: number, headers: HttpHeaders): Observable<any> {
+    return this.http.post(`${this.apiUrl}/projets/${projetId}/tache/${userId}/add`, tache, { headers });
+  }
+  
+
+
+  getProjectDurationInDays(startDate: string, endDate: string): number {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }  
+  
+  participate(projetId: number, userId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`  // Assumes token is saved in localStorage
+    });
+    
+    const url = `${this.apiUrl}/projets/projets/${projetId}/participate/${userId}`;
+    return this.http.post(url, {}, { headers });
+  }
+  
+  
+
+  
 }
