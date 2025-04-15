@@ -69,16 +69,8 @@
         font-weight: 500;
         transition: background 0.3s ease;
       }
-  
-      .edit {
-        background-color: #e0f2fe;
-        color: #0369a1;
-      }
-  
-      .delete {
-        background-color: #fee2e2;
-        color: #b91c1c;
-      }
+
+      
   
       .toggle {
         background-color: #ede9fe;
@@ -164,4 +156,26 @@
     border-radius: 8px;
   }
     
+  .btn.update {
+    background-color: #facc15; /* jaune ambré */
+    color: #78350f;
+  }
+  .btn.update:hover {
+    background-color: #fbbf24;
+  }
   
+  .btn.delete {
+    background-color: #ef4444;
+    color: #fff;
+  }
+  .btn.delete:hover {
+    background-color: #dc2626;
+  }
+  
+  .btn.save {
+    background-color: #3b82f6;
+    color: white;
+  }
+  .btn.save:hover {
+    background-color: #2563eb;
+  }

@@ -207,6 +207,25 @@ toggleApproval(id: number): Observable<any> {
 }
 
 
+    
+getUserIdFromToken(): number | null {
+    const token = localStorage.getItem('authToken'); // Récupérer le token du localStorage
+    if (token) {
+      const decodedToken = this.decodeToken(token);  // Décoder le token
+      return decodedToken ? decodedToken.id : null;  // Retourner l'ID si disponible
+    }
+    return null;  // Si aucun token n'est trouvé
+  }
   
-  
+
+
+  getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      return new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+    }
+    return new HttpHeaders();
+  }
 }

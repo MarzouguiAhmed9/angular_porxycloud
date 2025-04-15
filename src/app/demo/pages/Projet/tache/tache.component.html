@@ -1,75 +1,108 @@
-<div class="task-container">
-    <h2>Task List</h2>
-  
-    <div class="form-group">
-      <label for="projectSelect">Select a project:</label>
-      <select id="projectSelect" [(ngModel)]="selectedProjet" (change)="loadTaches(selectedProjet?.idProjet)">
-        <option [ngValue]="null">All Projects</option>
-        <option *ngFor="let projet of projets" [ngValue]="projet">
-          {{ projet.nomProjet }}
-        </option>
-      </select>
-    </div>
-  
-    <button (click)="showModal = true; isEditing = false;" class="add-button">
-      <span>+</span> Add Task
-    </button>
-  
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Task Name</th>
-          <th>Status</th>
-          <th>DD</th>
-          <th>DF</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let task of tasks">
-          <td>{{ task.nomTache }}</td>
-          <td>
-            <span class="status-badge"
-      [ngClass]="{
-        'not-begin': task.status === 'NOT_BEGIN',
-        'in-progress': task.status === 'EN_COURS',
-        'completed': task.status === 'FINISHED'
-      }">
-      {{ task.status }}
-    </span>
-          </td>
-          <td>{{ task.dateDebut }}</td>
-          <td>{{ task.dateFin}}</td>
-          <td>
-           <!-- <button (click)="openEditTaskModal(task)" class="btn edit">Edit</button>-->
-            <button (click)="deleteTask(task.idTache)" class="btn delete">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <!-- Modal Form for Task -->
-    <div *ngIf="showModal" class="modal">
-      <div class="modal-content">
-        <h2>{{ isEditing ? 'Edit Task' : 'Add Task' }}</h2>
-      
-  
-          
-  
-          <div class="form-group">
-            <label for="taskStartDate">Start Date:</label>
-            <input id="taskStartDate" type="date" formControlName="dateDebut" required />
+<!-- Tâches - Formulaire -->
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="isEditing ? 'Edit Task' : 'Add Task'" [options]="false">
+      <hr />
+      <form [formGroup]="taskForm" (ngSubmit)="isEditing ? updateTask() : addTask()">
+        <div class="row">
+          <div class="col-md-6">
+            <!-- Nom Tâche -->
+            <div class="form-group">
+              <label for="taskName">Task Name</label>
+              <input id="taskName" type="text" formControlName="nomTache" class="form-control" placeholder="Enter task name" required />
+            </div>
+
+            <!-- Projet -->
+            <div class="form-group">
+              <label for="projectSelect">Select a project</label>
+              <select id="projectSelect" class="form-control" formControlName="projet">
+                <option *ngFor="let projet of projets" [ngValue]="projet">{{ projet.nomProjet }}</option>
+              </select>
+            </div>
+
+            <!-- Dates -->
+            <div class="form-group">
+              <label for="startDate">Start Date</label>
+              <input id="startDate" type="date" formControlName="dateDebut" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="endDate">End Date</label>
+              <input id="endDate" type="date" formControlName="dateFin" class="form-control" required />
+            </div>
+
+            <!-- Statut -->
+            <div class="form-group">
+              <label for="status">Status</label>
+              <select id="status" class="form-control" formControlName="status">
+                <option value="NOT_BEGIN">Not Begin</option>
+                <option value="EN_COURS">In Progress</option>
+                <option value="FINISHED">Finished</option>
+              </select>
+            </div>
           </div>
-  
-          <div class="form-group">
-            <label for="taskEndDate">End Date:</label>
-            <input id="taskEndDate" type="date" formControlName="dateFin" required />
-          </div>
-  
-          <button type="submit" [disabled]="taskForm.invalid">{{ isEditing ? 'Update' : 'Add' }}</button>
-          <button type="button" (click)="closeModal()">Cancel</button>
-     
-      </div>
-    </div>
+        </div>
+
+        <!-- Boutons -->
+        <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">
+          {{ isEditing ? 'Update Task' : 'Add Task' }}
+        </button>
+        <button *ngIf="isEditing" type="button" class="btn btn-secondary ml-2" (click)="resetForm()">Cancel</button>
+      </form>
+    </app-card>
   </div>
-  
+</div>
+
+<!-- Tâches - Tableau -->
+<div class="col-xl-12 mt-4">
+  <!-- Filtrage -->
+  <!-- Sélecteur de projet pour filtrer -->
+<div class="form-inline mb-3">
+  <label for="filterProject" class="mr-2">Filter by Project:</label>
+  <select id="filterProject" class="form-control mr-2" [(ngModel)]="selectedProjectId" (change)="filterTachesByProject()">
+    <option value="">-- All Projects --</option>
+    <option *ngFor="let projet of projets" [value]="projet.idProjet">{{ projet.nomProjet }}</option>
+  </select>
+</div>
+
+  <!-- Liste des tâches -->
+  <app-card cardTitle="Manage Tasks" [options]="false" blockClass="table-border-style">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Task Name</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of filteredTaches; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ task.nomTache }}</td>
+            <td>
+              <span class="status-badge"
+                [ngClass]="{
+                  'not-begin': task.status === 'NOT_BEGIN',
+                  'badge-warning': task.status === 'EN_COURS',
+                  'badge-success': task.status === 'FINISHED'
+                }">
+                {{ task.status }}
+              </span>
+            </td>
+            <td>{{ task.dateDebut }}</td>
+            <td>{{ task.dateFin }}</td>
+            <td>
+              <button class="btn btn-sm btn-warning" (click)="onEdit(task)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteTask(task.projet?.idProjet, task.idTache)">Delete</button>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+</div>

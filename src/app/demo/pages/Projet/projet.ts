@@ -3,7 +3,7 @@ import { Tache } from "./tache";
 import { Status } from "./Status";
 
 export interface Projet {
-  idProjet: number;
+  idProjet?: number;
   nomProjet: string;
   description: string;
   nbreGestions: number;
@@ -14,4 +14,6 @@ export interface Projet {
   membres?: User[];
   taches?: Tache[];
   status: Status;
+  image?:string;
+  image_url?: string; 
 }

@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { Status } from '../Status';
+import { UserService } from 'src/app/serviceUser/user.service';
 
 @Component({
   selector: 'app-projet',
-  imports:[CommonModule, SharedModule, FormsModule],
+  imports: [CommonModule, SharedModule, FormsModule],
   templateUrl: './projet.component.html',
   styleUrls: ['./projet.component.scss']
 })
@@ -16,20 +17,28 @@ export class ProjetComponent implements OnInit {
   projets: Projet[] = [];
   allProjets: Projet[] = [];
   selectedStatus: string = '';
-
   selectedDescription: string = '';
   showModal: boolean = false;
   isDescriptionModal: boolean = false;
   modalPosition: { top: number; left: number } = { top: 0, left: 0 };
   isEditing: boolean = false;
-
   currentProjet: Projet = this.initNewProjet();
   statusEnum = Status;
-
-  constructor(private projetService: ProjetService) {}
+  userId!: number;
+  constructor(private projetService: ProjetService, private userProfile: UserService) {}
 
   ngOnInit(): void {
     this.loadProjets();
+    this.getUserId();
+  }
+
+  getUserId(): void {
+    const userIdFromToken = this.userProfile.getUserIdFromToken();
+    if (userIdFromToken) {
+      this.userId = userIdFromToken;
+    } else {
+      console.log("Aucun ID utilisateur trouvé dans le token", "error");
+    }
   }
 
   initNewProjet(): Projet {
@@ -56,49 +65,72 @@ export class ProjetComponent implements OnInit {
       error: (err) => console.error('Erreur lors du chargement des projets :', err),
     });
   }
+
   openModal(isEditing: boolean, projet?: Projet, isDescription: boolean = false): void {
     this.isEditing = isEditing;
     this.isDescriptionModal = isDescription;
-  
+
     if (isEditing && projet) {
       this.currentProjet = { ...projet };
     } else if (isDescription) {
       this.selectedDescription = projet?.description || '';
     }
-  
+
     this.showModal = true;
   }
-  
+
   closeModal(): void {
     this.showModal = false;
     this.currentProjet = this.initNewProjet();
   }
 
   saveProjet(): void {
-    this.currentProjet.status = Status.NOT_BEGIN;
+    const formData = new FormData();
+    
+    // Adding fields from `this.currentProjet` to the FormData
+    formData.append('nomProjet', this.currentProjet.nomProjet);
+    formData.append('description', this.currentProjet.description);
+    formData.append('nbreGestions', this.currentProjet.nbreGestions.toString());
+    formData.append('nbreMembreDisponible', this.currentProjet.nbreMembreDisponible.toString());
+    formData.append('dateDebut', this.currentProjet.dateDebut);
+    formData.append('dateFin', this.currentProjet.dateFin);
+    formData.append('status', this.currentProjet.status);
 
+    // If editing
     if (this.isEditing) {
-      this.projetService.updateProjet(this.currentProjet).subscribe(
-        () => {
+      this.projetService.updateProjet(this.currentProjet).subscribe({
+        next: () => {
           this.loadProjets();
           this.closeModal();
+          alert("Mise à jour réussie du projet !");
         },
-        (error) => console.error('Erreur lors de la mise à jour du projet', error)
-      );
+        error: (error) => console.error('Erreur lors de la mise à jour du projet', error),
+      });
     } else {
-      this.projetService.addProjet(this.currentProjet).subscribe(
-        () => {
+      // If adding a new project
+      this.projetService.ajouterProjet(formData).subscribe({
+        next: () => {
           this.loadProjets();
           this.closeModal();
+          alert("Projet ajouté avec succès !");
         },
-        (error) => console.error("Erreur lors de l'ajout du projet", error)
-      );
+        error: (error) => console.error("Erreur lors de l'ajout du projet", error),
+      });
     }
   }
 
   deleteProjet(id: number): void {
-    if (confirm('Confirmer la suppression ?')) {
-      this.projetService.deleteProjet(id).subscribe(() => this.loadProjets());
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) {
+      this.projetService.deleteProjet(id).subscribe({
+        next: () => {
+          this.loadProjets();
+          alert("Projet supprimé avec succès !");
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression du projet', err);
+          alert("Erreur lors de la suppression du projet.");
+        },
+      });
     }
   }
 
@@ -117,12 +149,4 @@ export class ProjetComponent implements OnInit {
       this.projets = this.allProjets.filter((p) => p.status === this.selectedStatus);
     }
   }
-  }
-  
-      
-
- 
-
-
- 
-
+}

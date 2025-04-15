@@ -24,6 +24,7 @@
         color: #333;
         margin-bottom: 0.5rem;
       }
+      
   
       .description-short {
         color: #000;
@@ -87,28 +88,7 @@
         display: flex;
         gap: 1rem;
   
-        button {
-          padding: 0.4rem 0.8rem;
-          border-radius: 5px;
-          font-weight: 500;
-          border: none;
-          cursor: pointer;
-          transition: background 0.3s ease;
-  
-          &.update {
-            background-color: #e0f2fe;
-            color: #0369a1;
-          }
-  
-          &.delete {
-            background-color: #fee2e2;
-            color: #b91c1c;
-          }
-  
-          &:hover {
-            opacity: 0.85;
-          }
-        }
+       
       }
   
       .taches {
@@ -213,8 +193,7 @@
   background-color: #0056b3; /* Changer la couleur du bouton lors du survol */
 }
 .add-button {
-    background-color: #10b981;
-    color: white;
+   
     position: absolute;
     top: 6rem;
     right: 3.9rem;
@@ -231,9 +210,7 @@
       font-weight: bold;
     }
 
-    &:hover {
-      background-color: #059669;
-    }
+    
 
 
 
@@ -256,4 +233,41 @@
 
 
 
+    .projets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
+      gap: 20px;
+      padding: 10px 0;
+    }
     
+    .projet-card {
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    /* Global button styles */
+.btn.update {
+  background-color: #facc15; /* jaune ambré */
+  color: #78350f;
+}
+.btn.update:hover {
+  background-color: #fbbf24;
+}
+
+.btn.delete {
+  background-color: #ef4444;
+  color: #fff;
+}
+.btn.delete:hover {
+  background-color: #dc2626;
+}
+
+.btn.save {
+  background-color: #3b82f6;
+  color: white;
+}
+.btn.save:hover {
+  background-color: #2563eb;
+}

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {jwtDecode} from 'jwt-decode';
 
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Projet } from '../demo/pages/Projet/projet';
 import { Tache } from '../demo/pages/Projet/tache';
 
@@ -61,14 +61,13 @@ export class ProjetService {
   
 
   deleteProjet(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+    return this.http.delete<void>(`${this.baseUrl}/delete/${id}`, { headers: this.getHeaders() });
   }
- 
-
+  
   updateProjet(projet: Projet): Observable<Projet> {
-    return this.http.put<Projet>(`${this.baseUrl}/${projet.idProjet}`, projet);
+    return this.http.put<Projet>(`${this.baseUrl}/update/${projet.idProjet}`, projet, { headers: this.getHeaders() });
   }
- 
+  
   private getAuthToken(): string | null {
     return localStorage.getItem('authToken'); // Assurez-vous que le token est dans le localStorage
   }
@@ -81,6 +80,7 @@ export class ProjetService {
     }
     return null;
   }
+  
   
   addProjet(projet: Projet): Observable<Projet> {
     const token = this.getAuthToken();
@@ -95,9 +95,10 @@ export class ProjetService {
     return this.http.post<Projet>(this.baseUrl, projet, { headers });
   }
   
-  getTachesByProjet(id: number): Observable<Tache[]> {
-    return this.http.get<Tache[]>(`${this.baseUrl}/${id}/taches`, { headers: this.getHeaders() });
+  getTachesByProjet(idProjet: number): Observable<any> {
+    return this.http.get(`http://localhost:8089/Projetback/api/projets/${idProjet}/taches`);
   }
+  
   
 
   
@@ -105,7 +106,7 @@ export class ProjetService {
  
 
   updateTache(tache: Tache): Observable<Tache> {
-    return this.http.put<Tache>(`${this.apiUrl}/taches/${tache.idTache}`, tache, { headers: this.getHeaders() });
+    return this.http.put<Tache>(`${this.baseUrl}/taches/${tache.idTache}/update`, tache, { headers: this.getHeaders() });
   }
   
   deleteTache(idTache: number): Observable<string> {
@@ -118,8 +119,11 @@ export class ProjetService {
     return this.http.get<Tache[]>(`${this.apiUrl}/projets/taches`, { headers: this.getHeaders() });
   }
   
-    
-
+  deleteTask(idProjet: number, idTache: number): Observable<void> {
+    return this.http.delete<void>(`http://localhost:8089/Projetback/api/projets/${idProjet}/tache/${idTache}`);
+  }
+  
+  
 
   addProjets(projet: Projet): Observable<Projet> {
     const token = this.getAuthToken();
@@ -133,11 +137,16 @@ export class ProjetService {
     return this.http.post<Projet>(this.baseUrl, projet, { headers });
   }
   
-  addTache(tache: Tache, projetId: number, userId: number, headers: HttpHeaders): Observable<any> {
-    return this.http.post(`${this.apiUrl}/projets/${projetId}/tache/${userId}/add`, tache, { headers });
+  addTache(newTask: Tache, projetId: number, userId: number, headers: any): Observable<Tache> {
+    return this.http.post<Tache>(`http://localhost:8089/Projetback/api/projets/${projetId}/tache/${userId}/add`, newTask, { headers })
+      .pipe(
+        catchError(error => {
+          console.error('Erreur lors de l\'ajout de la tâche', error);
+          return throwError(() => new Error('Erreur serveur lors de l\'ajout de la tâche'));
+        })
+      );
   }
   
-
 
   getProjectDurationInDays(startDate: string, endDate: string): number {
     const start = new Date(startDate);
@@ -157,5 +166,8 @@ export class ProjetService {
   
   
 
+
+
+  
   
 }
