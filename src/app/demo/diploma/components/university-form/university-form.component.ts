@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { CardComponent } from '../../../../theme/shared/components/card/card.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UniversityService } from 'src/app/demo/services/diploma/university-service.service';
+import { University } from 'src/app/models/university.model';
 
 @Component({
   selector: 'app-university-form',
@@ -10,10 +11,12 @@ import { UniversityService } from 'src/app/demo/services/diploma/university-serv
   styleUrl: './university-form.component.scss'
 })
 export class UniversityFormComponent {
+  @Input() universityToEdit: University | null = null;
+  @Output() universityAdded = new EventEmitter<void>();
   selectedThumbnail: File | null = null;
   universityForm!: FormGroup;
   selectedFile: File | null = null;
-  @Output() universityAdded = new EventEmitter<void>();
+  updatedUniversityId: number;
 
   constructor(
     private fb: FormBuilder,
@@ -49,23 +52,76 @@ export class UniversityFormComponent {
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
   }
-
+  isEditMode = false;
   onSubmit(): void {
     if (this.universityForm.invalid) return;
+
     const formData = new FormData();
-    // Append form controls
     Object.entries(this.universityForm.value).forEach(([key, value]) => {
       formData.append(key, value as string);
     });
 
-    //! console.log(formData.get('thumbnail')['name']);
+    if (this.isEditMode) {
+      // Update existing university
+      this.universityForm.value.universityId = this.updatedUniversityId;
+      this.universityService.updateUniversity(this.universityForm.value).subscribe({
+        next: () => {
+          alert('University updated successfully!');
+          this.resetForm();
+          this.universityAdded.emit();
+        },
+        error: (err) => console.error('Error updating university:', err)
+      });
+    } else {
+      // Add new university
+      this.universityService.addUniversity(this.universityForm.value).subscribe({
+        next: () => {
+          alert('University saved successfully!');
+          this.resetForm();
+          this.universityAdded.emit();
+        },
+        error: (err) => console.error('Error saving university:', err)
+      });
+    }
+  }
+  // Update populateForm to set edit mode flag
+  populateForm(university: University | null) {
+    if (university) {
+      this.isEditMode = true;
+      this.updatedUniversityId = university.universityId;
+      this.universityForm.patchValue({
+        universityId: university.universityId,
+        name: university.name,
+        ranking: university.ranking,
+        description: university.description,
+        programSpecialty: university.programSpecialty,
+        establishedYear: university.establishedYear,
+        address: university.address,
+        city: university.city,
+        state: university.state,
+        postalCode: university.postalCode,
+        country: university.country,
+        website: university.website,
+        phoneNumber: university.phoneNumber,
+        email: university.email,
+        type: university.type,
+        accreditationStatus: university.accreditationStatus
+      });
+    }
+  }
 
-    this.universityService.addUniversity(this.universityForm.value).subscribe({
-      next: () => {
-        alert('University saved successfully!');
-        this.universityAdded.emit();
-      },
-      error: (err) => console.error('Error saving university:', err)
-    });
+  // Add a method to reset the form
+  resetForm(): void {
+    this.universityForm.reset();
+    this.isEditMode = false;
+    this.universityToEdit = null;
+    this.selectedFile = null;
+    this.selectedThumbnail = null;
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['universityToEdit'] && changes['universityToEdit'].currentValue && !changes['universityToEdit'].firstChange) {
+      const university = changes['universityToEdit'].currentValue;
+      this.populateForm(university);
+    }
   }
 }

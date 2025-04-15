@@ -1,2 +1,2 @@
-<app-university-form (universityAdded)="onUniversityAdded()"></app-university-form>
-<app-university-table #tableRef></app-university-table>
+<app-university-form #formRef [universityToEdit]="selectedUniversity" (universityAdded)="onUniversityAdded()"></app-university-form>
+<app-university-table #tableRef (selectUniversity)="onSelectUniversity($event)"></app-university-table>

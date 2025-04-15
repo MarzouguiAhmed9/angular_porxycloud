@@ -1,2 +1,2 @@
-<app-studyplan-form></app-studyplan-form>
-<app-studyplan-table></app-studyplan-table>
+<app-studyplan-form #formRef [studyToEdit]="selectedStudy" (studyAdded)="onStudyAdded()"></app-studyplan-form>
+<app-studyplan-table #tableRef (selectStudy)="onSelectStudy($event)"></app-studyplan-table>

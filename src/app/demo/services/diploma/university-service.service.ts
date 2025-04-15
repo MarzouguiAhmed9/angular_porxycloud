@@ -21,7 +21,7 @@ export class UniversityService {
   addUniversity(data: University) {
     return this.http.post<University[]>(`${this.URL}/add`, data);
   }
-  updateUniversity(data: University, id: any) {
+  updateUniversity(data: University) {
     return this.http.put<University>(`${this.URL}/update`, data);
   }
 }

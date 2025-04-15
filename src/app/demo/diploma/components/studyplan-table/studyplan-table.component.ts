@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { StudyplanService } from 'src/app/demo/services/diploma/studyplan-service.service';
 import { StudyPlan } from 'src/app/models/study-plan.model';
 import { University } from 'src/app/models/university.model';
@@ -13,7 +13,9 @@ import { UniversityService } from 'src/app/demo/services/diploma/university-serv
   styleUrl: './studyplan-table.component.scss'
 })
 export class StudyplanTableComponent implements OnInit {
-  universities: University[]=[];
+  universities: University[] = [];
+  @Output() selectStudy = new EventEmitter<StudyPlan>();
+
   constructor(
     private studyService: StudyplanService,
     private univerityService: UniversityService
@@ -28,7 +30,7 @@ export class StudyplanTableComponent implements OnInit {
       this.universities = data;
     });
   }
-  editStudyPlan(id: number) {}
+
   deleteStudyPlan(id: number) {
     if (!confirm('Are you sure you want to delete this university?')) {
       return;
@@ -37,7 +39,14 @@ export class StudyplanTableComponent implements OnInit {
       this.ngOnInit();
     });
   }
-  showStudyPlan(id: number) {}
+  onEditClick(study: StudyPlan) {
+    this.selectStudy.emit(study);
+  }
+  showStudyPlan(id: number) {
+    this.studyService.getStudyPlan(id).subscribe((data) => {
+      console.log(data);
+    });
+  }
 
   getUniversityName(universityId: number | { universityId: number }): string {
     const university = this.universities.find((uni) => uni.universityId === universityId);

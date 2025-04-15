@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { StudyplanService } from 'src/app/demo/services/diploma/studyplan-service.service';
 import { UniversityService } from 'src/app/demo/services/diploma/university-service.service';
@@ -16,6 +16,8 @@ export class StudyplanFormComponent {
   studyPlanForm: FormGroup;
   minDate: string;
   universities: University[] = [];
+  @Input() studyToEdit: StudyPlan | null = null;
+  @Output() studyAdded = new EventEmitter<void>();
 
   constructor(
     private universityService: UniversityService,
@@ -100,6 +102,35 @@ export class StudyplanFormComponent {
     const diffInYears = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 365);
 
     return parseFloat(diffInYears.toFixed(1));
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['studyToEdit'] && changes['studyToEdit'].currentValue && !changes['studyToEdit'].firstChange) {
+      const study = changes['studyToEdit'].currentValue;
+      this.populateForm(study);
+    }
+  }
+
+  populateForm(study: StudyPlan | null) {
+    if (!study) return;
+
+    this.studyPlanForm.patchValue({
+      studyPlanId: study.studyPlanId,
+      university: study.university,
+      programName: study.programName,
+      programCode: study.programCode,
+      degreeType: study.degreeType,
+      specialization: study.specialization,
+      startDate: study.startDate,
+      endDate: study.endDate,
+      programWebsite: study.programWebsite,
+      programDescription: study.programDescription,
+      prerequisites: study.prerequisites,
+      admissionRequirements: study.admissionRequirements,
+      languageOfInstruction: study.languageOfInstruction,
+      coreCourses: study.coreCourses,
+      totalCredits: study.totalCredits,
+      durationYears: study.durationYears
+    });
   }
   getFormControl(controlName: string) {
     return this.studyPlanForm.get(controlName);

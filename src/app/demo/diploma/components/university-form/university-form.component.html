@@ -243,6 +243,14 @@
       </div>
     </div>
 
-    <button type="submit" class="btn mt-3 btn-primary" [disabled]="universityForm.invalid">Save University</button>
+    <!-- In your form's submit button -->
+    <button type="submit" class="btn btn-primary">
+      {{ isEditMode ? 'Update University' : 'Add University' }}
+    </button>
+
+    <!-- You might also want to add a cancel button for edit mode -->
+    @if (isEditMode) {
+      <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancel</button>
+    }
   </form>
 </app-card>
