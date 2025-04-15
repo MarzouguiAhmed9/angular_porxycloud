@@ -103,11 +103,14 @@ export class ProjetService {
 
   
   
- 
-
-  updateTache(tache: Tache): Observable<Tache> {
-    return this.http.put<Tache>(`${this.baseUrl}/taches/${tache.idTache}/update`, tache, { headers: this.getHeaders() });
+  updateTache(tache: Tache): Observable<Projet> {
+    return this.http.put<Projet>(
+      `${this.baseUrl}/${tache.projet.idProjet}/tache/${tache.idTache}/update`,
+      tache,
+      { headers: this.getHeaders() }
+    );
   }
+  
   
   deleteTache(idTache: number): Observable<string> {
     return this.http.delete(`${this.apiUrl}/taches/${idTache}`, {
@@ -121,6 +124,10 @@ export class ProjetService {
   
   deleteTask(idProjet: number, idTache: number): Observable<void> {
     return this.http.delete<void>(`http://localhost:8089/Projetback/api/projets/${idProjet}/tache/${idTache}`);
+  }
+  
+  getTachesByProjetId(projetId: number): Observable<Tache[]> {
+    return this.http.get<Tache[]>(`http://localhost:8089/Projetback/api/projets/${projetId}/taches`);
   }
   
   

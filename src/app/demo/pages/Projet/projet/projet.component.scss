@@ -192,10 +192,10 @@
 .modal-content button:hover {
   background-color: #0056b3; /* Changer la couleur du bouton lors du survol */
 }
-.add-button {
+.btn.btn-primary {
    
     position: absolute;
-    top: 6rem;
+    top: 8rem;
     right: 3.9rem;
     padding: 0.4rem 0.8rem;
     border-radius: 5px;

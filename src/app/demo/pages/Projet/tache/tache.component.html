@@ -59,7 +59,7 @@
   <!-- Sélecteur de projet pour filtrer -->
 <div class="form-inline mb-3">
   <label for="filterProject" class="mr-2">Filter by Project:</label>
-  <select id="filterProject" class="form-control mr-2" [(ngModel)]="selectedProjectId" (change)="filterTachesByProject()">
+  <select id="filterProject" class="form-control mr-2" [(ngModel)]="selectedProjectId" (change)="onProjectSelect()">
     <option value="">-- All Projects --</option>
     <option *ngFor="let projet of projets" [value]="projet.idProjet">{{ projet.nomProjet }}</option>
   </select>
@@ -97,8 +97,9 @@
             <td>{{ task.dateFin }}</td>
             <td>
               <button class="btn btn-sm btn-warning" (click)="onEdit(task)">Edit</button>
-              <button class="btn btn-sm btn-danger" (click)="deleteTask(task.projet?.idProjet, task.idTache)">Delete</button>
-
+              <button class="btn btn-sm btn-danger" (click)="deleteTask(selectedProjectId, task.idTache)">Delete</button>
+            
+              <p>Task ID: {{ task.idTache }}</p>
             </td>
           </tr>
         </tbody>

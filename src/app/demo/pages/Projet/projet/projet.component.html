@@ -1,42 +1,42 @@
 <div class="projet-container">
-  <h2>Liste des Projets</h2>
+  <h2>Project List</h2>
 
-  <!-- Bouton pour ajouter un projet -->
-  <button (click)="openModal(false, null)" class="add-button">
-    <span>➕ Ajouter Projet</span>
+  <!-- Button to add a project -->
+  <button (click)="openModal(false, null)" class="btn btn-primary">
+    <span> Add Project</span>
   </button>
 
-  <!-- Filtres -->
+  <!-- Filters -->
   <div class="actions-bar">
-    <label for="statusFilter">Filtrer par statut :</label>
+    <label for="statusFilter">Filter by status:</label>
     <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="filterProjets()">
-      <option value="">Tous</option>
-      <option value="NOT_BEGIN">Non commencé</option>
-      <option value="BEGIN">Commencé</option>
-      <option value="FINISHED">Terminé</option>
+      <option value="">All</option>
+      <option value="NOT_BEGIN">Not Started</option>
+      <option value="BEGIN">Started</option>
+      <option value="FINISHED">Finished</option>
     </select>
   </div>
 
-  <!-- Affichage des projets -->
+  <!-- Display Projects -->
   <div class="projets-grid">
     <div *ngFor="let projet of projets" class="projet-card">
       <h3>{{ projet.nomProjet }}</h3>
       <p>
-        <strong>Description :</strong>
+        <strong>Description:</strong>
         <span class="description-short" (click)="openDescriptionModal(projet)">
           {{ projet.description.split(' ').slice(0, 2).join(' ') }}...
         </span>
       </p>
 
       <div class="nbreGestions">
-        <strong>Gestion :</strong> {{ projet.nbreGestions }}
+        <strong>Management:</strong> {{ projet.nbreGestions }}
       </div>
       <div class="nbreMembreDisponible">
-        <strong>Membres :</strong> {{ projet.nbreMembreDisponible }}
+        <strong>Members:</strong> {{ projet.nbreMembreDisponible }}
       </div>
 
       <div class="date-info">
-        <strong>Dates :</strong> {{ projet.dateDebut }} - {{ projet.dateFin }}
+        <strong>Dates:</strong> {{ projet.dateDebut }} - {{ projet.dateFin }}
       </div>
 
       <span class="status-badge" [ngClass]="{ 'not-begin': projet.status === statusEnum.NOT_BEGIN }">
@@ -48,12 +48,10 @@
       <div class="actions">
         <button class="btn update">Update</button>
         <button class="btn delete">Delete</button>
-
-        
       </div>
 
       <div *ngIf="projet.taches?.length > 0" class="taches">
-        <h4>Tâches associées :</h4>
+        <h4>Associated Tasks:</h4>
         <ul>
           <li *ngFor="let tache of projet.taches">{{ tache.nomTache }} - {{ tache.status }}</li>
         </ul>
@@ -61,34 +59,31 @@
     </div>
   </div>
 
-  <!-- MODAL : Ajouter ou Modifier un projet -->
+  <!-- MODAL: Add or Edit a project -->
   <div *ngIf="showModal && !isDescriptionModal" class="modal-content show" [ngStyle]="{ top: modalPosition.top + 'px', left: modalPosition.left + 'px' }">
     <span class="close-btn" (click)="closeModal()">×</span>
-    <h3>{{ isEditing ? 'Modifier le Projet' : 'Ajouter un Projet' }}</h3>
+    <h3>{{ isEditing ? 'Edit Project' : 'Add Project' }}</h3>
     <form (ngSubmit)="saveProjet()" #projetForm="ngForm">
-      <label>Nom :</label>
+      <label>Name:</label>
       <input type="text" [(ngModel)]="currentProjet.nomProjet" name="nomProjet" required #nomProjet="ngModel"
         [class.is-invalid]="nomProjet.invalid && nomProjet.touched" />
-      <div *ngIf="nomProjet.invalid && nomProjet.touched" class="error-message">Champ requis</div>
+      <div *ngIf="nomProjet.invalid && nomProjet.touched" class="error-message">Required field</div>
 
-      <label>Description :</label>
+      <label>Description:</label>
       <textarea [(ngModel)]="currentProjet.description" name="description" required></textarea>
 
-      <label>Date Début :</label>
+      <label>Start Date:</label>
       <input type="date" [(ngModel)]="currentProjet.dateDebut" name="dateDebut" required />
 
-      <label>Date Fin :</label>
+      <label>End Date:</label>
       <input type="date" [(ngModel)]="currentProjet.dateFin" name="dateFin" required />
 
-      
-
-      <button type="submit">{{ isEditing ? 'Modifier' : 'Ajouter' }}</button>
+      <button type="submit">{{ isEditing ? 'Edit' : 'Add' }}</button>
     </form>
   </div>
 
-  <!-- MODAL : Description complète -->
+  <!-- MODAL: Full Description -->
   <div *ngIf="isDescriptionModal" class="modal-content show">
     <span class="close-btn" (click)="closeModal()">×</span>
-   
   </div>
 </div>
