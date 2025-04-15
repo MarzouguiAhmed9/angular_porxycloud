@@ -50,7 +50,15 @@
   <ng-template #noDataTemplate>
     <p>No applications available.</p>
   </ng-template>
-</div>
+
+  <!-- Best Applicant Card -->
+  <!-- Best Applicant Card -->
+  <div *ngIf="bestApplicant" class="best-applicant-card">
+    <h2>Best Applicant</h2>
+    <p>Name: {{ bestApplicant.username }}</p>
+    <p>Score: {{ bestApplicantScore | number:'1.0-0' }}%</p>
+  </div>
+
 
 <!-- CV Viewer -->
 <div *ngIf="selectedCvUrl" class="cv-viewer">

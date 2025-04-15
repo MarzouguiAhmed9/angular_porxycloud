@@ -397,6 +397,22 @@
       font-weight: bold;
       font-size: 18px;
     }
+    .best-applicant-card {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-top: 20px;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+
+    .best-applicant-card h2 {
+      margin-bottom: 10px;
+    }
+
+    .best-applicant-card p {
+      font-size: 1.2em;
+      margin: 5px 0;
+    }
 
     .progress-circle .left-half-clipper {
       position: absolute;

@@ -70,15 +70,6 @@ export class OffreComponent implements OnInit {
     this.isEditing = true;  // Edit mode (editable fields)
   }
 
-  private decodeJwt(token: string): any {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace('-', '+').replace('_', '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
-  }
 
   // Method to switch to add mode (reset form fields)
   addOffre(): void {
@@ -134,7 +125,15 @@ export class OffreComponent implements OnInit {
       }
     });
   }
+  private decodeJwt(token: string): any {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
 
+    return JSON.parse(jsonPayload);
+  }
   updateOffre(id: number, updatedOffre: Offre): void {
     this.isLoading = true;
     this.offreservice.editOffre({ id, body: updatedOffre }).subscribe({

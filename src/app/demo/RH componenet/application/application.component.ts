@@ -21,6 +21,8 @@ export class ApplicationComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = '';
   selectedCvUrl: SafeResourceUrl = null;
+  bestApplicant: Application | null = null;  // Variable to store the best applicant
+  bestApplicantScore: number = 0;  // Variable to store the highest score
 
   offre: Offre = {
     title: '',
@@ -49,6 +51,7 @@ export class ApplicationComponent implements OnInit {
     this.applicationService.getApplications().subscribe({
       next: (data: Application[]) => {
         this.applications = data;
+        this.calculateBestApplicant(); // Calculate the best applicant after loading the applications
       },
       error: (error) => {
         this.errorMessage = 'Failed to load applications. Please try again later.';
@@ -78,35 +81,46 @@ export class ApplicationComponent implements OnInit {
 
   // Calculate score based on CV and offer skills
   calculateScore(cvSkills: string[], offerSkills: string[]): number {
-    // Trim spaces from both CV skills and offer skills before comparing
     const trimmedCvSkills = cvSkills.map(skill => skill.trim());
     const trimmedOfferSkills = offerSkills.map(skill => skill.trim());
-
-    // Log the trimmed skills for debugging
-    console.log('Trimmed CV Skills:', trimmedCvSkills);
-    console.log('Trimmed Offer Skills:', trimmedOfferSkills);
-
-    // Calculate the number of matched skills
     const matchedSkills = trimmedCvSkills.filter(skill => trimmedOfferSkills.includes(skill));
-
-    // Log the matched skills
-    console.log('Matched Skills:', matchedSkills);
-
-    // Set the score based on matching skills
     let score = (matchedSkills.length / trimmedOfferSkills.length) * 100;
 
-    // Apply normalization to decrease the score for fewer matches
     if (matchedSkills.length === 1) {
       score = score * 0.5; // Decrease the score by half for only one match
     } else if (matchedSkills.length === 0) {
       score = 0; // If no match, set the score to 0
     }
 
-    // Ensure the score doesn't exceed 100%
     return Math.min(score, 100);
   }
 
+  // Calculate the best applicant based on the highest score
+  calculateBestApplicant(): void {
+    let highestScore = 0;
+    let bestApplication: Application | null = null;
 
+    // Iterate through the applications and calculate score for each
+    this.applications.forEach(application => {
+      if (application.cv && this.offres[0]) {
+        const cvSkills = application.cv.skills.split(',');
+        const offerSkills = this.offres[0].skills.split(',');
+        const score = this.calculateScore(cvSkills, offerSkills);
+
+        // Check if this application has the highest score
+        if (score > highestScore) {
+          highestScore = score;
+          bestApplication = application;
+        }
+      }
+    });
+
+    // Set the best applicant and score
+    if (bestApplication) {
+      this.bestApplicant = bestApplication;
+      this.bestApplicantScore = highestScore;
+    }
+  }
 
   // Method to view the CV as a PDF
   viewCv(cvId: number): void {
@@ -126,9 +140,10 @@ export class ApplicationComponent implements OnInit {
   closeCv(): void {
     this.selectedCvUrl = null;
   }
+
   setFeedbackRating(application: Application, star: number): void {
     if (application.feedback) {
-      application.feedback.note = star; // Update the local feedback note
+      application.feedback.note = star;
 
       // Optionally, send the updated feedback to the backend here
       this.applicationService.updateFeedback(application.feedback).subscribe({
@@ -141,22 +156,4 @@ export class ApplicationComponent implements OnInit {
       });
     }
   }
-
-  // Method to calculate and update the circle color dynamically
-  updateScoreAndColor(application: Application, offre: Offre): void {
-    const cvSkills = application.cv.skills.split(','); // assuming skills are stored as a comma-separated string
-    const offerSkills = offre.skills.split(',');
-    const score = this.calculateScore(cvSkills, offerSkills);
-    const circle = document.querySelector(`#circle-${application.id}`);
-    console.log(cvSkills, offerSkills, score);
-    console.log("rrr" + offerSkills)
-
-
-    // Update the circle's color based on the score
-    circle?.setAttribute('data-score', score.toString());
-    console.log("Score calculated and circle updated with score:", score);
-
-    console.log("Score calculated and circle updated with score:", score);
-  }
-
 }
