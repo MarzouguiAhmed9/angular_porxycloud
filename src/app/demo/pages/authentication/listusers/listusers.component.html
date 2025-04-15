@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:ng="http://angular.io">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    .user-table-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .actions-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .actions-bar input,
+    .actions-bar select,
+    .actions-bar button {
+      padding: 8px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .add-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+    }
+
+    .add-button span {
+      font-size: 18px;
+      margin-right: 4px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .user-table th,
+    .user-table td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .text-success {
+      color: green;
+    }
+
+    .text-danger {
+      color: red;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .modal-content input,
+    .modal-content select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal-content button {
+      margin-right: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    .modal-content button[type="button"] {
+      background-color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Tableau Utilisateur -->
+  <div class="user-table-container">
+    <div class="header-bar">
+      <h2>User List</h2>
+      <div class="actions-bar">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          [(ngModel)]="searchTerm"
+          (input)="filterUserss()" />
+
+        <select [(ngModel)]="selectedStatus" (change)="filterUserss()">
+          <option value="">All Status</option>
+          <option value="true">Approved</option>
+          <option value="false">Not Approved</option>
+        </select>
+
+        <button class="add-button" (click)="addUser()">
+          <span>+</span> Add User
+        </button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of filteredUsers">
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.birthday }}</td>
+            <td>{{ user.address }}</td>
+            <td>{{ user.phone }}</td>
+            <td>
+              <span [ngClass]="{'text-success': user.approuve, 'text-danger': !user.approuve}">
+                {{ user.approuve ? 'Approved' : 'Not Approved' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn edit" (click)="updateUser(user)">Edit</button>
+              <button class="btn delete" (click)="deleteUser(user.id)">Delete</button>
+              <button class="btn toggle" (click)="toggleApproval(user.id)">
+                {{ user.approuve ? 'Disapprove' : 'Approve' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal for Add User -->
+  <div class="modal" *ngIf="newUser">
+    <div class="modal-content">
+      <span class="close-btn" (click)="closeModal()">&#x2716;</span>
+      
+      <h2>Add User</h2>
+      <form (ngSubmit)="saveUser()">
+        <label for="UserName">User Name:</label>
+        <input id="UserName" [(ngModel)]="newUser.username" name="firstName" required />
+  
+        <!-- First Name -->
+        <label for="firstName">First Name:</label>
+        <input id="firstName" [(ngModel)]="newUser.firstName" name="firstName" required />
+  
+        <!-- Last Name -->
+        <label for="lastName">Last Name:</label>
+        <input id="lastName" [(ngModel)]="newUser.lastName" name="lastName" required />
+  
+        <!-- Birthday -->
+        <label for="birthday">Birthday:</label>
+        <input type="date" id="birthday" [(ngModel)]="newUser.birthday" name="birthday" required />
+  
+        <!-- Address -->
+        <label for="address">Address:</label>
+        <input id="address" [(ngModel)]="newUser.address" name="address" />
+  
+        <!-- Phone -->
+        <label for="phone">Phone:</label>
+        <input id="phone" [(ngModel)]="newUser.phone" name="phone" />
+  
+        <!-- Email -->
+        <label for="email">Email:</label>
+        <input id="email" type="email" [(ngModel)]="newUser.email" name="email" required />
+  
+       
+  
+        <!-- Role -->
+        <label for="role">Role:</label>
+        <select id="role" [(ngModel)]="newUser.role.id" name="role">
+          <option [ngValue]="2">ROLE_CLIENT</option>
+          <option [ngValue]="1">ROLE_ADMIN</option>
+        </select>
+  
+        <!-- Submit and Cancel Buttons -->
+        <div class="modal-footer">
+          <button type="submit">Add</button>
+          <button type="button" (click)="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+  <!-- Modal for Edit User -->
+  <div class="modal" *ngIf="editingUser">
+    <div class="modal-content">
+      <span class="close-btn" (click)="closeModal()">&#x2716;</span>
+    
+      <h2>Edit User</h2>
+      <form (ngSubmit)="saveUser()">
+
+        <!-- First Name -->
+        <label>First Name:</label>
+        <input [(ngModel)]="editingUser.firstName" name="firstName" required />
+
+        <!-- Last Name -->
+        <label>Last Name:</label>
+        <input [(ngModel)]="editingUser.lastName" name="lastName" required />
+
+        <!-- Birthday -->
+        <label>Birthday:</label>
+        <input type="date" [(ngModel)]="editingUser.birthday" name="birthday" required />
+
+        <!-- Address -->
+        <label>Address:</label>
+        <input [(ngModel)]="editingUser.address" name="address" />
+
+        <!-- Phone -->
+        <label>Phone:</label>
+        <input [(ngModel)]="editingUser.phone" name="phone" />
+
+        <!-- Email -->
+        <label>Email:</label>
+        <input [(ngModel)]="editingUser.email" name="email" required />
+
+        <!-- Status -->
+        <label>Status:</label>
+        <select [(ngModel)]="editingUser.approuve" name="status">
+          <option [ngValue]="true">Approved</option>
+          <option [ngValue]="false">Not Approved</option>
+        </select>
+
+        <button type="submit">Update</button>
+        <button type="button" (click)="closeModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

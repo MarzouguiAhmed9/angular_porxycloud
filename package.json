@@ -31,6 +31,8 @@
     "@tailwindcss/postcss": "^4.1.3",
     "apexcharts": "4.0.0",
     "bootstrap": "5.3.3",
+    "datta-able-free-angular-admin-template": "file:",
+    "jwt-decode": "^4.0.0",
     "ng-apexcharts": "1.15.0",
     "ng-openapi-gen": "^0.52.0",
     "ngx-scrollbar": "16.1.1",

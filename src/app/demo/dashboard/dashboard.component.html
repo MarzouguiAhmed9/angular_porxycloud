@@ -24,6 +24,10 @@
 
   <!-- Template for when no applications are available -->
   <ng-template #noDataTemplate>
-    <p class="text-3xl">No applications available.</p>
+    <p>No applications available.</p>
+    <button (click)="logout()">Logout</button>
+    <button (click)="profile()">Profile</button>
+    <button (click)="list()">List</button>
+
   </ng-template>
 </div>

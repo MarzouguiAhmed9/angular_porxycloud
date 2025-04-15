@@ -1,0 +1,37 @@
+<div class="forgot-password-wrapper">
+    <div class="forgot-password-container">
+      <div class="form-card">
+        <h2>Forgot your password?</h2>
+        <img src="assets/images/mobileforgot.png" alt="Illustration image" class="form-image" />
+        
+  
+        <form [formGroup]="forgotForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+           
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="Enter your email address"
+            />
+            <div *ngIf="email.invalid && email.touched" class="error-message">
+              Invalid or required email.
+            </div>
+          </div>
+  
+          <button type="submit" [disabled]="forgotForm.invalid">Send reset link</button>
+        </form>
+  
+        <!-- Success message -->
+        <div class="message success-message" *ngIf="successMessage">
+          {{ successMessage }}
+        </div>
+  
+        <!-- Error message -->
+        <div class="message error-message" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+  

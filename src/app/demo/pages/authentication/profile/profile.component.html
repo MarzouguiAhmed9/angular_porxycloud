@@ -1,0 +1,50 @@
+<div class="hi">
+  <div class="container mt-4">
+    <div class="row bg-light p-5 rounded shadow-sm">
+      <!-- Colonne Profil -->
+      <div class="col-md-6 text-center profile-column">
+        <!-- Informations Utilisateur -->
+        <h3 class="text-center mt-4 mb-4 username">{{ userProfile.username }}</h3>
+        <div class="user-info">
+          <div class="row mb-3">
+            <div class="col-md-4 label"><strong>Prénom :</strong></div>
+            <div class="col-md-8 value">{{ userProfile.firstName }}</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4 label"><strong>Nom :</strong></div>
+            <div class="col-md-8 value">{{ userProfile.lastName }}</div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-4 label"><strong>Email :</strong></div>
+            <div class="col-md-8 value">{{ userProfile.email }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonne Action -->
+      <div class="col-md-6">
+        <!-- Prévisualisation de l'image -->
+        <div *ngIf="previewUrl" class="mb-4">
+          <h4 class="text-md">Aperçu de l'image :</h4>
+          <img [src]="previewUrl" alt="Aperçu Image" class="img-fluid rounded-circle profile-img" />
+        </div>
+        <!-- Image de Profil -->
+        <img *ngIf="!previewUrl && userProfile.profileImageUrl" 
+             [src]="userProfile.profileImageUrl" 
+             alt="Image de profil" 
+             class="img-fluid rounded-circle profile-img" />
+        
+        <!-- Upload Image -->
+        <form (ngSubmit)="onSubmit1()" #form="ngForm" class="upload-form">
+          <div class="file-input-wrapper">
+            <input type="file" accept="image/*" (change)="onFileSelected($event)" required id="fileInput" />
+            <label for="fileInput" class="file-input-label">
+              <img src="assets/images/upload.png" alt="Upload Icon" class="upload-icon" />
+            </label>
+          </div>
+          <button class="btn btn-upload mt-4" type="submit">Enregistrer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
